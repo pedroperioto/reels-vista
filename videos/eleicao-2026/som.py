@@ -151,6 +151,16 @@ put(sfx, C_(3), sw(0), 0.22); put(sfx, C_(8), click(), 0.35); put(sfx, C_(10) + 
 put(sfx, c0 + tChat - c0 - 0.1, sw(1), 0.2); put(sfx, tReply, ding(), 0.3); put(sfx, tMine, sweep_tone(700, 1500, 0.2), 0.07); put(sfx, tMine + 0.05, pop(1200), 0.22)
 put(sfx, c0 + tFinal, sw(2), 0.25); put(sfx, c0 + tFinal + 1.0, click(), 0.35); put(sfx, c0 + tFinal + 1.08, pluck(note(79)), 0.15); put(sfx, c0 + tFinal + 1.2, pluck(note(84)), 0.12)
 
+# ---- v7: whoosh nos cortes com passagem de velocidade + brilho sonoro nas faíscas
+for j, sc in enumerate(('bolsonaro', 'lula', 'mercado')):
+    b = S[sc]['fim']; put_end(sfx, b + 0.06, noise_sweep(350, 6500, 0.6), 0.2); put(sfx, b - 0.02, sw(j + 1), 0.16)
+def shimmer():
+    x = np.zeros(int(SR * 1.2))
+    for k, (f, d) in enumerate(((2637, 0.0), (3136, 0.07), (3951, 0.14), (5274, 0.2))):
+        y = bell(f, 0.9, 0.22) * (0.5 - k * 0.08); i = int(d * SR); x[i:i + len(y)] += y[:len(x) - i]
+    return x
+for sc, w_, dt in (('mercado', 12, 0.3), ('m2', 31, 0.35), ('mapa', 64, 0.3)): put(sfx, Wd(sc, w_) + dt, shimmer(), 0.14)
+
 # ---------------- mixagem ----------------
 def room(x, mix, dec=0.6):
     n = int(SR * dec * 2.5); ir = rng.standard_normal(n) * np.exp(-np.arange(n) / SR / dec); ir = lp(ir, 5000); ir /= np.sqrt((ir ** 2).sum()); return x + fftconvolve(x, ir)[:len(x)] * mix

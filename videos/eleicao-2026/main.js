@@ -1,4 +1,4 @@
-// VÍDEO ÚNICO (v6) — estilo Apple claro, fotos reais, sombras, dados até 15/10/2026.
+// VÍDEO ÚNICO (v7) — estilo Apple claro, fotos reais, sombras, dados até 15/10/2026.
 const RATE = 2.5, WD = 1 / RATE, PAUSE = 0.35;
 const PLAN = [
   ['gancho', 0.3, 0.6, 'Lula contra Bolsonaro, de novo. E tem gente me dizendo que vai esperar a eleição pra comprar. Agora é o Flávio, mas a briga é a mesma.'],
@@ -297,6 +297,7 @@ const SC = {
       if (kWhy > 0) { ctx.save(); ctx.globalAlpha *= kWhy; ctx.fillStyle = '#FBE9EA'; ctx.beginPath(); ctx.roundRect(150, 1170, 780, 170, 30); ctx.fill(); ctx.fillStyle = REDp; ctx.beginPath(); ctx.roundRect(150, 1170, 12, 170, [30, 0, 0, 30]); ctx.fill();
         T(ctx, 'POR QUE VOLTOU A SUBIR?', 540, 1214, F.mono(22), REDp, 'center', 1, 22, 740, 2); T(ctx, 'Quaest (14/10): empate técnico no 2º turno,', 540, 1258, F.semi(30), INK, 'center', 1, 30, 740); T(ctx, 'Flávio 46% × Lula 44%.', 540, 1296, F.semi(30), INK, 'center', 1, 30, 740); T(ctx, 'Também pesaram: fim da escala 6x1 no Senado e inflação esperada maior.', 540, 1330, F.med(22), MUTE, 'center', prog(u, tPoll + 0.8, tPoll + 1.2), 22, 740); ctx.restore(); }
       ctx.restore(); }
+    if (u < w[19]) sparkle(ctx, 770, 835, u, w[12] + 0.3, 1);
     fonte(ctx, u < tFlow ? 'Fonte: B3 · fechamento de 5/10/2026 (via CNN Brasil)' : u < tFlip ? 'Fonte: B3 · saldo diário de estrangeiros (último dado: 13/10/2026)' : 'Fontes: B3 / CNN Brasil (ajustes até 14/10) · Quaest, 14/10/2026', prog(u, tBoard, tBoard + 0.4));
   },
   m2(ctx, u, d, w) {
@@ -333,6 +334,7 @@ const SC = {
       if (kS > 0) { ctx.save(); ctx.globalAlpha *= kS; ctx.strokeStyle = GOLDA; ctx.lineWidth = 3; ctx.setLineDash([6, 8]); ctx.beginPath(); ctx.moveTo(xs - 12, base); ctx.lineTo(xs - 12, base - Hm - 10); ctx.stroke(); ctx.setLineDash([]); ctx.restore(); T(ctx, 'na planta', xs + 30, base + 34, F.mono(20), GOLDA, 'center', kS, 20);
         T(ctx, 'média SP: R$ 12.206', 470, base - hOf(12206) - 60, F.semi(26), INK, 'center', kS, 26); }
       const k15 = clamp(SPR(u - w[31] + 0.2, 1.3, 0.6), 0, 1.06); if (k15 > 0) { const h = hOf(15000) * k15; brickIso(ctx, xs, base, 44, h, d3, '#2A3A57', '#1B2840', '#4A5E82'); T(ctx, 'R$ 15 mil', xs + 26, base - h - 30, F.black(30), INK, 'center', clamp(k15 * 3), 30); T(ctx, 'Tatuapé', xs + 26, base - h - 66, F.semi(22), MUTE, 'center', clamp(k15 * 3), 22); }
+      sparkle(ctx, xs + 26, base - hOf(15000) - 50, u, w[31] + 0.35, 0.85);
       const kTr = prog(u, w[32], w[34] + 0.3); if (kTr > 0) { const x = xs + 26, y0 = base - hOf(15000) - 100, y1 = y0 - 120 * easeOut(kTr); ctx.save(); ctx.strokeStyle = NAVY; ctx.lineWidth = 5; ctx.setLineDash([10, 10]); ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x, y1); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = NAVY; ctx.beginPath(); ctx.moveTo(x, y1 - 22); ctx.lineTo(x - 16, y1 + 4); ctx.lineTo(x + 16, y1 + 4); ctx.fill(); ctx.restore(); T(ctx, 'tendência', x - 30, y1 + 10, F.semi(22), NAVY, 'right', kTr, 22); }
       fonte(ctx, 'FipeZAP: preço médio anunciado, São Paulo (dez/2008 a set/2026) · na planta: tabelas de lançamentos out/2026 (Vista Broker)', spread, 1470);
     }
@@ -458,6 +460,7 @@ function drawMap(ctx, u, d, w) {
   head(ctx, u, null, 0, 'também não param.', w[43], tLanc - 0.3, 290, 96);
   head(ctx, u, 'E o metrô', tL2, 'está chegando.', w[57], tEnd - 0.3, 290, 104);
   head(ctx, u, 'Governo passa.', tEnd, 'O tijolo fica.', w[64], 99, 290, 124);
+  sparkle(ctx, 540, 392, u, w[64] + 0.3, 1.35);
   // por que a Porte aposta aqui (topo)
   const kW = winA(u, 10.6, tU + 1.2, 0.4); if (kW > 0) { ctx.save(); ctx.globalAlpha *= kW; ctx.translate(0, (1 - easeOut(clamp(kW))) * -30); soft(ctx, 90, 200, 900, 300, 36, 0.14, 50, 18);
     T(ctx, 'POR QUE A PORTE APOSTA AQUI', 140, 258, F.mono(22), GOLDA, 'left', 1, 22, 800, 2);
@@ -509,10 +512,38 @@ function drawMap(ctx, u, d, w) {
   ctx.restore();
   fonte(ctx, u < T3 ? 'Mapa: Geosampa e Metrô · empreendimentos: site da Porte (out/2026) · alturas fora de escala' : u < tL2 ? 'Empreendimentos: sites da Diálogo, Cyrela/Living, Tegra e Eztec (out/2026) · alturas fora de escala' : 'Mapa: Geosampa e Metrô · alturas fora de escala', prog(u, 1.5, 2.0) * (1 - fo), 1530);
 }
+// ---------- acabamento v7: faíscas discretas e cortes com passagem de velocidade ----------
+// faíscas douradas + anel fino que se expande a partir do destaque (só nos 3 momentos-chave)
+function sparkle(ctx, x, y, u, t0, s = 1) {
+  const k = (u - t0) / 0.95; if (k <= 0 || k >= 1) return; ctx.save();
+  const kr = clamp(k / 0.7); if (kr < 1) { ctx.globalAlpha = 0.5 * (1 - kr); ctx.strokeStyle = '#C9A86A'; ctx.lineWidth = 3 * s * (1 - kr) + 0.5; ctx.beginPath(); ctx.ellipse(x, y, (30 + 170 * easeOut(kr)) * s, (22 + 110 * easeOut(kr)) * s, 0, 0, 6.283); ctx.stroke(); }
+  for (let i = 0; i < 11; i++) { const a = i * 2.39996 + 0.7, r0 = (0.55 + 0.45 * ((i * 37) % 11) / 11) * 150 * s, d = 0.12 + 0.05 * (i % 4), kk = clamp((k - d * 0.4) / (1 - d * 0.4)); if (kk <= 0) continue;
+    const e = easeOut(kk), px = x + Math.cos(a) * r0 * e, py = y + Math.sin(a) * r0 * 0.7 * e - 14 * kk, sz = (5 + (i % 3) * 3) * s * (1 - kk) * Math.min(1, kk * 6);
+    if (sz <= 0.3) continue; ctx.globalAlpha = 0.95 * (1 - kk * kk); ctx.fillStyle = i % 3 === 0 ? '#FFFFFF' : '#D9B979'; ctx.shadowColor = 'rgba(184,149,90,0.55)'; ctx.shadowBlur = 8 * s;
+    ctx.beginPath(); ctx.moveTo(px, py - sz * 2); ctx.quadraticCurveTo(px, py, px + sz * 2, py); ctx.quadraticCurveTo(px, py, px, py + sz * 2); ctx.quadraticCurveTo(px, py, px - sz * 2, py); ctx.quadraticCurveTo(px, py, px, py - sz * 2); ctx.fill(); }
+  ctx.restore(); }
+// cortes "velocity handoff": a cena que sai acelera para cima e a próxima entra já em movimento, desacelerando
+const WHIP = { bolsonaro: 1, lula: 1, mercado: 1 }, W_OUT = 0.55, W_IN = 0.5, D_OUT = 420, D_IN = 380;
+function sceneAt(t) { let i = SCENES.findIndex(s => t < s.b); if (i < 0) i = SCENES.length - 1; return i; }
+function drawScene(ctx, t, i) {
+  const s = SCENES[i], u = t - s.a; let dy = 0, sc = 1;
+  if (WHIP[s.name] && u > s.d - W_OUT) { const k = (u - (s.d - W_OUT)) / W_OUT; dy = -D_OUT * k * k * k; sc = 1 - 0.03 * k * k; }
+  if (i > 0 && WHIP[SCENES[i - 1].name] && u < W_IN) { const k = 1 - u / W_IN; dy = D_IN * k * k * k; sc = 1 + 0.025 * k * k; }
+  ctx.save(); if (dy || sc !== 1) { ctx.translate(540, 960 + dy); ctx.scale(sc, sc); ctx.translate(-540, -960); }
+  if (s.name === 'mapa') drawMap(ctx, u, s.d, s.wt); else SC[s.name](ctx, u, s.d, s.wt); ctx.restore(); }
+function inWhip(t) { const i = sceneAt(t), s = SCENES[i], u = t - s.a; return (WHIP[s.name] && u > s.d - W_OUT) || (i > 0 && WHIP[SCENES[i - 1].name] && u < W_IN); }
+let MB = null, SUB = null;
 function render(cv, t) {
   const ctx = cv.getContext('2d'); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; bgFill(ctx);
-  let i = SCENES.findIndex(s => t < s.b); if (i < 0) i = SCENES.length - 1; const s = SCENES[i], u = t - s.a;
-  ctx.save(); if (s.name === 'mapa') drawMap(ctx, u, s.d, s.wt); else SC[s.name](ctx, u, s.d, s.wt); ctx.restore();
+  const i = sceneAt(t);
+  if (!inWhip(t)) { drawScene(ctx, t, i); return; }
+  // motion blur: 6 amostras em meio quadro (obturador 180°), sem atravessar o corte
+  if (!MB) { MB = document.createElement('canvas'); MB.width = W; MB.height = H; SUB = document.createElement('canvas'); SUB.width = W; SUB.height = H; }
+  const m = MB.getContext('2d'), g = SUB.getContext('2d'), N = 6, s = SCENES[i];
+  for (let j = 0; j < N; j++) { const tj = clamp(t + (j / (N - 1) - 0.5) / 60, s.a, s.b - 1e-4);
+    g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.filter = 'none'; bgFill(g); drawScene(g, tj, i);
+    m.globalAlpha = 1 / (j + 1); m.drawImage(SUB, 0, 0); }
+  m.globalAlpha = 1; ctx.drawImage(MB, 0, 0);
 }
 window.TIMING = SCENES.map(s => ({ cena: s.name, inicio: Math.round(s.a * 100) / 100, fim: Math.round(s.b * 100) / 100, fala: s.text, palavras: s.wt.map(x => Math.round((x + s.a) * 100) / 100) }));
 function setMap(m) { MAP = m; }

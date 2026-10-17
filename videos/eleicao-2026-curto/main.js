@@ -567,7 +567,7 @@ const CHUNKS = []; SEQ.forEach(s => { if (s.name === 'cta') return; const ws = s
     if (brk || i === ws.length - 1) { CHUNKS.push({ ws: cur, t0: cur[0][1] }); cur = []; } });
   CHUNKS[CHUNKS.length - 1].last = s.b; });
 CHUNKS.forEach((c, i) => { const n = CHUNKS[i + 1]; const lastW = c.ws[c.ws.length - 1][1]; c.t1 = Math.min(n ? n.t0 - 0.02 : 1e9, lastW + 0.75, c.last || 1e9); });
-function captions(ctx, t) {
+function captions(ctx, t) { if (window.NOCAP) return;
   const c = CHUNKS.find(c => t >= c.t0 - 0.06 && t < c.t1); if (!c) return;
   ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.font = F.semi(44);
   const sp = ctx.measureText(' ').width, ws = c.ws.map(([w]) => ctx.measureText(w).width), tw = ws.reduce((a, b) => a + b, 0) + sp * (ws.length - 1);

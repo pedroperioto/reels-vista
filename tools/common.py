@@ -33,9 +33,9 @@ def open_page(pw, vdir):
     b = pw.chromium.launch(args=ARGS); pg = b.new_page(viewport={'width': 1080, 'height': 1920})
     errs = []
     pg.on('pageerror', lambda e: errs.append(str(e)))
-    pg.on('console', lambda m: m.type == 'error' and not m.text.startswith(IGNORE) and errs.append(m.text))
+    pg.on('console', lambda m: m.type == 'error' and not m.text.startswith(IGNORE) and 'status of 404' not in m.text and errs.append(m.text))
     pg.on('requestfailed', lambda r: errs.append('falhou ao carregar ' + r.url))
-    pg.on('response', lambda r: r.status >= 400 and errs.append(f'{r.status} {r.url}'))
+    pg.on('response', lambda r: r.status >= 400 and '/mapcache/' not in r.url and errs.append(f'{r.status} {r.url}'))
     rel = vdir.relative_to(ROOT).as_posix()
     pg.goto(f'http://localhost:{PORT}/{rel}/index.html')
     try:

@@ -1,0 +1,13 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/fonts.css">
+<style>html,body{margin:0;background:#000} canvas{display:block}</style></head><body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script type="importmap">{"imports":{"three":"../../lib/three/build/three.module.js","three/addons/":"../../lib/three/examples/jsm/"}}</script>
+<script src="../../lib/engine.js"></script><script src="../../lib/mapcache.js"></script><script src="helpers.js"></script><script src="old6.js"></script><script src="main.js"></script>
+<script type="module">
+import { createMap } from './map3d.js';
+for (const f of ['InterBlack','InterSemi','InterMed','SerifIt','Instr','Mono']) await document.fonts.load(`80px ${f}`);
+await ASSETS; setMap(await createMap(1080, 1920, '', MAPTM));
+const cv = document.getElementById('c'); installMapCache(MAP, cv, render, 'out/mapcache/');
+window.frame = (t) => { render(cv, t); return cv.toDataURL('image/jpeg', 0.93); };
+window.DUR = DUR; window.TIMING_ = TIMING; window.ready = true;
+</script></body></html>

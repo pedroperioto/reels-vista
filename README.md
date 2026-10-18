@@ -27,6 +27,15 @@ do mapa, a câmera ou os prédios, o cache se renova sozinho.
 - `fotos/` → fotos e logo. `distritos.json` / `transporte.json` → dados do mapa (Geosampa, Metrô).
 - `out/` → tudo que é gerado (não vai para o Git).
 
+## Versão atual: `videos/eleicao-2026-v11` ("5 conselhos")
+
+- `v11.js` monta a sequência (`V11`): cada cena nova tem fala própria e reaproveita uma animação antiga (v9 em `main.js`,
+  v6 em `old6.js`) por *time-warp*: as palavras da fala nova são ligadas às da fala antiga (automático, por palavras iguais,
+  ou à mão em `anchors`). `intro: n` abre a cena com um cartão de conselho que dura as `n` primeiras palavras.
+- Fotos do banco em `fotos-banco/` (passam por `imgCard`, com zoom lento e sombra).
+- Legenda dinâmica: 2–3 palavras, posição por cena em `CAPZ`. Para conferir se ela cobre algo:
+  `python3 tools/legendas.py eleicao-2026-v11` (mede bordas atrás de cada legenda; gera `out/capcheck.jpg` se achar).
+
 ## Fazer um vídeo novo
 
 1. Copie a pasta: `cp -r videos/eleicao-2026 videos/novo-tema` (e apague `videos/novo-tema/out`).

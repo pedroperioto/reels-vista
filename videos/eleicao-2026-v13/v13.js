@@ -16,7 +16,7 @@ const TX = {
   m2: 'Segundo conselho: olhe o histórico. O preço médio do metro quadrado em São Paulo, sem descontar a inflação, subiu com Lula, Dilma, Temer, Bolsonaro e de novo com Lula. Em qualquer governo, quem comprou tijolo não ficou refém da eleição. No Tatuapé, lançamentos já passam de quinze mil o metro quadrado.',
   corrida: 'Terceiro: aluguel não é neutro. Em doze meses, subiu nove por cento, quase o dobro da inflação, e mais que o imóvel.',
   conta: 'Numa simulação para um apê de oitocentos mil no Tatuapé, o aluguel soma seiscentos e oitenta e cinco mil em dez anos. Financiar também tem custo, por isso vale comparar.',
-  estoque: 'Quarto: com estoque alto, quem tem poder de negociar é você. No médio e alto padrão, as vendas caíram dezoito por cento em um ano, e o estoque levaria treze meses pra acabar. Há dois anos, eram sete.',
+  estoque: 'Quarto: com estoque alto, quem tem poder de negociar é você. Em São Paulo, os imóveis de médio e alto padrão venderam dezoito por cento menos em doze meses. No ritmo atual, levaria treze meses pra vender tudo o que está à venda. Há dois anos, eram sete meses.',
   parcela: 'Quinto: faça a conta da parcela. Na simulação, ela cai e, no oitavo ano, fica menor que o aluguel. E no fim, o patrimônio é seu. Mas só vale se couber no seu bolso.',
   mapa: 'Olhe pra onde a cidade vai: no Eixo Platina, moradia, trabalho e lazer ficam ao lado do metrô. Em volta, são catorze empreendimentos: lançamentos, obras e prédios prontos. E o metrô está chegando à Anália Franco. Governo passa. O tijolo fica.',
   cta: 'Você ainda é do time do aluguel? Ou acha que, com o resultado da eleição, comprar ficará mais fácil? Comenta TIME ALUGUEL ou TIME COMPRA e marca quem está nessa dúvida.',
@@ -38,9 +38,8 @@ const V13 = [
     ['w44', 'w29'], ['w45', 'w30'], ['w46', 'w31'], ['w47', 'w32'], ['w48', 'w33'], ['w49', 'w34'], ['w50', 'w35'], ['e', 'e']] },
   { name: 'corrida', src: 'o6', hold: 0.6, intro: 5, anchors: [['P', 0.3], ['w5', 0.8], ['w9', 2.0], ['w11', 2.9], ['w12', 3.15], ['w16', 3.36], ['w17', 3.42], ['e', 'e']] },
   { name: 'conta', src: 'o6', hold: 0.5, tail: 'Financiar' },
-  { name: 'estoque', src: 'o6', hold: 1.2, intro: 11, anchors: [['P', 0], ['w11', 'w0'], ['w14', 'w3'], ['w16', 'w5'], ['w17', 'w6'], ['w18', 'w7'], ['w19', 'w8'], ['w21', 3.75], ['w24', 4.1], ['w25', 4.4], ['w26', 4.62],
-    ['w28', 'w16'], ['w29', 'w17'], ['w30', 'w18'], ['w31', 'w19'], ['w32', 'w20'], [['w36', 0.25], ['w21', 0.25]], ['e', 'e']] },
-  { name: 'parcela', src: 'o6', hold: 0.6, intro: 6, tail: 'E', tailHold: 'last' },
+  { name: 'estoque', src: 'new', hold: 1.2, intro: 11 },
+  { name: 'parcela', src: 'o6', hold: 0.6, intro: 6, tail: 'E', tailHold: 5.05 },
   { name: 'mapa', src: 'v9', hold: 1.4, intro: 6, anchors: [['P', 6.62], ['w7', 'w14'], ['w9', 'w19'], ['w10', 'w20'], ['w11', ['w21', 0.2]], ['w12', 'w22'], ['w13', 10.52], [['w17', 0.3], 10.58],
     ['J', ['w17', 0.35], 19.4], ['w21', 20.3], ['w23', 'w47'], ['w24', 'w48'], ['w26', 'w50'], ['w27', 'w51'], [['w28', -0.3], 23.7], ['w28', 'w54'], ['w30', 'w56'], ['w31', 'w57'], ['w32', 'w58'],
     ['w34', 'w60'], ['w35', 'w61'], ['w36', 'w62'], ['w37', 'w63'], ['w38', 'w64'], ['w40', 'w66'], ['e', 'e']] },
@@ -72,7 +71,7 @@ const SEQ = []; {
         else pts.push([refT(p[0], o, d, P), refT(p[1], old.wt, old.d, P)]); }); }
       else { const ow = old.text.split(' '), k0 = e.intro || 0, ti = e.tail ? nw.indexOf(e.tail, k0) : nw.length;
         pts = [[P, 0]]; lcs(nw.slice(k0, ti), ow).forEach(([i, j]) => pts.push([o[i + k0], old.wt[j]]));
-        if (e.tail) { const lastOld = Math.max(...pts.map(q => q[1])), hv = e.tailHold === 'last' ? Math.min(old.d - 0.6, lastOld + 0.5) : old.d - 0.6; pts.push([o[ti] - 0.25, hv], [d - 0.45, hv]); }
+        if (e.tail) { const lastOld = Math.max(...pts.map(q => q[1])), hv = typeof e.tailHold === 'number' ? Math.max(lastOld, e.tailHold) : old.d - 0.6; pts.push([o[ti] - 0.25, hv], [d - 0.45, hv]); }
         pts.push([d, old.d]); }
       pts.sort((x, y) => x[0] - y[0]);
       const cl = []; pts.forEach(p => { if (!cl.length || (p[0] > cl[cl.length - 1][0] && (p[1] >= cl[cl.length - 1][1] || jumps.some(J => Math.abs(p[0] - J.tn) < 1e-3)))) cl.push(p); }); pts = cl;
@@ -262,6 +261,48 @@ NEW.cta = (ctx, u, s) => { const w = s.wt, d = s.d; BGS.cta(ctx);
     ctx.restore(); }
 };
 
+
+// ESTOQUE (conselho 4): vendas em 12 meses (barras rotuladas) → meses pra vender o estoque: hoje 13, há dois anos 7
+function monthRow(ctx, x0, y, n, k, col, lit) { for (let i = 0; i < n; i++) { const ki = clamp(k * n - i); if (ki <= 0) continue; const x = x0 + i * 62, sc = lerp(0.6, 1, easeOut(ki));
+    ctx.save(); ctx.globalAlpha *= clamp(ki * 2); ctx.translate(x + 26, y + 32); ctx.scale(sc, sc); ctx.fillStyle = col; ctx.beginPath(); ctx.roundRect(-26, -32, 52, 64, 10); ctx.fill();
+    ctx.fillStyle = lit; ctx.fillRect(-26, -32, 52, 14); ctx.restore(); } }
+NEW.estoque = (ctx, u, s) => { const w = s.wt, d = s.d; OLD6.bgLight(ctx);
+  const iSP = WI('estoque', 'São'), iM = WI('estoque', 'médio'), iV = WI('estoque', 'venderam'), i18 = WI('estoque', 'dezoito'), iMen = WI('estoque', 'menos'), iNo = WI('estoque', 'No'), i13 = WI('estoque', 'treze'),
+    iVen = WI('estoque', 'vender'), iHa = WI('estoque', 'Há'), i7 = WI('estoque', 'sete');
+  T(ctx, 'CONSELHO 4 · NEGOCIE', 80, 290, F.mono(24), NAVY, 'left', prog(u, s.P + 0.1, s.P + 0.5), 24, 900, 2);
+  const tB = w[iNo] - 0.3, kB = easeInOut(prog(u, tB, tB + 0.5));
+  // parte A: vendas
+  if (kB < 1) { ctx.save(); ctx.globalAlpha *= 1 - kB; ctx.translate(0, -60 * kB);
+    head(ctx, u, 'Médio e alto padrão', w[iM], 'vendeu 18% menos.', w[i18], 99, 372, 100);
+    const kc = SPR(u - (w[iSP] - 0.15), 1.5, 0.6); if (kc > 0) pop(ctx, clamp(kc, 0, 1.05), 540, 600, () => { ctx.font = F.mono(24); const t_ = 'CIDADE DE SÃO PAULO · IMÓVEIS VENDIDOS EM 12 MESES', tw_ = ctx.measureText(t_).width + 56;
+      shadowed(ctx, () => { ctx.fillStyle = '#FFFFFF'; ctx.beginPath(); ctx.roundRect(540 - tw_ / 2, 572, tw_, 58, 29); ctx.fill(); }, 0.12, 16, 6); T(ctx, t_, 540, 610, F.mono(24), NAVY, 'center', 1, 24, 940, 1); });
+    const X = 110, Y = 668, Wc = 860, Hc = 560; if (kc > 0) { ctx.save(); ctx.globalAlpha *= clamp(kc * 3); soft(ctx, X, Y, Wc, Hc, 40, 0.14, 60, 22);
+      [['12 meses até jul/2025', '≈ 44,5 mil', 1, '#B9C0CC', w[iV] - 0.1], ['12 meses até jul/2026', '36,5 mil', 36.5 / 44.5, NAVY, w[i18] - 0.15]].forEach(([l, v, f, c, t0], i) => {
+        const y = Y + 140 + i * 190, k = easeOut(prog(u, t0, t0 + 0.8)); T(ctx, l, X + 50, y - 26, F.semi(34), INK, 'left', prog(u, t0 - 0.25, t0), 34, 480);
+        T(ctx, v, X + Wc - 50, y - 26, F.black(48), i ? NAVY : '#7D8594', 'right', prog(u, t0 + 0.2, t0 + 0.5), 48, 300);
+        ctx.fillStyle = '#ECECF1'; ctx.beginPath(); ctx.roundRect(X + 50, y, 760, 54, 14); ctx.fill(); if (k > 0) { ctx.fillStyle = c; ctx.beginPath(); ctx.roundRect(X + 50, y, Math.max(20, 760 * f * k), 54, 14); ctx.fill(); }
+        if (i === 1 && k > 0.95) { const kg = easeOut(prog(u, t0 + 0.75, t0 + 1.2)); ctx.save(); ctx.globalAlpha *= kg; ctx.setLineDash([10, 8]); ctx.strokeStyle = '#D62828'; ctx.lineWidth = 4; ctx.beginPath(); ctx.roundRect(X + 50 + 760 * f, y, 760 * (1 - f), 54, 14); ctx.stroke(); ctx.restore(); } });
+      slamT(ctx, '−18%', 540, Y + 500, F.black(110), '#D62828', prog(u, w[i18] + 0.2, w[i18] + 0.6), 110);
+      ctx.restore(); }
+    T(ctx, '≈ 8 mil imóveis a menos vendidos em um ano', 540, 1300, F.it(46), GOLDA, 'center', prog(u, w[iMen], w[iMen] + 0.4), 46, 900);
+    ctx.restore(); }
+  // parte B: tempo pra vender o estoque
+  if (kB > 0) { ctx.save(); ctx.globalAlpha *= kB; ctx.translate(0, 60 * (1 - kB));
+    head(ctx, u, 'No ritmo atual,', w[iNo], '13 meses pra vender tudo.', w[i13], 99, 372, 96);
+    const X = 110, Y = 630, Wc = 860, Hc = 640; soft(ctx, X, Y, Wc, Hc, 40, 0.14, 60, 22);
+    T(ctx, 'MESES PRA VENDER TUDO QUE ESTÁ À VENDA', X + 50, Y + 74, F.mono(23), MUTE, 'left', 1, 23, 760, 1.5);
+    const k1 = easeInOut(prog(u, w[i13] - 0.1, w[iVen] + 0.3)), k2 = easeInOut(prog(u, w[iHa] + 0.1, w[i7] + 0.1));
+    T(ctx, 'Hoje (ago/2026)', X + 50, Y + 160, F.semi(36), INK, 'left', 1, 36, 480); T(ctx, Math.round(13 * k1) + ' meses', X + Wc - 50, Y + 160, F.black(50), GOLDA, 'right', clamp(k1 * 4), 50, 300);
+    monthRow(ctx, X + 50, Y + 190, 13, k1, NAVY, '#E2C27F');
+    T(ctx, 'Há dois anos (2024)', X + 50, Y + 380, F.semi(36), INK, 'left', prog(u, w[iHa] - 0.1, w[iHa] + 0.2), 36, 480); T(ctx, Math.round(7 * k2) + ' meses', X + Wc - 50, Y + 380, F.black(50), '#7D8594', 'right', clamp(k2 * 4), 50, 300);
+    monthRow(ctx, X + 50, Y + 410, 7, k2, '#B9C0CC', '#DDE1E8');
+    const kq = SPR(u - (w[i7] + 0.35), 1.5, 0.6); if (kq > 0) pop(ctx, clamp(kq, 0, 1.05), 540, Y + 560, () => { shadowed(ctx, () => { ctx.fillStyle = NAVY; ctx.beginPath(); ctx.roundRect(170, Y + 514, 740, 92, 46); ctx.fill(); }, 0.22, 22, 8);
+      T(ctx, 'Mais estoque = mais espaço pra negociar', 540, Y + 574, F.semi(36), '#F3DDA8', 'center', 1, 36, 680); });
+    ctx.restore(); }
+  T(ctx, 'Fonte: Secovi-SP, cidade de SP — médio e alto padrão: vendas em 12 meses até jul/2026 (2025 calculado pela queda de 18%);', 540, 1462, F.med(21), '#5B6577', 'center', prog(u, s.P + 0.4, s.P + 0.8), 21, 960);
+  T(ctx, 'estoque em meses de venda: ago/2026 e 2024', 540, 1490, F.med(21), '#5B6577', 'center', prog(u, s.P + 0.4, s.P + 0.8), 21, 960);
+};
+
 // ---------- cartões de conselho (abertura de cada bloco) ----------
 function coinFace(ctx, x, y, R, sx, face) { ctx.save(); ctx.translate(x, y); ctx.scale(Math.max(0.03, sx), 1);
   shadowed(ctx, () => { const g = ctx.createLinearGradient(-R, -R, R, R); g.addColorStop(0, '#F1D9A0'); g.addColorStop(0.5, '#C9A86A'); g.addColorStop(1, '#8E6E38'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, R, 0, 6.283); ctx.fill(); }, 0.25, 30, 14);
@@ -360,11 +401,9 @@ OVER.parcela = (ctx, u, s) => { const w = s.wt, iE = WI('parcela', 'E', 1), iM =
   aw(ctx, 'Mas só vale', 540, 350, F.semi(66), '#FFFFFF', u, w[iM], 66); aw(ctx, 'se couber no seu bolso.', 540, 462, F.it(96), '#F3DDA8', u, w[iM + 3], 96, 'center', WD, 960);
   credit(ctx, 'Imagens: Anália Franco, out/2026', prog(u, t0 + 0.3, t0 + 0.7)); ctx.restore(); };
 // conta: o outro lado da comparação
-OVER.conta = (ctx, u, s) => { const i = WI('conta', 'Financiar'), t0 = s.wt[i] - 0.15, k = clamp(SPR(u - t0, 1.5, 0.65), 0, 1.06); if (k <= 0) return;
-  pop(ctx, k, 540, 1330, () => { soft(ctx, 120, 1246, 840, 176, 40, 0.3, 50, 18, '#FFFFFF'); T(ctx, 'Financiar também tem custo.', 540, 1316, F.semi(44), INK, 'center', 1, 44, 760);
-    T(ctx, 'Compare as duas contas.', 540, 1384, F.it(50), GOLDA, 'center', prog(u, s.wt[i + 4] - 0.1, s.wt[i + 4] + 0.3), 50, 760); }); };
-OVER.estoque = (ctx, u, s, uo) => { const nw = s.text.split(' '), ti = nw.indexOf('Há'), k = prog(u, s.wt[ti] - 0.1, s.wt[ti] + 0.35) * (1 - 0.85 * easeInOut(prog(uo, 8.45, 8.8))); if (k <= 0) return;
-  const w22 = s.old.wt[22]; T(ctx, 'há dois anos, eram 7 meses', 540, 1300, F.it(52), GOLDA, 'center', k * (1 - prog(uo, w22 - 0.35, w22 - 0.1)), 52, 900); };
+OVER.conta = (ctx, u, s) => { const i = WI('conta', 'Financiar'), t0 = s.wt[i] - 0.05, k = clamp(SPR(u - t0, 1.5, 0.65), 0, 1.06); if (k <= 0) return;
+  pop(ctx, k, 540, 1320, () => { soft(ctx, 120, 1250, 840, 150, 40, 0.3, 50, 18, '#FFFFFF'); T(ctx, 'Financiar também tem custo.', 540, 1308, F.semi(42), INK, 'center', 1, 42, 760);
+    T(ctx, 'Compare as duas contas.', 540, 1368, F.it(48), GOLDA, 'center', prog(u, s.wt[i + 4] - 0.1, s.wt[i + 4] + 0.3), 48, 760); }); };
 window.NUP_MIN = 14;
 
 // MERCADO: títulos no tempo antigo + quadro "depois do debate" (letreiro de aeroporto, split-flap)
@@ -403,13 +442,16 @@ const SRC11 = { corrida: 'Fontes: FipeZAP (aluguel e venda, Brasil) · IBGE (IPC
 
 // ---------- composição ----------
 function sceneAt(t) { let i = SEQ.findIndex(s => t < s.b); if (i < 0) i = SEQ.length - 1; return i; }
+// deriva de câmera nas cenas antigas: conta abre espaço para o "financiar também tem custo"; parcela aproxima devagar no fim do gráfico
+const DRIFT = { parcela: (u, s) => { const k = easeInOut(prog(u, s.wt[WI('parcela', 'oitavo')] - 0.3, s.wt[WI('parcela', 'E', 1)])); return [540, 900, 1 + 0.06 * k, 0]; } };
 function drawScene(ctx, t, i) {
   const s = SEQ[i], u = t - s.a; DK = DARK[s.name] ? 1 : 0;
-  if (s.src === 'new') { ctx.save(); NEW[s.name](ctx, u, s); ctx.restore(); return; }
-  const P = s.P, draw = (uo) => { ctx.save(); if (BGS[s.name]) BGS[s.name](ctx); HEADOFF = HOFF[s.name] ? 1 : 0;
+  if (s.src === 'new' && !s.intro) { ctx.save(); NEW[s.name](ctx, u, s); ctx.restore(); return; }
+  const P = s.P, draw = (uo) => { ctx.save(); if (s.src === 'new') { NEW[s.name](ctx, u, s); ctx.restore(); return; } if (BGS[s.name]) BGS[s.name](ctx); HEADOFF = HOFF[s.name] ? 1 : 0;
+    if (DRIFT[s.name]) { const [cx, cy, z, dy] = DRIFT[s.name](u, s);  ctx.translate(cx, cy + dy); ctx.scale(z, z); ctx.translate(-cx, -cy); }
     if (s.src === 'o6') OLD6.SC[s.name](ctx, uo, s.old.d, t, s.old.wt); else if (s.name === 'mapa') drawMap(ctx, uo, s.old.d, s.old.wt); else SC[s.name](ctx, uo, s.old.d, s.old.wt); HEADOFF = 0; ctx.restore(); };
   if (!s.intro || u > P - 0.25) {
-    const uo = clamp(pw(s.pts, u, 0, 1), 0, s.old.d - 1e-3), kin = s.intro ? easeOut(prog(u, P - 0.2, P + 0.45)) : 1;
+    const uo = s.src === 'new' ? u : clamp(pw(s.pts, u, 0, 1), 0, s.old.d - 1e-3), kin = s.intro ? easeOut(prog(u, P - 0.2, P + 0.45)) : 1;
     ctx.save(); if (kin < 1) zoomAt(ctx, 1 - kin, 540, 960, 0.86);
     const J = (s.jumps || []).find(J => Math.abs(u - J.tn) < 0.25);
     if (J) { const k = easeInOut(clamp((u - J.tn + 0.25) / 0.5)); draw(u < J.tn ? uo : J.from + (u - J.tn));
@@ -465,7 +507,7 @@ function captions(ctx, t, i) { if (window.NOCAP) return; const c = capAt(t); if 
   ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.filter = 'none'; ctx.font = F.black(46); const sp = ctx.measureText(' ').width, ws = c.ws.map(([w]) => ctx.measureText(w).width), tw_ = ws.reduce((a, b) => a + b, 0) + sp * (ws.length - 1);
   const k = clamp((t - c.t0 + 0.05) / 0.14); ctx.globalAlpha = k * (1 - clamp((t - c.t1 + 0.1) / 0.1)); let cur = -1; c.ws.forEach(([, a_], j) => { if (t >= a_ - 0.04) cur = j; });
   if (c.sc === 'mapa' && !onClip) { const g = ctx.createLinearGradient(0, y0 - 70, 0, y0 + 60); g.addColorStop(0, 'rgba(245,245,247,0)'); g.addColorStop(0.5, 'rgba(245,245,247,0.92)'); g.addColorStop(1, 'rgba(245,245,247,0)'); ctx.fillStyle = g; ctx.fillRect(0, y0 - 70, W, 130); }
-  if (onClip) { const g = ctx.createLinearGradient(0, y0 - 90, 0, y0 + 80); g.addColorStop(0, 'rgba(6,16,32,0)'); g.addColorStop(0.5, `rgba(6,16,32,${0.62 * Math.min(1, CLIPON)})`); g.addColorStop(1, 'rgba(6,16,32,0)'); ctx.fillStyle = g; ctx.fillRect(0, y0 - 90, W, 170); }
+  if (onClip) { ctx.save(); ctx.fillStyle = `rgba(6,16,32,${0.58 * Math.min(1, CLIPON)})`; ctx.shadowColor = 'rgba(0,0,0,0.25)'; ctx.shadowBlur = 24; ctx.beginPath(); ctx.roundRect(540 - tw_ / 2 - 30, y0 - 44, tw_ + 60, 88, 44); ctx.fill(); ctx.restore(); }
   let x = 540 - tw_ / 2; const y = y0 + (1 - easeOut(k)) * 16; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.lineJoin = 'round';
   const halo = dk ? 'rgba(8,22,48,0.9)' : 'rgba(255,255,255,0.95)', on = dk ? '#FFFFFF' : INK, hi = dk ? '#E2C27F' : GOLDA, off = dk ? 'rgba(255,255,255,0.45)' : 'rgba(29,29,31,0.32)';
   c.ws.forEach(([w], j) => { const wk = j === cur ? 1 + 0.12 * Math.max(0, 1 - (t - c.ws[j][1]) / 0.25) : 1, num = /\d|mil|bilh|trilh|cento|quinze|dezesseis|dezoito|treze|oitocentos|seiscentos|nove|doze|oitavo|dobro|dígitos/i.test(w);

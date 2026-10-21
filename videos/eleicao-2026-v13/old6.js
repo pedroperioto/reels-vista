@@ -67,7 +67,7 @@ function toggle(ctx, a = 1) { if (a <= 0) return; ctx.save(); ctx.globalAlpha *=
   ctx.fillStyle = 'rgba(255,255,255,0.06)'; ctx.fill(); ctx.strokeStyle = 'rgba(245,242,236,0.3)'; ctx.lineWidth = 4; ctx.stroke(); ctx.restore(); }
 const HOOK_LINE = 'no seu bolso não muda', HOOK_Y = 1160, HOOK_FONT = F.it(110);
 const hookDot = (ctx) => ({ x: 540 + Math.min(820, tw(ctx, HOOK_LINE, HOOK_FONT)) / 2 + 18, y: HOOK_Y - 12 });
-const CONTA_LINE = 'Dinheiro que não volta', CONTA_Y = 1395, CONTA_FONT = F.black(70);
+const CONTA_LINE = 'Dinheiro que não volta', CONTA_Y = 1090, CONTA_FONT = F.black(70);
 const contaDot = (ctx) => ({ x: 540 + Math.min(820, tw(ctx, CONTA_LINE, CONTA_FONT)) / 2 + 16, y: CONTA_Y - 10 });
 // simulação (igual às versões anteriores)
 const SIM = (() => { const Fi = 640000, n = 360, i = Math.pow(1.1149, 1 / 12) - 1, am = Fi / n; const parc = [], alug = [];

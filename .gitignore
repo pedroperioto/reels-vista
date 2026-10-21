@@ -4,3 +4,6 @@ __pycache__/
 .DS_Store
 node_modules/
 remotion/out/
+videos/*/clips/*/
+videos/*/voz/voz_original_completa.wav
+videos/eleicao-2026-v13-material/

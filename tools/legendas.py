@@ -13,7 +13,8 @@ with sync_playwright() as p:
         for t in sorted({round(c['t0'] + 0.08, 2), c['t'], round(c['t1'] - 0.08, 2)}):
             r = pg.evaluate(f'window.capBusy({t})')
             if r: res.append(r)
-    bad = [r for r in res if r['dens'] > TH]
+    bad = [r for r in res if r['dens'] > TH and not r.get('clip')]
+    nclip = sum(1 for r in res if r.get('clip')); print(nclip, 'medições sobre vídeo (legenda com faixa escura, não contam)')
     print(len(caps), 'legendas,', len(res), 'medições,', len(bad), 'acima de', TH)
     seen = set(); crops = []
     for r in bad:

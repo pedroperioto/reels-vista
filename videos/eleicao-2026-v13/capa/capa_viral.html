@@ -1,0 +1,34 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IB;src:url(../../../lib/fonts/InterBlack.otf)}@font-face{font-family:IS;src:url(../../../lib/fonts/InterSemi.otf)}
+@font-face{font-family:SI;src:url(../../../lib/fonts/Instr.ttf)}@font-face{font-family:MO;src:url(../../../lib/fonts/Mono.ttf)}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden}
+#c{position:relative;width:1080px;height:1920px;background:radial-gradient(900px 700px at 540px 560px,#FFFFFF,#F2EEE6 70%);color:#0B1F3A}
+#duo{position:absolute;left:0;right:0;top:300px;display:flex;justify-content:center;align-items:center}
+canvas{width:360px;height:360px;border-radius:50%;border:8px solid #fff;box-shadow:0 22px 44px rgba(11,31,58,.25)}
+#vs{width:0;position:relative;z-index:2}
+#vs span{position:absolute;left:-66px;top:-66px;width:132px;height:132px;border-radius:50%;background:#0B1F3A;color:#F3DDA8;font:88px IB;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px rgba(11,31,58,.35);border:6px solid #fff}
+#duo .gap{width:40px}
+#h{position:absolute;left:0;right:0;top:722px;text-align:center}
+#h1{font:108px IB;letter-spacing:-4px;line-height:1.02}
+#h2{font:140px SI;line-height:1;color:#B8955A;letter-spacing:-2px;margin-top:6px}
+#split{position:absolute;left:84px;right:84px;top:1170px;height:450px;border-radius:44px;overflow:hidden;box-shadow:0 28px 54px rgba(11,31,58,.28)}
+#y{position:absolute;inset:0;background:linear-gradient(160deg,#F7CF48,#F1BC1E);clip-path:polygon(0 0,100% 0,100% 32%,0 68%)}
+#n{position:absolute;inset:0;background:radial-gradient(500px 380px at 640px 420px,#1C4277,#0B1F3A 72%);clip-path:polygon(0 68.6%,100% 32.6%,100% 100%,0 100%)}
+.lab{position:absolute;font:24px MO;letter-spacing:10px}.big{position:absolute;font:96px IB;letter-spacing:-3px;line-height:1}
+#l1{left:50px;top:46px;color:#1A1A1E}#b1{left:44px;top:78px;color:#1A1A1E}
+#l2{right:50px;top:290px;color:#E2C27F}#b2{right:44px;top:322px;color:#fff}
+#q{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-12deg);background:#fff;border-radius:999px;padding:18px 50px;box-shadow:0 20px 40px rgba(4,12,26,.35);white-space:nowrap;font:58px IB;color:#0B1F3A}
+#q i{font:68px SI;font-style:normal;color:#B8955A}
+</style></head><body><div id="c">
+<div id="duo"><canvas id="a" width="720" height="720"></canvas><div class="gap"></div><div id="vs"><span>?</span></div><div class="gap"></div><canvas id="b" width="720" height="720"></canvas></div>
+<div id="h"><div id="h1">QUEM GANHAR<br>MUDA O PREÇO</div><div id="h2">do seu apê?</div></div>
+<div id="split"><div id="y"></div><div id="n"></div>
+ <div class="lab" id="l1">TIME</div><div class="big" id="b1">ALUGUEL</div>
+ <div class="lab" id="l2">TIME</div><div class="big" id="b2">COMPRA</div>
+ <div id="q">Qual é o seu <i>time?</i></div></div>
+</div><script>
+const FOC={lula:[0.57,0.5,1.45],flavio:[0.52,0.6,1.45]};
+window.done=Promise.all([['a','lula'],['b','flavio']].map(([id,k])=>new Promise(r=>{const im=new Image(); im.onload=()=>{const c=document.getElementById(id),g=c.getContext('2d'),[fx,fy,z]=FOC[k];
+  const s=Math.min(im.width,im.height)/z, sx=Math.min(Math.max(fx*im.width-s/2,0),im.width-s), sy=Math.min(Math.max(fy*im.height-s/2,0),im.height-s);
+  g.drawImage(im,sx,sy,s,s,0,0,720,720); r();}; im.src='../fotos/'+k+'.jpg';})));
+</script></body></html>

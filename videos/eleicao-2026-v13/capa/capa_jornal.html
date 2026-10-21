@@ -1,0 +1,53 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IB;src:url(../../../lib/fonts/InterBlack.otf)}@font-face{font-family:IS;src:url(../../../lib/fonts/InterSemi.otf)}
+@font-face{font-family:IM;src:url(../../../lib/fonts/InterMed.otf)}@font-face{font-family:SI;src:url(../../../lib/fonts/Instr.ttf)}@font-face{font-family:IT;src:url(../../../lib/fonts/SerifIt.otf)}@font-face{font-family:MO;src:url(../../../lib/fonts/Mono.ttf)}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden}
+#c{position:relative;width:1080px;height:1920px;background:#F4EFE4;color:#14171C}
+.abs{position:absolute;left:84px;right:84px}
+.rule{height:2px;background:#14171C}.rule.thin{height:1px}
+#mast{top:250px;text-align:center;font:104px SI;letter-spacing:1px;line-height:1}
+#mast small{display:block;font:22px MO;letter-spacing:6px;margin-top:8px;color:#5B5F66}
+#r1{top:392px}#r1b{top:398px}
+#date{top:410px;display:flex;justify-content:space-between;font:22px MO;letter-spacing:3px;color:#3A3E45}
+#r2{top:452px}
+#kick{top:494px;font:26px MO;letter-spacing:5px;color:#9C7A40}
+#head{top:536px;font:148px SI;line-height:.98;letter-spacing:-2px}
+#head i{font-family:IT;color:#9C7A40}
+#sub{top:1010px;font:38px IM;line-height:1.32;color:#2A2E35}
+#r3{top:1138px}
+#fig{top:1166px;height:330px;display:flex;gap:34px}
+#chart{flex:1.25;position:relative;border-right:1px solid #B9B2A3;padding-right:30px}
+#chart .cap{font:20px MO;letter-spacing:2px;color:#5B5F66;margin-bottom:12px}
+#bars{display:flex;align-items:flex-end;gap:5px;height:220px}
+#bars div{flex:1;background:#14171C;border-radius:2px 2px 0 0}
+#bars div.g{background:#B8955A}
+#chart .src{font:17px IM;color:#6B6F76;margin-top:12px}
+#col{flex:1;font:28px IM;line-height:1.38;color:#2A2E35}
+#col b{font-family:IB;font-size:64px;color:#14171C;display:block;line-height:1;margin-bottom:6px}
+#seal{position:absolute;left:740px;top:676px;width:210px;height:210px;border-radius:50%;background:#0B1F3A;color:#F3DDA8;display:flex;align-items:center;justify-content:center;text-align:center;transform:rotate(10deg);box-shadow:0 18px 40px rgba(11,31,58,.28)}
+#seal div{font:20px MO;letter-spacing:1.5px;line-height:1.4}
+#seal div b{font:64px IB;display:block;letter-spacing:0;color:#fff;line-height:1}
+#seal:before{content:'';position:absolute;inset:10px;border:2px dashed rgba(243,221,168,.55);border-radius:50%}
+#by{top:1530px;display:flex;justify-content:space-between;font:24px IS;color:#14171C;border-top:1px solid #14171C;padding-top:18px}
+#by span{font:22px MO;letter-spacing:2px;color:#5B5F66}
+svg{position:absolute;inset:0;pointer-events:none}
+</style></head><body><div id="c">
+<div class="abs" id="mast">O Tijolo<small>VISTA BROKER · CADERNO IMÓVEIS</small></div>
+<div class="abs rule" id="r1"></div><div class="abs rule thin" id="r1b"></div>
+<div class="abs" id="date"><span>OUTUBRO DE 2026</span><span>ESPECIAL 2º TURNO · 25/10</span></div>
+<div class="abs rule thin" id="r2"></div>
+<div class="abs" id="kick">ELEIÇÃO E MERCADO IMOBILIÁRIO</div>
+<div class="abs" id="head">A eleição muda<br>o preço do<br><i>seu apê?</i></div>
+<div class="abs" id="sub">O histórico do m², o aluguel e o estoque<br>dizem mais do que o resultado do dia 25.</div>
+<div class="abs rule thin" id="r3"></div>
+<div class="abs" id="fig">
+ <div id="chart"><div class="cap">PREÇO MÉDIO DO M² · SÃO PAULO · 2008–2026</div><div id="bars"></div><div class="src">FipeZAP, valores nominais</div></div>
+ <div id="col"><b>≈ 2×</b>foi quanto o aluguel subiu a mais que a inflação em 12 meses.<div style="font:17px IM;color:#6B6F76;margin-top:10px">FipeZAP e IBGE, até set/2026</div></div>
+</div>
+<div id="seal"><div><b>5</b>CONSELHOS<br>DE CORRETOR</div></div>
+<div class="abs" id="by"><div>Por Pedro Perioto</div><span>@VISTABROKER.PERIOTO</span></div>
+<svg width="1080" height="1920"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2"/><feColorMatrix values="0 0 0 0 .25  0 0 0 0 .2  0 0 0 0 .15  0 0 0 .07 0"/></filter><rect width="1080" height="1920" filter="url(#g)"/></svg>
+</div><script>
+const F=[3053,3712,4602,5843,6765,7706,8272,8479,8513,8633,8787,8986,9326,9711,10202,10681,11381,11900,12206];
+const b=document.getElementById('bars'); F.forEach((v,i)=>{const d=document.createElement('div'); d.style.height=(v/12206*100)+'%'; if(i===F.length-1) d.className='g'; b.appendChild(d);});
+</script></body></html>

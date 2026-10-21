@@ -40,7 +40,7 @@ const V13 = [
   { name: 'conta', src: 'o6', hold: 0.5, tail: 'Financiar' },
   { name: 'estoque', src: 'o6', hold: 1.2, intro: 11, anchors: [['P', 0], ['w11', 'w0'], ['w14', 'w3'], ['w16', 'w5'], ['w17', 'w6'], ['w18', 'w7'], ['w19', 'w8'], ['w21', 3.75], ['w24', 4.1], ['w25', 4.4], ['w26', 4.62],
     ['w28', 'w16'], ['w29', 'w17'], ['w30', 'w18'], ['w31', 'w19'], ['w32', 'w20'], [['w36', 0.25], ['w21', 0.25]], ['e', 'e']] },
-  { name: 'parcela', src: 'o6', hold: 0.6, intro: 6, tail: 'E' },
+  { name: 'parcela', src: 'o6', hold: 0.6, intro: 6, tail: 'E', tailHold: 'last' },
   { name: 'mapa', src: 'v9', hold: 1.4, intro: 6, anchors: [['P', 6.62], ['w7', 'w14'], ['w9', 'w19'], ['w10', 'w20'], ['w11', ['w21', 0.2]], ['w12', 'w22'], ['w13', 10.52], [['w17', 0.3], 10.58],
     ['J', ['w17', 0.35], 19.4], ['w21', 20.3], ['w23', 'w47'], ['w24', 'w48'], ['w26', 'w50'], ['w27', 'w51'], [['w28', -0.3], 23.7], ['w28', 'w54'], ['w30', 'w56'], ['w31', 'w57'], ['w32', 'w58'],
     ['w34', 'w60'], ['w35', 'w61'], ['w36', 'w62'], ['w37', 'w63'], ['w38', 'w64'], ['w40', 'w66'], ['e', 'e']] },
@@ -72,7 +72,7 @@ const SEQ = []; {
         else pts.push([refT(p[0], o, d, P), refT(p[1], old.wt, old.d, P)]); }); }
       else { const ow = old.text.split(' '), k0 = e.intro || 0, ti = e.tail ? nw.indexOf(e.tail, k0) : nw.length;
         pts = [[P, 0]]; lcs(nw.slice(k0, ti), ow).forEach(([i, j]) => pts.push([o[i + k0], old.wt[j]]));
-        if (e.tail) { const hv = old.d - 0.6; pts.push([o[ti] - 0.25, hv], [d - 0.45, hv]); }
+        if (e.tail) { const lastOld = Math.max(...pts.map(q => q[1])), hv = e.tailHold === 'last' ? Math.min(old.d - 0.6, lastOld + 0.5) : old.d - 0.6; pts.push([o[ti] - 0.25, hv], [d - 0.45, hv]); }
         pts.push([d, old.d]); }
       pts.sort((x, y) => x[0] - y[0]);
       const cl = []; pts.forEach(p => { if (!cl.length || (p[0] > cl[cl.length - 1][0] && (p[1] >= cl[cl.length - 1][1] || jumps.some(J => Math.abs(p[0] - J.tn) < 1e-3)))) cl.push(p); }); pts = cl;

@@ -18,7 +18,7 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden}
 #vs span{width:110px;height:110px;border-radius:50%;background:#0B1F3A;color:#F3DDA8;font:72px IB;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 26px rgba(11,31,58,.3);margin-top:-30px}
 #head{top:768px;text-align:center;font:118px SI;line-height:.98;letter-spacing:-2px}
 #head i{font-family:IT;color:#9C7A40}
-#split{position:absolute;left:84px;right:84px;top:1048px;height:550px;border-radius:40px;overflow:hidden;box-shadow:0 26px 50px rgba(11,31,58,.25)}
+#split{position:absolute;left:84px;right:84px;top:1060px;height:590px;border-radius:40px;overflow:hidden;box-shadow:0 26px 50px rgba(11,31,58,.25)}
 #y{position:absolute;inset:0;background:linear-gradient(160deg,#F7CF48,#F1BC1E);clip-path:polygon(0 0,100% 0,100% 30%,0 70%)}
 #n{position:absolute;inset:0;background:radial-gradient(500px 400px at 650px 470px,#1C4277,#0B1F3A 70%);clip-path:polygon(0 70.6%,100% 30.6%,100% 100%,0 100%)}
 .lab{position:absolute;font:24px MO;letter-spacing:10px}.big{position:absolute;font:92px IB;letter-spacing:-3px;line-height:1}
@@ -44,14 +44,13 @@ svg{position:absolute;inset:0;pointer-events:none}
   <g transform="translate(150,430) rotate(-24) scale(.62)"><circle cx="-110" cy="0" r="78" fill="none" stroke="url(#k)" stroke-width="34"/><rect x="-40" y="-17" width="300" height="34" rx="17" fill="url(#k)"/><rect x="190" y="0" width="30" height="74" rx="6" fill="url(#k)"/><rect x="235" y="0" width="26" height="54" rx="6" fill="url(#k)"/></g>
   <g id="cal" transform="translate(600,70) rotate(-6)"></g></svg>
 </div>
-<div class="abs" id="by"><div>5 conselhos de corretor · Por Pedro Perioto</div><span>@VISTABROKER.PERIOTO</span></div>
 <svg width="1080" height="1920"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2"/><feColorMatrix values="0 0 0 0 .25  0 0 0 0 .2  0 0 0 0 .15  0 0 0 .06 0"/></filter><rect width="1080" height="1920" filter="url(#g)"/></svg>
 </div><script>
 // retratos em preto e branco (tom de jornal, sem cor de partido), centrados no rosto
 const FOC={lula:[0.57,0.5,1.5],flavio:[0.52,0.62,1.5]};
 window.done=Promise.all([['a','lula'],['b','flavio']].map(([id,k])=>new Promise(r=>{const im=new Image(); im.onload=()=>{const c=document.getElementById(id),g=c.getContext('2d'),[fx,fy,z]=FOC[k];
   const s=Math.min(im.width,im.height)/z, sx=Math.min(Math.max(fx*im.width-s/2,0),im.width-s), sy=Math.min(Math.max(fy*im.height-s/2,0),im.height-s);
-  g.filter='grayscale(1) contrast(1.08) brightness(1.04)'; g.drawImage(im,sx,sy,s,s,0,0,500,500); r();}; im.src='../fotos/'+k+'.jpg';})));
+  g.filter='saturate(1.05) contrast(1.03)'; g.drawImage(im,sx,sy,s,s,0,0,500,500); r();}; im.src='../fotos/'+k+'.jpg';})));
 let h=''; for(let r=0;r<2;r++)for(let c=0;c<4;c++){const x=c*62,y=r*56,on=r*4+c<6; h+=`<rect x="${x}" y="${y}" width="50" height="44" rx="8" fill="#1A1A1E" opacity="${on?1:.18}"/>`+(on?`<text x="${x+25}" y="${y+29}" text-anchor="middle" font-family="IS" font-size="17" fill="#F4C430">R$</text>`:'');}
 document.getElementById('cal').innerHTML=h;
 </script></body></html>

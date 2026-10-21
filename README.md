@@ -56,3 +56,11 @@ Biblioteca 3D (three.js r169) e fontes já estão em `lib/`.
 ## Créditos de áudio
 
 Efeitos CC0: "Micro Pack – Organic Wooshes" e "BB_2HTC Samples Vol 4" (cc0sounds), teclado: Kenney (CC0). Trilha sintetizada no `som.py`.
+
+## Remotion (opcional, `remotion/`)
+
+Instalado em 20/10/2026 (Remotion 4.0.537, React 18) para animações extras. Teste: `cd remotion && ./render.sh Teste out/teste.mp4`
+(1080×1920, 30 fps, usa o Chromium já instalado). As skills oficiais (`remotion-dev/skills`) ficam em `remotion/.agents/skills`.
+Instalar pacotes neste ambiente só funciona com o domínio `registry.npmjs.org` liberado em Configurações > Capacidades e com:
+`env -u no_proxy -u NO_PROXY -u GLOBAL_AGENT_NO_PROXY npm_config_noproxy=localhost npm install ...`
+Licença do Remotion: confira os termos para uso comercial.

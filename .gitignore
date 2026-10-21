@@ -2,3 +2,5 @@ videos/*/out/
 __pycache__/
 *.pyc
 .DS_Store
+node_modules/
+remotion/out/

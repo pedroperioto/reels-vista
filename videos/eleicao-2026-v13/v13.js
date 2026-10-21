@@ -523,7 +523,7 @@ window.capBusy = async (t) => { const b = capBox(t); if (!b) return null; await 
 window.capTimes = () => CHUNKS.filter(c => CAPZ[c.sc]((c.t0 + c.t1) / 2 - c.s.a, c.s) != null).map(c => ({ t: Math.round(((c.t0 + c.t1) / 2) * 100) / 100, t0: c.t0, t1: c.t1, sc: c.sc }));
 const r2 = (x) => Math.round(x * 100) / 100, r3 = (x) => Math.round(x * 1000) / 1000;
 window.TIMING = SEQ.map(s => { const base = { cena: s.name, inicio: r3(s.a), fim: r3(s.b), fala: s.text, palavras: s.wt.map(x => r3(x + s.a)), fins: s.we.map(x => r3(x + s.a)), voz: s.voz.map(r3), extra: r3(s.extra) };
-  if (s.src === 'new') return { ...base, antigas: base.palavras, warp: [[0, 0], [r2(s.d), r2(s.d)]] };
+  if (s.src === 'new') return { ...base, antigas: base.palavras, warp: [[0, 0], [r2(s.d), r2(s.d)]], intro: r2(s.P) };
   const lo = Math.min(...s.pts.map(p => p[1])) - 1e-6, hi = Math.max(...s.pts.map(p => p[1])) + 1e-6;
   return { ...base, antigas: s.old.wt.map(x => (x < lo || x > hi || s.jumps.some(J => x > J.from && x < J.to)) ? null : r2(pw(s.pts, x, 1, 0) + s.a)), warp: s.pts.map(p => p.map(r2)), intro: r2(s.P) }; });
 const TIMING = window.TIMING;

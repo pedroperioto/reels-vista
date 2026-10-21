@@ -1,4 +1,4 @@
-PROMPT PARA O GOOGLE AI STUDIO (Gemini TTS) — NARRAÇÃO v13
+PROMPT PARA O GOOGLE AI STUDIO (Gemini TTS) — NARRAÇÃO v13 (FINAL: roteiro "picante" + CTA dos times)
 ============================================================
 
 CONFIGURAÇÃO GERAL
@@ -6,9 +6,10 @@ CONFIGURAÇÃO GERAL
 - Voz: use a MESMA voz dos áudios anteriores, se gostou. Se for escolher outra, teste uma voz de tom informativo/firme
   (a lista costuma ter nomes como Charon, Sadaltager, Orus ou Kore).
 - Idioma: português do Brasil.
-- Gere um arquivo por parte e exporte em WAV. Não acelere nem edite depois (eu meço o tempo real da voz).
+- Gere UM arquivo por parte (3 no total) e exporte em WAV. Não acelere nem edite depois (eu meço o tempo real da voz).
 - As marcas <short pause> e <long pause> e as palavras em MAIÚSCULAS são para a voz. Não vão para a legenda.
 - Teste a 1ª frase de cada parte. Se a voz LER a instrução de estilo em voz alta ou LER as marcas <...>, me avise.
+- Envie os 3 áudios na ordem: Parte 1, Parte 2, Parte 3.
 
 ------------------------------------------------------------
 PARTE 1 — GANCHO ATÉ A VIRADA
@@ -18,15 +19,15 @@ ritmo médio para rápido, voz firme e dicção limpa. Sem exagero e sem sorrir.
 Faça pausas curtas entre as ideias.
 
 TEXTO:
-A eleição vai fazer o imóvel despencar ou disparar? <short pause> Tem gente esperando o resultado pra comprar. Será que vale a pena?
+Tem gente esperando a eleição passar pra comprar imóvel. Só que esperar também tem preço: o aluguel subiu quase o dobro da inflação.
 
-<short pause> Primeiro conselho: NÃO tente adivinhar a eleição. Com Bolsonaro, os juros foram de dois a treze e setenta e cinco. Com Lula, chegaram a quinze, e a dívida a oitenta e três por cento do PIB. Com os dois, os juros chegaram a dois dígitos.
+<short pause> Primeiro conselho: NÃO tente adivinhar a eleição. Quem diz que sabe o que vem depois dela está chutando. Com Bolsonaro, os juros foram de dois a treze e setenta e cinco. Com Lula, chegaram a quinze, e a dívida a oitenta e três por cento do PIB. Com os dois, os juros chegaram a dois dígitos.
 
 <short pause> No debate da Band, Lula disse que foi o único presidente com superávit nos oito anos de governo. Flávio disse que o governo atual deixa uma dívida de onze trilhões. A checagem confirma as duas. <short pause> Quem te convence mais?
 
 Depois do primeiro turno, estrangeiros colocaram dezesseis bilhões na Bolsa. Mas os juros longos, que pesam no financiamento, voltaram a subir após a pesquisa de empate técnico. Depois do debate, o dólar caiu e a Bolsa oscilou.
 
-<long pause> Mas enquanto todo mundo olha a política, pouca gente olha pra este gráfico.
+<long pause> Enquanto todo mundo briga por política, quase ninguém olha pra este gráfico.
 
 ------------------------------------------------------------
 PARTE 2 — SEGUNDO CONSELHO ATÉ O MAPA
@@ -41,7 +42,7 @@ Segundo conselho: olhe o histórico. O preço médio do metro quadrado em São P
 
 Numa simulação para um apê de oitocentos mil no Tatuapé, o aluguel soma seiscentos e oitenta e cinco mil em dez anos. Financiar também tem custo, por isso vale comparar.
 
-<short pause> Quarto: com estoque alto, NEGOCIE. No médio e alto padrão, as vendas caíram dezoito por cento em um ano, e o estoque levaria treze meses pra acabar. Há dois anos, eram sete.
+<short pause> Quarto: com estoque alto, quem tem poder de NEGOCIAR é você. No médio e alto padrão, as vendas caíram dezoito por cento em um ano, e o estoque levaria treze meses pra acabar. Há dois anos, eram sete.
 
 <short pause> Quinto: faça a conta da parcela. Na simulação, ela cai e, no oitavo ano, fica menor que o aluguel. E no fim, o patrimônio é seu. Mas só vale se couber no seu bolso.
 
@@ -50,10 +51,11 @@ Numa simulação para um apê de oitocentos mil no Tatuapé, o aluguel soma seis
 ------------------------------------------------------------
 PARTE 3 — CTA (curta, para o tom mudar)
 ESTILO:
-Amigável e sorridente, em português do Brasil. Energia média para alta, tom de convite e de fechamento, como quem fala com um amigo.
+Amigável, descontraído e provocador, em português do Brasil. Energia média para alta, como quem lança um desafio a um amigo.
+Sem tom de vendedor.
 
 TEXTO:
-Conhece alguém esperando a eleição? Manda pra ele. Curte se foi útil e comenta: você compraria antes ou depois da eleição?
+Você ainda é do time do aluguel? Ou acha que, com o resultado da eleição, comprar ficará mais fácil? <short pause> Comenta TIME ALUGUEL ou TIME COMPRA e marca quem está nessa dúvida.
 
 ------------------------------------------------------------
-SE QUISER MANTER SÓ DUAS PARTES: junte a Parte 3 ao fim da Parte 2 e use o estilo da Parte 2 (o CTA fica menos animado).
+SE QUISER MANTER SÓ DUAS PARTES: junte a Parte 3 ao fim da Parte 2 e use o estilo da Parte 2 (o CTA fica menos provocador).

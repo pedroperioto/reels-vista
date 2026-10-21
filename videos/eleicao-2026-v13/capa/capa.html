@@ -1,0 +1,74 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IB;src:url(../../../lib/fonts/InterBlack.otf)}@font-face{font-family:IS;src:url(../../../lib/fonts/InterSemi.otf)}
+@font-face{font-family:IM;src:url(../../../lib/fonts/InterMed.otf)}@font-face{font-family:SI;src:url(../../../lib/fonts/Instr.ttf)}@font-face{font-family:MO;src:url(../../../lib/fonts/Mono.ttf)}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden}
+#c{position:relative;width:1080px;height:1920px;background:radial-gradient(900px 760px at 540px 1120px,#1d3f6e 0%,#0F2747 45%,#081A33 75%,#050F21 100%);}
+.t{position:absolute;left:0;right:0;text-align:center}
+#lab{top:300px;font:30px MO;letter-spacing:9px;color:#E2C78F}
+#lab span{display:inline-block;width:56px;height:2px;background:#C9A86A;vertical-align:middle;margin:0 22px 6px}
+#h1{top:372px;font:86px IS;color:#fff;letter-spacing:-1px}
+#h2{top:452px;font:200px SI;color:#E9CC8C;line-height:1;letter-spacing:-2px;background:linear-gradient(180deg,#F6E2B4,#C9A86A 70%,#A8843F);-webkit-background-clip:text;color:transparent;filter:drop-shadow(0 10px 30px rgba(0,0,0,.35))}
+#tag{top:1286px}
+#tag div{display:inline-block;padding:20px 46px;border-radius:60px;background:rgba(255,255,255,.07);border:1.5px solid rgba(226,199,143,.55);font:40px IS;color:#fff;backdrop-filter:blur(6px)}
+#tag b{font-family:IB;color:#E9CC8C}
+#f1{top:1396px;font:58px IS;color:#fff}
+#f2{top:1458px;font:104px SI;color:#E2C78F;line-height:1}
+#at{top:1606px;font:28px IM;color:rgba(255,255,255,.55);letter-spacing:1px}
+svg{position:absolute;left:0;top:0}
+</style></head><body><div id="c">
+<svg width="1080" height="1920" viewBox="0 0 1080 1920">
+<defs>
+ <linearGradient id="top" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBEBC4"/><stop offset=".55" stop-color="#E3C37F"/><stop offset="1" stop-color="#C9A35E"/></linearGradient>
+ <linearGradient id="lft" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D6B26D"/><stop offset="1" stop-color="#A07C3C"/></linearGradient>
+ <linearGradient id="rgt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9E7B3E"/><stop offset="1" stop-color="#6C5226"/></linearGradient>
+ <radialGradient id="glow"><stop offset="0" stop-color="#E2C78F" stop-opacity=".42"/><stop offset=".5" stop-color="#C9A86A" stop-opacity=".12"/><stop offset="1" stop-color="#C9A86A" stop-opacity="0"/></radialGradient>
+ <filter id="sh" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="26"/></filter>
+ <filter id="bl"><feGaussianBlur stdDeviation="5"/></filter><filter id="bl2"><feGaussianBlur stdDeviation="12"/></filter>
+ <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .06 0"/></filter>
+ <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#DCE3EE"/></linearGradient>
+</defs>
+<ellipse cx="540" cy="930" rx="480" ry="380" fill="url(#glow)"/>
+<g id="cedulas"></g>
+<ellipse id="shd" cx="545" cy="1352" rx="330" ry="58" fill="#02070F" opacity=".6" filter="url(#sh)"/>
+<g id="bricks"></g>
+<rect width="1080" height="1920" filter="url(#grain)" opacity=".9"/>
+</svg>
+<div class="t" id="lab"><span></span>5 CONSELHOS · ELEIÇÃO 2026<span></span></div>
+<div class="t" id="h1">Vai esperar a eleição</div>
+<div class="t" id="h2">pra comprar?</div>
+<div class="t" id="tag"><div>Aluguel subiu <b>≈ 2×</b> a inflação</div></div>
+<div class="t" id="f1">Governo passa.</div>
+<div class="t" id="f2">O tijolo fica.</div>
+<div class="t" id="at">@vistabroker.perioto</div>
+</div>
+<script>
+// tijolo isométrico: (x,y) = canto de baixo da face frontal; L comprimento, D profundidade, h altura
+const NS='http://www.w3.org/2000/svg', B=document.getElementById('bricks');
+const c30=Math.cos(Math.PI/6), s30=.5;
+function P(x,y,z,ox,oy){return [ox+(x-y)*c30, oy+(x+y)*s30 - z];}
+function brick(ox,oy,L,D,h){ const pts=(a)=>a.map(p=>p.join(',')).join(' ');
+  const A=P(0,0,0,ox,oy),Bp=P(L,0,0,ox,oy),C=P(L,D,0,ox,oy),Dd=P(0,D,0,ox,oy),A2=P(0,0,h,ox,oy),B2=P(L,0,h,ox,oy),C2=P(L,D,h,ox,oy),D2=P(0,D,h,ox,oy);
+  const add=(p,f,st)=>{const e=document.createElementNS(NS,'polygon');e.setAttribute('points',pts(p));e.setAttribute('fill',f);if(st){e.setAttribute('stroke',st);e.setAttribute('stroke-width','1.5');e.setAttribute('stroke-linejoin','round');}B.appendChild(e);return e;};
+  add([Dd,C,C2,D2],'url(#lft)','rgba(255,240,200,.25)'); add([C,Bp,B2,C2],'url(#rgt)','rgba(255,230,180,.15)'); add([A2,B2,C2,D2],'url(#top)','rgba(255,250,230,.6)');
+  // brilho na aresta
+  const l=document.createElementNS(NS,'polyline'); l.setAttribute('points',pts([D2,C2,B2])); l.setAttribute('fill','none'); l.setAttribute('stroke','rgba(255,248,225,.9)'); l.setAttribute('stroke-width','3'); B.appendChild(l);
+  // furos do tijolo no topo
+  for(const k of [.25,.5,.75]){ const q=P(L*k,D*.5,h,ox,oy); const e=document.createElementNS(NS,'ellipse'); e.setAttribute('cx',q[0]); e.setAttribute('cy',q[1]); e.setAttribute('rx',L*.07); e.setAttribute('ry',L*.04); e.setAttribute('fill','rgba(120,88,36,.55)'); B.appendChild(e);} }
+// parede: 2 embaixo + 1 em cima (amarração)
+const L=340,D=170,h=126;
+brick(470,1300,L,D,h);
+brick(615,1385,L,D,h);
+brick(565,1214,L,D,h);
+{const bb=B.getBBox(), dx=540-(bb.x+bb.width/2), dy=1010-(bb.y+bb.height/2); B.setAttribute('transform',`translate(${dx},${dy})`); const sh=document.getElementById('shd'); sh.setAttribute('cx',540); sh.setAttribute('cy',bb.y+bb.height+dy-40); sh.setAttribute('rx',bb.width*0.52);}
+// cédulas de voto indo embora (o governo passa)
+const G=document.getElementById('cedulas');
+[[800,628,-16,.2,'bl2',.85],[832,712,-10,.38,'bl',.95],[858,800,-5,1,null,1.12]].forEach(([x,y,r,op,f,s])=>{
+  const g=document.createElementNS(NS,'g'); g.setAttribute('transform',`translate(${x},${y}) rotate(${r}) scale(${s})`); g.setAttribute('opacity',op); if(f) g.setAttribute('filter',`url(#${f})`);
+  g.innerHTML=`<rect x="-120" y="-80" width="240" height="160" rx="14" fill="url(#paper)"/>
+   <rect x="-96" y="-58" width="120" height="10" rx="5" fill="#B9C3D0"/><rect x="-96" y="-36" width="80" height="8" rx="4" fill="#CDD5E0"/>
+   <rect x="-96" y="0" width="58" height="58" rx="8" fill="none" stroke="#0B1F3A" stroke-width="4"/><path d="M-86 10 L-48 48 M-48 10 L-86 48" stroke="#D62828" stroke-width="7" stroke-linecap="round"/>
+   <rect x="-20" y="12" width="100" height="9" rx="4.5" fill="#CDD5E0"/><rect x="-20" y="32" width="70" height="9" rx="4.5" fill="#CDD5E0"/>`;
+  G.appendChild(g); });
+// rastro de movimento
+const tr=document.createElementNS(NS,'path'); tr.setAttribute('d','M640 860 C 700 850, 760 840, 790 870'); tr.setAttribute('stroke','rgba(226,199,143,.35)'); tr.setAttribute('stroke-width','3'); tr.setAttribute('fill','none'); tr.setAttribute('stroke-dasharray','2 14'); tr.setAttribute('stroke-linecap','round'); G.appendChild(tr);
+</script></body></html>

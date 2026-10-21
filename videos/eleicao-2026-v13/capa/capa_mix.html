@@ -1,0 +1,57 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IB;src:url(../../../lib/fonts/InterBlack.otf)}@font-face{font-family:IS;src:url(../../../lib/fonts/InterSemi.otf)}
+@font-face{font-family:IM;src:url(../../../lib/fonts/InterMed.otf)}@font-face{font-family:SI;src:url(../../../lib/fonts/Instr.ttf)}@font-face{font-family:IT;src:url(../../../lib/fonts/SerifIt.otf)}@font-face{font-family:MO;src:url(../../../lib/fonts/Mono.ttf)}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden}
+#c{position:relative;width:1080px;height:1920px;background:#F4EFE4;color:#14171C}
+.abs{position:absolute;left:84px;right:84px}
+.rule{height:2px;background:#14171C}.thin{height:1px}
+#mast{top:236px;text-align:center;font:96px SI;line-height:1}
+#mast small{display:block;font:21px MO;letter-spacing:6px;margin-top:6px;color:#5B5F66}
+#r1{top:380px}#r1b{top:386px}
+#date{top:398px;display:flex;justify-content:space-between;font:21px MO;letter-spacing:3px;color:#3A3E45}
+#r2{top:436px}
+#duo{top:462px;height:290px;display:flex;justify-content:center;align-items:center;gap:0}
+.p{position:relative;width:250px;text-align:center}
+.p canvas{width:250px;height:250px;border-radius:50%;box-shadow:0 14px 30px rgba(20,23,28,.22);border:6px solid #fff}
+.p div{font:22px MO;letter-spacing:5px;margin-top:8px;color:#3A3E45}
+#vs{width:150px;display:flex;justify-content:center}
+#vs span{width:110px;height:110px;border-radius:50%;background:#0B1F3A;color:#F3DDA8;font:72px IB;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 26px rgba(11,31,58,.3);margin-top:-30px}
+#head{top:768px;text-align:center;font:118px SI;line-height:.98;letter-spacing:-2px}
+#head i{font-family:IT;color:#9C7A40}
+#split{position:absolute;left:84px;right:84px;top:1048px;height:550px;border-radius:40px;overflow:hidden;box-shadow:0 26px 50px rgba(11,31,58,.25)}
+#y{position:absolute;inset:0;background:linear-gradient(160deg,#F7CF48,#F1BC1E);clip-path:polygon(0 0,100% 0,100% 30%,0 70%)}
+#n{position:absolute;inset:0;background:radial-gradient(500px 400px at 650px 470px,#1C4277,#0B1F3A 70%);clip-path:polygon(0 70.6%,100% 30.6%,100% 100%,0 100%)}
+.lab{position:absolute;font:24px MO;letter-spacing:10px}.big{position:absolute;font:92px IB;letter-spacing:-3px;line-height:1}
+#l1{left:46px;top:40px;color:#1A1A1E}#b1{left:40px;top:72px;color:#1A1A1E}
+#l2{right:46px;top:392px;color:#E2C27F}#b2{right:40px;top:424px;color:#fff}
+#q{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-12deg);background:#fff;border-radius:999px;padding:18px 48px;box-shadow:0 20px 40px rgba(4,12,26,.35);white-space:nowrap;font:56px IB;color:#0B1F3A}
+#q i{font:66px SI;font-style:normal;color:#B8955A}
+#by{top:1624px;display:flex;justify-content:space-between;font:23px IS;border-top:1px solid #14171C;padding-top:14px}
+#by span{font:21px MO;letter-spacing:2px;color:#5B5F66}
+svg{position:absolute;inset:0;pointer-events:none}
+</style></head><body><div id="c">
+<div class="abs" id="mast">O Tijolo<small>VISTA BROKER · CADERNO IMÓVEIS</small></div>
+<div class="abs rule" id="r1"></div><div class="abs rule thin" id="r1b"></div>
+<div class="abs" id="date"><span>OUTUBRO DE 2026</span><span>ESPECIAL 2º TURNO · 25/10</span></div>
+<div class="abs rule thin" id="r2"></div>
+<div class="abs" id="duo"><div class="p"><canvas id="a" width="500" height="500"></canvas><div>LULA</div></div><div id="vs"><span>?</span></div><div class="p"><canvas id="b" width="500" height="500"></canvas><div>FLÁVIO</div></div></div>
+<div class="abs" id="head">Quem ganhar muda<br>o preço do <i>seu apê?</i></div>
+<div id="split"><div id="y"></div><div id="n"></div>
+ <div class="lab" id="l1">TIME</div><div class="big" id="b1">ALUGUEL</div>
+ <div class="lab" id="l2">TIME</div><div class="big" id="b2">COMPRA</div>
+ <div id="q">Qual é o seu <i>time?</i></div>
+ <svg viewBox="0 0 912 560" width="912" height="560"><defs><linearGradient id="k" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F8E3B0"/><stop offset=".5" stop-color="#D7B270"/><stop offset="1" stop-color="#9C7A40"/></linearGradient></defs>
+  <g transform="translate(150,430) rotate(-24) scale(.62)"><circle cx="-110" cy="0" r="78" fill="none" stroke="url(#k)" stroke-width="34"/><rect x="-40" y="-17" width="300" height="34" rx="17" fill="url(#k)"/><rect x="190" y="0" width="30" height="74" rx="6" fill="url(#k)"/><rect x="235" y="0" width="26" height="54" rx="6" fill="url(#k)"/></g>
+  <g id="cal" transform="translate(600,70) rotate(-6)"></g></svg>
+</div>
+<div class="abs" id="by"><div>5 conselhos de corretor · Por Pedro Perioto</div><span>@VISTABROKER.PERIOTO</span></div>
+<svg width="1080" height="1920"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2"/><feColorMatrix values="0 0 0 0 .25  0 0 0 0 .2  0 0 0 0 .15  0 0 0 .06 0"/></filter><rect width="1080" height="1920" filter="url(#g)"/></svg>
+</div><script>
+// retratos em preto e branco (tom de jornal, sem cor de partido), centrados no rosto
+const FOC={lula:[0.57,0.5,1.5],flavio:[0.52,0.62,1.5]};
+window.done=Promise.all([['a','lula'],['b','flavio']].map(([id,k])=>new Promise(r=>{const im=new Image(); im.onload=()=>{const c=document.getElementById(id),g=c.getContext('2d'),[fx,fy,z]=FOC[k];
+  const s=Math.min(im.width,im.height)/z, sx=Math.min(Math.max(fx*im.width-s/2,0),im.width-s), sy=Math.min(Math.max(fy*im.height-s/2,0),im.height-s);
+  g.filter='grayscale(1) contrast(1.08) brightness(1.04)'; g.drawImage(im,sx,sy,s,s,0,0,500,500); r();}; im.src='../fotos/'+k+'.jpg';})));
+let h=''; for(let r=0;r<2;r++)for(let c=0;c<4;c++){const x=c*62,y=r*56,on=r*4+c<6; h+=`<rect x="${x}" y="${y}" width="50" height="44" rx="8" fill="#1A1A1E" opacity="${on?1:.18}"/>`+(on?`<text x="${x+25}" y="${y+29}" text-anchor="middle" font-family="IS" font-size="17" fill="#F4C430">R$</text>`:'');}
+document.getElementById('cal').innerHTML=h;
+</script></body></html>

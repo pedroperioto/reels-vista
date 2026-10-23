@@ -357,8 +357,9 @@ function render(cv, t) {
     if (prev && into < 0.28) {
       // transição: a seção anterior sobe e some, a nova entra de baixo (whip vertical)
       const k = easeInOut(into / 0.28);
-      ctx.save(); ctx.globalAlpha = 1 - k; ctx.translate(0, -260 * k); drawSection(ctx, prev, prev.b - 0.001); ctx.restore();
-      ctx.save(); ctx.globalAlpha = k; ctx.translate(0, 260 * (1 - k)); drawSection(ctx, s, t); ctx.restore();
+      const ko = clamp(k * 2.2), ki = clamp((k - 0.4) / 0.6);
+      if (ko < 1) { ctx.save(); ctx.globalAlpha = 1 - ko; ctx.translate(0, -260 * easeIn(ko)); drawSection(ctx, prev, prev.b - 0.001); ctx.restore(); }
+      if (ki > 0) { ctx.save(); ctx.globalAlpha = ki; ctx.translate(0, 220 * (1 - easeOut(ki))); drawSection(ctx, s, t); ctx.restore(); }
       // linha dourada atravessando
       ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = `rgba(226,194,127,${0.5 * (1 - Math.abs(k - 0.5) * 2)})`; ctx.fillRect(0, lerp(1800, 120, k), W, 6); ctx.restore();
     } else drawSection(ctx, s, t);

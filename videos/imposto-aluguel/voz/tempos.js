@@ -1,0 +1,1 @@
+window.VOZ = null;

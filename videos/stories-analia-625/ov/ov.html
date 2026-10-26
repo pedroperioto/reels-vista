@@ -1,0 +1,31 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IB;src:url(../../../lib/fonts/InterBlack.otf)}@font-face{font-family:IS;src:url(../../../lib/fonts/InterSemi.otf)}@font-face{font-family:IM;src:url(../../../lib/fonts/InterMed.otf)}
+@font-face{font-family:SI;src:url(../../../lib/fonts/Instr.ttf)}@font-face{font-family:MO;src:url(../../../lib/fonts/Mono.ttf)}
+*{margin:0;padding:0;box-sizing:border-box}html,body{width:1080px;height:1920px;background:transparent;overflow:hidden}
+#mask{position:absolute;inset:0}
+.c{position:absolute;left:0;width:1080px;text-align:center;color:#fff}
+#k{top:250px;font:28px MO;letter-spacing:6px;color:#E2C78F}
+#t{top:300px;font:88px IB;letter-spacing:-3px;line-height:1.02}
+#s{top:400px;font:44px SI;color:#F3DDA8}
+#p{top:480px}#p span{display:inline-block;padding:8px 20px;border-radius:30px;background:rgba(226,199,143,.16);border:2px solid rgba(226,199,143,.5);font:26px MO;letter-spacing:3px;color:#F3DDA8}
+#chips{position:absolute;left:0;width:1080px;top:1490px;display:flex;justify-content:center;gap:14px}
+.ch{padding:12px 22px;border-radius:999px;background:#fff;color:#0B1F3A;font:30px IS}
+#cta{top:1590px;font:34px IS;color:#fff}#cta b{color:#F3DDA8;font-family:IB;font-weight:normal}
+</style></head><body>
+<canvas id="mask" width="1080" height="1920"></canvas>
+<div id="k" class="c">À VENDA · JARDIM ANÁLIA FRANCO</div>
+<div id="t" class="c">625 m² · 5 suítes</div>
+<div id="s" class="c">mobiliado, decorado e com vista livre</div>
+<div id="p" class="c"><span id="pt">1/3 · ÁREA SOCIAL</span></div>
+<div id="chips"><div class="ch">9 vagas</div><div class="ch">7 banheiros</div><div class="ch">1 apto por andar</div></div>
+<div id="cta" class="c">Toque no link ou responda <b>QUERO VER</b></div>
+<script>
+const P=new URLSearchParams(location.search); document.getElementById('pt').textContent=P.get('p');
+if(P.get('chips')) document.getElementById('chips').innerHTML=P.get('chips').split('|').map(x=>`<div class="ch">${x}</div>`).join('');
+const c=document.getElementById('mask').getContext('2d');
+const g=c.createLinearGradient(0,0,0,1920); g.addColorStop(0,'rgba(6,16,32,.86)'); g.addColorStop(.5,'rgba(6,16,32,.55)'); g.addColorStop(1,'rgba(6,16,32,.9)');
+c.fillStyle=g; c.fillRect(0,0,1080,1920);
+// janela do vídeo (cantos arredondados) recortada
+const X=40,Y=560,W=1000,H=880,R=40; c.globalCompositeOperation='destination-out'; c.beginPath(); c.roundRect(X,Y,W,H,R); c.fill();
+c.globalCompositeOperation='source-over'; c.strokeStyle='rgba(226,199,143,.55)'; c.lineWidth=3; c.beginPath(); c.roundRect(X-1.5,Y-1.5,W+3,H+3,R+1.5); c.stroke();
+</script></body></html>

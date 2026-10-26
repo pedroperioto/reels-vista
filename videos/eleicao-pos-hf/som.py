@@ -126,8 +126,12 @@ for k, key in enumerate(['lula', 'catorze', 'vinte5', 'ibov', 'bb', 'dolar', 'do
 
 # ---------- mixagem ----------
 n = int(SR * DUR); M_ = (hp(mus, 35) + dr * 0.9)[:n]; S_ = sfx[:n]
+TR = HERE / 'voz' / 'trilha.wav'   # trilha original "sombria slowed" (trilha.py) substitui a trilha antiga
+if TR.exists():
+    _, tr = wavfile.read(str(TR)); tr = tr.astype(np.float64) / 32767; M_ = np.zeros(n); M_[:min(n, len(tr))] = tr[:n]
 M_ /= np.max(np.abs(M_)); S_ /= np.max(np.abs(S_))
-fo = int(2.0 * SR); M_[-fo:] *= np.linspace(1, 0, fo) ** 1.5
+if not TR.exists():
+    fo = int(2.0 * SR); M_[-fo:] *= np.linspace(1, 0, fo) ** 1.5
 vp = HERE / 'voz' / 'bruto.wav'
 if vp.exists():
     sr, v = wavfile.read(str(vp)); v = v.astype(np.float64); v = v if v.ndim == 1 else v.mean(1)
@@ -135,7 +139,7 @@ if vp.exists():
         import scipy.signal as ss; v = ss.resample_poly(v, SR, sr)
     v /= np.max(np.abs(v)); V = np.zeros(n); V[:min(n, len(v))] = v[:n]
     env = lp(np.abs(V), 8); env /= np.max(env) + 1e-9; duck = 1 - 0.5 * np.clip(env / 0.15, 0, 1)
-    mix = V * 1.0 + M_ * 0.2 * duck + S_ * 0.3
+    mix = V * 1.0 + M_ * (0.26 if TR.exists() else 0.2) * duck + S_ * 0.3
 else:
     mix = M_ * 0.55 + S_ * 0.6
 mix /= np.max(np.abs(mix))

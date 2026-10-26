@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8"><script src="../assets/personagens.js"></script><style>
+@font-face{font-family:Oswald700;src:url("../assets/fonts/Oswald700.woff2")}@font-face{font-family:M7;src:url("../assets/fonts/Mono700.woff2")}
+*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1920px;overflow:hidden;background:#0A1428;font-family:Oswald700;color:#fff}
+.c{position:absolute;left:0;width:1080px;text-align:center}
+#k{top:300px}#k span{display:inline-block;padding:10px 22px;border-radius:40px;border:2px solid rgba(255,255,255,.25);font-family:M7;font-size:28px;letter-spacing:3px;background:rgba(10,20,40,.7)}#k i{display:inline-block;width:16px;height:16px;border-radius:50%;background:#E5484D;margin-right:12px;vertical-align:2px}
+#t{top:370px;font-size:100px;line-height:1;text-transform:uppercase;text-shadow:0 8px 30px rgba(0,0,0,.7)}#t b{color:#FFD24A;font-weight:normal}
+#p{top:1250px}#p span{display:inline-block;font-size:76px;padding:10px 34px}#p .r{background:#E5484D;border-radius:24px 0 0 24px}#p .g{background:#2E9E68;color:#FFD24A;border-radius:0 24px 24px 0}
+#s{top:1380px;font-family:M7;font-size:30px;color:#D6DEEC;letter-spacing:1px;line-height:1.5}
+</style></head><body>
+<svg id="w" width="1080" height="1920" viewBox="0 0 1080 1920" style="position:absolute;left:0;top:0"></svg>
+<div id="k" class="c"><span><i></i>PÓS-ELEIÇÃO · DADOS REAIS</span></div>
+<div id="t" class="c">O Brasil acordou dividido.<br><b>O aluguel, não.</b></div>
+<div id="p" class="c"><span class="r">TIME 13</span><span class="g">TIME 22</span></div>
+<div id="s" class="c">B3 TRAVADA · DÓLAR A R$ 5,60 · JUROS SUBINDO<br>E O SEU IMÓVEL?</div>
+<script>
+let s=`<defs><linearGradient id="q" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD58A"/><stop offset="1" stop-color="#E9A24E"/></linearGradient>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#060E1F"/><stop offset="1" stop-color="#14284F"/></linearGradient>
+<clipPath id="a"><rect x="90" y="705" width="420" height="440"/></clipPath><clipPath id="b"><rect x="570" y="705" width="420" height="440"/></clipPath></defs>
+<rect width="1080" height="1920" fill="url(#sky)"/><rect x="40" y="650" width="1000" height="1400" fill="#22324F"/>
+<rect x="40" y="650" width="500" height="1400" fill="#E5484D" opacity="0.16"/><rect x="540" y="650" width="500" height="1400" fill="#2E9E68" opacity="0.16"/>`;
+[[90,'a','ra'],[570,'b','cb']].forEach(([x,cp,id])=>{s+=`<rect x="${x-12}" y="693" width="444" height="464" fill="#33496F"/><g clip-path="url(#${cp})"><rect x="${x}" y="705" width="420" height="440" fill="url(#q)"/><rect x="${x}" y="1070" width="420" height="75" fill="rgba(0,0,0,.12)"/><g id="${id}"></g></g>`});
+s+=`<rect x="536" y="640" width="8" height="1400" fill="#FFF4D6"/><rect x="0" y="1160" width="1080" height="760" fill="url(#fade)"/>
+<defs><linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(10,20,40,0)"/><stop offset="0.25" stop-color="rgba(10,20,40,.95)"/><stop offset="1" stop-color="#0A1428"/></linearGradient></defs>`;
+w.innerHTML=s;
+document.getElementById('ra').innerHTML=`<g transform="translate(120 722) scale(1.12)">${rafa('r')}</g>`;
+document.getElementById('cb').innerHTML=`<g transform="translate(600 722) scale(1.12)">${celia('c')}</g>`;
+const set=(sel,on)=>document.querySelectorAll(sel).forEach(e=>e.setAttribute('opacity',on?1:0));
+document.querySelector('#r .armL').setAttribute('transform','rotate(150 106 252)');set('#r .m-smile',0);set('#r .m-open',1);set('#r .b-neutral',0);set('#r .b-up',1);
+set('#c .armL',0);set('#c .armR',0);set('#c .armsX',1);set('#c .m-smile',0);set('#c .m-frown',1);set('#c .b-neutral',0);set('#c .b-angry',1);
+</script></body></html>

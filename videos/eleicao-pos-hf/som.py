@@ -88,6 +88,42 @@ P(C['MN'], WS[3], 0.55); P(C['MN'] + 0.05, impact(), 0.4); P(M['time'], pop(800,
 P(M['compra'] - 0.2, WS[0], 0.4); P(M['comenta'], click(), 0.6); P(M['comenta'] + 0.05, chime(True), 0.35)
 P(T['END'], impact(), 0.3); P(T['END'] + 0.1, chime(True), 0.3)
 
+# ---------- camadas extras: ambiências e foley ----------
+def bed(a, b, kind):
+    i0, i1 = int(a * SR), int(b * SR); L = i1 - i0
+    if L <= 0: return
+    d = np.arange(L) / SR; env = np.minimum(1, np.minimum(d / 0.4, (L / SR - d) / 0.4))
+    if kind == 'cidade':   # noite da cidade: rumor grave + carros distantes
+        x = lp(np.cumsum(rg.standard_normal(L)) * 0.02, 400); x = x - np.mean(x)
+        for k in range(int(L / SR / 2.5)): c = int(rg.uniform(0, L - SR)); seg = bp(rg.standard_normal(SR), 200, 900) * np.sin(np.linspace(0, np.pi, SR)) ** 2; x[c:c + SR] += seg * 0.4
+        g = 0.18
+    elif kind == 'elevador':  # zumbido do motor
+        x = (np.sin(2 * np.pi * 60 * d) * 0.6 + np.sin(2 * np.pi * 120 * d) * 0.3 + lp(rg.standard_normal(L), 300) * 0.3); g = 0.12
+    elif kind == 'coracao':   # tensão no painel da B3
+        x = np.zeros(L)
+        for k in range(int(L / SR / 0.75)):
+            for off, a2 in ((0, 1), (0.16, 0.7)):
+                j = int((k * 0.75 + off) * SR); y = np.sin(2 * np.pi * 55 * np.arange(int(0.18 * SR)) / SR) * np.exp(-np.arange(int(0.18 * SR)) / SR / 0.05) * a2
+                x[j:j + len(y)] += y[:max(0, L - j)]
+        g = 0.5
+    elif kind == 'rua':       # dia de rua no plantão
+        x = bp(rg.standard_normal(L), 300, 2500) * 0.3; g = 0.1
+    x = x / (np.max(np.abs(x)) + 1e-9); sfx[i0:i1] += x * env * g
+def cheer(s=1.4):  # torcida ao longe
+    d = tt(s); n = bp(rg.standard_normal(len(d)), 500, 3500); am = 0.6 + 0.4 * np.sin(2 * np.pi * 7 * d + rg.uniform(0, 6))
+    return n * am * np.sin(np.pi * d / s) ** 1.5 * 0.7
+def rustle(s=0.25): d = tt(s); return bp(rg.standard_normal(len(d)), 1500, 7000) * np.exp(-d / 0.06) * 0.6
+def kaching(): d = tt(0.8); x = (np.sin(2 * np.pi * 2093 * d) + 0.6 * np.sin(2 * np.pi * 3136 * d)) * np.exp(-d / 0.25) * 0.5; x[:int(0.03 * SR)] += hp(rg.standard_normal(int(0.03 * SR)), 2000) * 0.5; return x
+bed(0, T['BC'], 'cidade'); bed(T['CD'], T['DE'] + 0.3, 'cidade')
+bed(T['EF'], T['FF2'], 'elevador'); bed(T['F2G'], T['GH'], 'elevador'); bed(T['HI'], T['IJ'], 'elevador')
+bed(T['FF2'], T['F2G'], 'coracao'); bed(T['LM'], T['MN'], 'rua')
+P(M['rojao'] + 0.1, cheer(1.6), 0.5)
+P(M['envel'] + 0.38, rustle(), 0.6); P(M['envel'] + 0.53, rustle(), 0.6); P(M['boleto'] - 0.05, kaching(), 0.35)
+for k in range(6): P(M['simul0'] + 0.3 + k * 0.13, tick(3200), 0.3)
+P(M['m2'] + 0.2, riser(max(1.8, M['todos'] + 0.8 - M['m2'] - 0.2)), 0.25)
+P(M['time'], cheer(1.0), 0.35); P(M['time'] + 0.35, cheer(1.0), 0.35)
+for k, key in enumerate(['lula', 'catorze', 'vinte5', 'ibov', 'bb', 'dolar', 'doisp', 'dobro']): P(M[key] - 0.03, pop(1300 - 40 * k, 0.05), 0.25)
+
 # ---------- mixagem ----------
 n = int(SR * DUR); M_ = (hp(mus, 35) + dr * 0.9)[:n]; S_ = sfx[:n]
 M_ /= np.max(np.abs(M_)); S_ /= np.max(np.abs(S_))

@@ -155,7 +155,7 @@ R.regua = (ctx, t, s) => {
 R.marcas = (ctx, t) => {
   kw(ctx, t, 'A linha tem', Wt(53), 'DUAS marcas', Wt(56), 99, 110);
   // marca 1: imóveis
-  const c1 = since(t, 57, -0.15), ok1 = kOn(t, 78, 0.3), ok2 = kOn(t, 80, 0.3);
+  const c1 = since(t, 54, -0.1), ok1 = kOn(t, 78, 0.3), ok2 = kOn(t, 80, 0.3);
   pop(ctx, c1, 540, 700, () => { card(ctx, 110, 580, 860, 270, 40, '#FFFFFF', ok1 > 0 ? 0.18 : 0.12); if (ok1 > 0) { ctx.strokeStyle = GRN; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(110, 580, 860, 270, 40); ctx.stroke(); }
     for (let i = 0; i < 4; i++) { const on = clamp((t - (Wt(58) + i * 0.18)) / 0.15); ctx.save(); const cx = 210 + i * 120, cy = 680; if (on > 0) { const s = 1 + 0.25 * Math.exp(-(t - Wt(58) - i * 0.18) / 0.12); ctx.translate(cx, cy); ctx.scale(s, s); ctx.translate(-cx, -cy); } houseIcon(ctx, cx, cy, 2.6, on > 0 ? (i === 3 ? GOLDA : NAVY) : '#D5D8DE'); ctx.restore(); }
     T(ctx, '4+', 830, 712, F.black(96), GOLDA, 'center', kOn(t, 58), 96); T(ctx, 'imóveis alugados (4 ou mais)', 150, 800, F.semi(36), INK, 'left', 1, 36, 640); checkbox(ctx, 900, 790, ok1); });
@@ -249,7 +249,7 @@ R.cta = (ctx, t, s) => {
   const endT = WE(215) + 0.25, out = clamp((t - endT) / 0.35);
   ctx.save(); ctx.globalAlpha *= 1 - out;
   kw(ctx, t, 'Quer saber se você', Wt(199), 'passa na régua?', Wt(203), 99, 104);
-  const c = clamp((t - Wt(205)) / 0.4);
+  const c = clamp((t - Wt(199) - 0.25) / 0.4);
   fx(ctx, c, 0, () => { const y0 = 700; card(ctx, 90, y0, 900, 560, 44, '#FFFFFF', 0.14); T(ctx, 'Comentários', 540, y0 + 70, F.semi(32), INK, 'center', 1, 32); ctx.fillStyle = LINE; ctx.fillRect(90, y0 + 104, 900, 2);
     const posted = t > Wt(208); if (posted) pop(ctx, since(t, 208), 300, y0 + 200, () => { ctx.beginPath(); ctx.arc(180, y0 + 190, 40, 0, 6.283); ctx.fillStyle = '#2A4A7A'; ctx.fill(); T(ctx, 'você', 240, y0 + 175, F.semi(28), MUTE, 'left', 1, 28); T(ctx, 'RÉGUA', 240, y0 + 230, F.black(56), INK, 'left', 1, 56); });
     ctx.fillStyle = '#F2F3F5'; ctx.beginPath(); ctx.roundRect(130, y0 + 410, 700, 100, 50); ctx.fill();
@@ -267,7 +267,8 @@ R.cta = (ctx, t, s) => {
 };
 
 // ---------- transições ----------
-function drawScene(ctx, sc, t) { CLIPON_SC = 0; R[sc.n](ctx, Math.min(t, sc.b + 0.4), sc); }
+// a cena já entra com o 1º elemento visível (adianta até 0,3 s depois da 1ª palavra durante a transição)
+function drawScene(ctx, sc, t) { CLIPON_SC = 0; const tt = sc.i > 0 ? Math.max(t, Wt(sc.i) + 0.3) : t; R[sc.n](ctx, Math.min(tt, sc.b + 0.4), sc); }
 let CLIPON_SC = 0;
 function transition(ctx, prev, next, t) {
   const type = TRANS[next.n], a = next.a, d = { flash: 0.16, mask: 0.4, push: 0.32, whip: 0.3, zoom: 0.35, slide: 0.32, fade: 0.25, glitch: 0.24, zoomout: 0.36 }[type], k = clamp((t - (a - d / 2)) / d);

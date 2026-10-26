@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="pt-BR" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <script src="assets/d3.min.js"></script>
+    <script src="assets/topojson-client.min.js"></script>
+    <script src="assets/mundo.js"></script>
+    <script src="assets/globo.js"></script>
+    <script src="assets/personagens.js"></script>
+    <style>
+      @font-face { font-family: "Oswald700"; src: url("assets/fonts/Oswald700.woff2"); }
+      @font-face { font-family: "Oswald600"; src: url("assets/fonts/Oswald600.woff2"); }
+      @font-face { font-family: "Mono500"; src: url("assets/fonts/Mono500.woff2"); }
+      @font-face { font-family: "Mono700"; src: url("assets/fonts/Mono700.woff2"); }
+      @font-face { font-family: "InterMed"; src: url("assets/fonts/InterMed.otf"); }
+      @font-face { font-family: "InterBlack"; src: url("assets/fonts/InterBlack.otf"); }
+      @font-face { font-family: "InterSemi"; src: url("assets/fonts/InterSemi.otf"); }
+      /* pós-eleição · história ilustrada + painéis de dados com globo · texto entre 168 e 1330 px */
+      :root { --night: #0A1428; --gold: #E2C27F; --y: #FFD24A; --red: #E5484D; --green: #2E9E68; --mute: #8A96AD; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--night); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Oswald700", sans-serif; color: #fff; }
+      .full { position: absolute; inset: 0; } .scene { position: absolute; inset: 0; overflow: hidden; } .abs { position: absolute; }
+      .ctr { left: 0; width: 1080px; text-align: center; }
+      .dark { background: radial-gradient(1100px 1000px at 50% 40%, #13264A 0%, #0A1428 62%, #060D1C 100%); }
+      .tag { position: absolute; top: 250px; left: 0; width: 1080px; text-align: center; }
+      .tag span { display: inline-block; padding: 6px 16px; background: #fff; color: #10151F; font-family: "Oswald600"; font-size: 32px; letter-spacing: 2px; }
+      #top { position: absolute; top: 180px; left: 0; width: 1080px; text-align: center; font-family: "Oswald600"; font-size: 28px; letter-spacing: 5px; color: rgba(255,255,255,0.8); }
+      #top i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--red); margin-right: 12px; vertical-align: 3px; }
+      /* painel de dados (estilo globo) */
+      .card { position: absolute; left: 90px; top: 320px; width: 900px; text-shadow: 0 4px 24px rgba(0,0,0,0.6); }
+      .dtag { display: inline-flex; align-items: center; gap: 14px; padding: 10px 22px; border-radius: 40px; background: rgba(10,20,40,0.85); border: 2px solid rgba(255,255,255,0.18); font-family: "Mono700"; font-size: 28px; letter-spacing: 2px; }
+      .dtag i { width: 18px; height: 18px; border-radius: 50%; background: var(--y); box-shadow: 0 0 16px var(--y); }
+      .dsrc { margin-top: 16px; font-family: "Mono500"; font-size: 22px; color: var(--mute); letter-spacing: 1px; }
+      .dbadge { display: inline-block; margin-top: 18px; padding: 6px 14px; background: var(--y); color: #10151F; font-family: "Mono700"; font-size: 26px; letter-spacing: 1px; }
+      .dbig { margin-top: 6px; font-family: "InterBlack"; font-size: 190px; line-height: 1; letter-spacing: -6px; }
+      .dsub { margin-top: 10px; font-family: "Mono700"; font-size: 28px; color: #D6DEEC; letter-spacing: 1px; }
+      .dline { width: 120px; height: 4px; background: var(--y); margin-top: 18px; }
+      .bul { margin-top: 20px; font-family: "InterSemi"; font-size: 38px; color: #fff; } .bul b { color: var(--y); font-weight: normal; }
+      .fonte { position: absolute; left: 0; width: 1080px; text-align: center; font-family: "Mono500"; font-size: 22px; color: rgba(255,255,255,0.55); letter-spacing: 1px; }
+      /* legenda: palavra atual em amarelo */
+      #cap { position: absolute; left: 90px; width: 900px; top: 1235px; height: 120px; }
+      .cg { position: absolute; left: 0; top: 0; width: 900px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 22px; row-gap: 6px; font-size: 72px; line-height: 1; text-transform: uppercase; opacity: 0; text-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 0 30px rgba(0,0,0,0.55); }
+      .cw { display: inline-block; color: rgba(255,255,255,0.5); }
+      /* balões, envelopes, notificações */
+      .bub { position: absolute; padding: 18px 30px; border-radius: 30px; background: #fff; color: #10151F; font-size: 50px; line-height: 1.05; text-align: center; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
+      .bub:after { content: ""; position: absolute; bottom: -22px; width: 0; height: 0; border-left: 18px solid transparent; border-right: 18px solid transparent; border-top: 26px solid #fff; }
+      .bubL:after { left: 40px; } .bubR:after { right: 40px; }
+      .noti { position: absolute; width: 470px; padding: 18px 22px; border-radius: 28px; background: rgba(245,246,250,0.96); color: #10151F; box-shadow: 0 20px 50px rgba(0,0,0,0.45); opacity: 0; }
+      .noti .h { display: flex; align-items: center; gap: 12px; font-family: "InterSemi"; font-size: 22px; color: #6B7280; }
+      .noti .h i { width: 34px; height: 34px; border-radius: 9px; background: #10151F; color: #FFD24A; font-family: "Mono700"; font-size: 16px; font-style: normal; display: flex; align-items: center; justify-content: center; }
+      .noti .t { margin-top: 8px; font-family: "InterBlack"; font-size: 30px; line-height: 1.15; } .noti .t b { color: var(--red); font-weight: normal; }
+      .env { position: absolute; width: 220px; height: 140px; border-radius: 10px; background: #FAF7F0; box-shadow: 0 18px 40px rgba(0,0,0,0.45); overflow: hidden; opacity: 0; }
+      .env:before { content: ""; position: absolute; left: 0; top: 0; width: 0; height: 0; border-left: 110px solid transparent; border-right: 110px solid transparent; border-top: 70px solid #E9E2D2; }
+      .env .st { position: absolute; left: 22px; top: 70px; padding: 2px 10px; border: 4px solid var(--red); color: var(--red); font-size: 34px; transform: rotate(-6deg); }
+      .pano { background: repeating-linear-gradient(90deg, #6E4560 0px, #835574 46px, #6E4560 92px, #5C3950 110px); }
+      /* B3 */
+      .row3 { position: absolute; left: 90px; width: 900px; height: 130px; border-bottom: 2px solid rgba(255,255,255,0.08); opacity: 0; }
+      .row3 .n { position: absolute; left: 0; top: 30px; font-family: "Mono700"; font-size: 34px; color: #D6DEEC; letter-spacing: 1px; }
+      .row3 .s { position: absolute; left: 0; top: 80px; font-family: "Mono500"; font-size: 20px; color: var(--mute); }
+      .row3 .v { position: absolute; right: 0; top: 12px; font-family: "InterBlack"; font-size: 84px; letter-spacing: -2px; }
+      /* corrida / barras */
+      .barw { position: absolute; left: 90px; width: 900px; }
+      .barw .lb { font-family: "Mono700"; font-size: 30px; color: #D6DEEC; } .barw .pc { position: absolute; right: 0; top: -6px; font-family: "InterBlack"; font-size: 56px; }
+      .barw .tr { margin-top: 14px; height: 54px; border-radius: 27px; background: rgba(255,255,255,0.07); overflow: hidden; } .barw .fl { height: 54px; border-radius: 27px; transform-origin: 0 50%; }
+      .lane { position: absolute; left: 90px; width: 900px; height: 110px; }
+      .lane .trk { position: absolute; left: 0; top: 62px; width: 900px; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.12); }
+      .lane .rn { position: absolute; left: 0; top: 0; width: 120px; text-align: center; }
+      .lane .ic { width: 96px; height: 96px; margin: 0 auto; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 46px; }
+      .lane .lb { position: absolute; left: 0; top: 84px; font-family: "Mono700"; font-size: 26px; color: #D6DEEC; }
+      /* celular de simulação */
+      #fone { position: absolute; left: 290px; top: 330px; width: 500px; height: 860px; border-radius: 64px; background: #0F1116; box-shadow: 0 40px 90px rgba(0,0,0,0.55), inset 0 0 0 8px #262A33; }
+      #fone .scr { position: absolute; left: 22px; top: 22px; width: 456px; height: 816px; border-radius: 46px; background: linear-gradient(180deg, #F7F8FA, #E9ECF2); overflow: hidden; color: #10151F; }
+      .sl { position: absolute; left: 34px; width: 388px; } .sl .l { font-family: "Mono700"; font-size: 22px; color: #6B7280; letter-spacing: 1px; }
+      .sl .t { margin-top: 12px; height: 12px; border-radius: 6px; background: #D5DAE3; } .sl .f { position: absolute; left: 0; top: 38px; height: 12px; border-radius: 6px; background: #0B1F3A; transform-origin: 0 50%; }
+      .sl .k { position: absolute; top: 28px; width: 32px; height: 32px; border-radius: 50%; background: #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.3); border: 4px solid #0B1F3A; }
+      /* m² */
+      .bar2 { position: absolute; bottom: 0; width: 34px; border-radius: 6px 6px 0 0; background: linear-gradient(180deg, #3E66A8, #23406F); transform-origin: 50% 100%; }
+      .gov { position: absolute; top: 1150px; text-align: center; font-family: "Mono700"; font-size: 20px; color: #D6DEEC; border-top: 4px solid rgba(255,255,255,0.35); padding-top: 8px; }
+      /* final */
+      #o-name { top: 820px; font-size: 92px; } #o-creci { top: 935px; font-family: "InterMed"; font-size: 32px; color: #A9B6CA; } #o-at { top: 990px; font-family: "InterSemi"; font-size: 40px; color: var(--gold); }
+      #o-logo { left: 400px; top: 1070px; width: 280px; height: 145px; border-radius: 26px; background: #fff; display: flex; align-items: center; justify-content: center; } #o-logo img { width: 230px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="@@DUR@@" data-width="1080" data-height="1920" data-motion-blur="on">
+      <div id="bg" class="full clip" data-start="0" data-duration="@@DUR@@" data-track-index="0" style="background: var(--night)"></div>
+
+      <!-- A, B, D: o prédio (câmera = viewBox) -->
+      <div id="sW" class="scene clip" data-start="0" data-duration="@@DE@@" data-track-index="1">
+        <svg id="world" class="full" width="1080" height="1920" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice"></svg>
+      </div>
+
+      <!-- C, E: o globo -->
+      <div id="sG" class="scene dark clip" data-start="@@BC@@" data-duration="@@D:BC,EF@@" data-track-index="2">
+        <svg id="globo" class="full" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+        <div id="stars" class="full"></div>
+        <div id="c1" class="card"><div class="dtag"><i></i>RESULTADO</div><div class="dsrc">FONTE: TSE · 25/10/2026 · 99,99% APURADO</div><div class="dbadge">2º TURNO · VOTOS VÁLIDOS</div>
+          <div class="dbig" id="c1n">0,00%</div><div class="dsub">LULA (PT) · REELEITO</div>
+          <div class="bul" id="c1b2"><b>48,21%</b> · Flávio (PL)</div><div class="bul" id="c1b3" style="font-size:32px">• Virada: no 1º turno, Flávio <b>47,03%</b> × Lula <b>45,16%</b></div></div>
+        <div id="c2" class="card"><div class="dtag"><i></i>TÓQUIO</div><div class="dsrc">FONTE: BLOOMBERG LÍNEA · DOMINGO, 21H52 (BRASÍLIA)</div><div class="dbadge">JÁ ERA SEGUNDA NO JAPÃO</div>
+          <div class="dbig" id="c2n" style="color:#FF6B6F">−14%</div><div class="dsub">FUNDO QUE COPIA O IBOVESPA (ETF 1325.T)</div></div>
+        <div id="c3" class="card"><div class="dtag"><i></i>NOVA YORK</div><div class="dsrc">FONTE: FORBES BRASIL · 26/10/2026</div><div class="dbadge">PRÉ-MERCADO</div>
+          <div class="dbig" id="c3n" style="color:#FF6B6F">−25%</div><div class="dsub">AÇÕES BRASILEIRAS (ETF EWZ) · QUEDA DE MAIS DE 25%</div></div>
+      </div>
+
+      <!-- F, G: dentro do elevador -->
+      <div id="sF" class="scene clip" data-start="@@EF@@" data-duration="@@D:EF,GH@@" data-track-index="3" style="background: linear-gradient(180deg, #C9B489 0%, #B9A27A 70%, #8E7B5B 70%)">
+        <svg class="full" width="1080" height="1920" viewBox="0 0 1080 1920">
+          <rect x="0" y="0" width="1080" height="1920" fill="url(#liftF)"/>
+          <rect x="70" y="420" width="940" height="16" rx="8" fill="#9C8761"/><rect x="110" y="1150" width="860" height="10" fill="rgba(0,0,0,0.12)"/>
+          
+          <defs><radialGradient id="liftF" cx="0.5" cy="0.05" r="0.9"><stop offset="0" stop-color="rgba(255,240,200,0.6)"/><stop offset="1" stop-color="rgba(0,0,0,0.25)"/></radialGradient></defs>
+          <g id="fin"></g>
+        </svg>
+        
+        <div id="n1" class="noti" style="left:40px;top:330px"><div class="h"><i>B3</i>NOTÍCIAS · agora</div><div class="t">URGENTE: <b>Bolsa aciona circuit breaker</b></div></div>
+        <div id="n2" class="noti" style="left:570px;top:370px"><div class="h"><i>B3</i>NOTÍCIAS · agora</div><div class="t">URGENTE: <b>Bolsa aciona circuit breaker</b></div></div>
+        <div id="gb1" class="bub bubL" style="left:610px;top:370px">“EU <span style="color:#2E9E68">AVISEI</span>.”</div>
+        <div id="gb2" class="bub bubL" style="left:180px;top:340px;font-size:46px">“É SÓ O <span style="color:#E5484D">PRIMEIRO</span><br>DIA.”</div>
+      </div>
+
+      <!-- F2: painel da B3 -->
+      <div id="sF2" class="scene dark clip" data-start="@@FF2@@" data-duration="@@D:FF2,F2G@@" data-track-index="4" style="opacity:0">
+        <svg class="full" width="1080" height="1920" viewBox="0 0 1080 1920"><path id="queda" d="M 0 700 L 120 690 L 220 720 L 330 700 L 420 760 L 520 900 L 600 880 L 700 1100 L 800 1060 L 900 1300 L 1080 1420" fill="none" stroke="rgba(229,72,77,0.25)" stroke-width="10"/></svg>
+        <div class="card" style="top:320px"><div class="dtag"><i style="background:#FF6B6F;box-shadow:0 0 16px #FF6B6F"></i>B3 · SÃO PAULO</div><div class="dsrc">FONTES: B3 · INFOMONEY · CNN BRASIL · 26/10/2026</div></div>
+        <div id="lock" class="abs" style="left:90px;top:470px;width:900px;height:130px;border-radius:20px;background:#E5484D;display:flex;align-items:center;gap:26px;padding-left:34px">
+          <svg width="70" height="80" viewBox="0 0 70 80"><path d="M 16 36 V 24 A 19 19 0 0 1 54 24 V 36" fill="none" stroke="#fff" stroke-width="9"/><rect x="6" y="34" width="58" height="44" rx="8" fill="#fff"/></svg>
+          <div><div style="font-size:52px;line-height:1">NEGOCIAÇÃO SUSPENSA</div><div style="font-family:Mono700;font-size:24px;margin-top:6px">CIRCUIT BREAKER · 9H57 · 30 MIN</div></div></div>
+        <div id="selo" class="abs" style="left:610px;top:590px;padding:10px 20px;background:var(--y);color:#10151F;font-family:Mono700;font-size:26px;transform:rotate(-4deg);opacity:0">1ª VEZ DESDE MAR/2020</div>
+        <div id="r1" class="row3" style="top:700px"><div class="n">IBOVESPA</div><div class="s">ÀS 11H10 · ÍNDICE DA BOLSA</div><div class="v" style="color:#FF6B6F">−16,4%</div></div>
+        <div id="r2" class="row3" style="top:840px"><div class="n">BANCO DO BRASIL</div><div class="s">ÀS 10H52 · BBAS3</div><div class="v" style="color:#FF6B6F">−31,4%</div></div>
+        <div id="r3" class="row3" style="top:980px"><div class="n">DÓLAR</div><div class="s">MÁXIMA DA MANHÃ · +12%</div><div class="v" style="color:var(--y)">R$ 5,60</div></div>
+      </div>
+
+      <!-- H: por quê -->
+      <div id="sH" class="scene dark clip" data-start="@@GH@@" data-duration="@@D:GH,HI@@" data-track-index="5">
+        <div class="card"><div class="dtag"><i></i>POR QUÊ</div><div class="dsrc">SEGUNDO ANALISTAS (CAPITAL ECONOMICS, VIA INFOMONEY)</div>
+          <div class="dbadge">POR QUE O MERCADO REAGIU ASSIM?</div><div class="bul" id="h1">• <b>Medo das contas públicas</b></div><div class="bul" id="h2">• Juros longos <b>sobem junto</b></div></div>
+        <svg id="hchart" class="abs" style="left:90px;top:720px" width="900" height="420" viewBox="0 0 900 420">
+          <path d="M 0 380 H 900" stroke="rgba(255,255,255,0.15)" stroke-width="3"/>
+          <rect id="hb1" x="120" y="0" width="220" height="380" rx="14" fill="#3E66A8"/><rect id="hb2" x="560" y="0" width="220" height="380" rx="14" fill="#FF6B6F"/>
+          <text x="230" y="415" text-anchor="middle" font-family="Mono700" font-size="24" fill="#D6DEEC">SEXTA</text><text x="670" y="415" text-anchor="middle" font-family="Mono700" font-size="24" fill="#D6DEEC">SEGUNDA 9H33</text>
+        </svg>
+        <div id="hv1" class="abs" style="left:210px;top:830px;width:220px;text-align:center;font-family:InterBlack;font-size:58px">12,58%</div>
+        <div id="hv2" class="abs" style="left:650px;top:740px;width:220px;text-align:center;font-family:InterBlack;font-size:58px">14,46%</div>
+        <div id="hlab" class="abs" style="left:90px;top:660px;font-family:Mono700;font-size:26px;color:#D6DEEC">JUROS LONGOS · DI JAN/2031 · % AO ANO</div>
+        <div id="hp" class="abs" style="left:420px;top:880px;padding:10px 22px;border-radius:16px;background:var(--y);color:#10151F;font-size:56px;opacity:0">+1,9 PONTO</div>
+        <div id="hhouse" class="abs" style="left:415px;top:1010px;width:250px;text-align:center;opacity:0">
+          <svg width="150" height="130" viewBox="0 0 180 150"><path d="M90 8 L 170 78 L 150 78 L 150 142 L 30 142 L 30 78 L 10 78 Z" fill="#E2C27F"/><rect x="75" y="98" width="30" height="44" rx="6" fill="#0B1F3A"/></svg>
+          <div style="font-family:Mono700;font-size:26px;color:var(--y);margin-top:4px">SEU FINANCIAMENTO</div></div>
+        <div class="fonte" style="top:1180px">FONTE: B3 · DI JAN/31 VIA INFOMONEY · 26/10/2026</div>
+      </div>
+
+      <!-- I: o elevador visto da portaria + o boleto -->
+      <div id="sI" class="scene clip" data-start="@@HI@@" data-duration="@@D:HI,IJ@@" data-track-index="6" style="background: linear-gradient(180deg, #1B2B45 0%, #22355A 100%)">
+        <svg class="full" width="1080" height="1920" viewBox="0 0 1080 1920">
+          <rect x="0" y="1190" width="1080" height="730" fill="#141F33"/><rect x="130" y="350" width="820" height="850" rx="10" fill="#7E889A"/>
+          <rect x="160" y="380" width="760" height="810" fill="#C9B489"/><rect x="160" y="380" width="760" height="810" fill="url(#lift)"/>
+          <rect x="190" y="760" width="700" height="14" rx="7" fill="#9C8761"/><g id="dentro"></g>
+          <g id="portaL"><rect x="160" y="380" width="380" height="810" fill="url(#aco)"/><path d="M 240 380 V 1190 M 330 380 V 1190" stroke="rgba(255,255,255,0.18)" stroke-width="3"/></g>
+          <g id="portaR"><rect x="540" y="380" width="380" height="810" fill="url(#aco)"/><path d="M 750 380 V 1190 M 840 380 V 1190" stroke="rgba(255,255,255,0.18)" stroke-width="3"/></g>
+          <rect x="537" y="380" width="6" height="810" fill="rgba(0,0,0,0.35)" id="fresta"/>
+          <g id="porteiro" opacity="0"><rect x="930" y="900" width="260" height="70" rx="35" fill="#3B4A63"/><circle cx="930" cy="935" r="34" fill="#C88D66"/></g>
+          <defs><linearGradient id="aco" x1="0" x2="1"><stop offset="0" stop-color="#9CA6B6"/><stop offset="0.5" stop-color="#C3CBD6"/><stop offset="1" stop-color="#8D97A7"/></linearGradient>
+            <radialGradient id="lift" cx="0.5" cy="0.1" r="0.9"><stop offset="0" stop-color="rgba(255,240,200,0.55)"/><stop offset="1" stop-color="rgba(0,0,0,0.15)"/></radialGradient></defs>
+        </svg>
+        <div id="led" class="abs" style="left:470px;top:300px;width:140px;height:56px;border-radius:10px;background:#0B0B0D;color:#FF4D3D;font-size:40px;text-align:center;line-height:56px;box-shadow:0 0 0 4px #5B6475">T</div>
+        <div id="env1" class="env" style="left:240px;top:820px"><div class="st">ALUGUEL</div></div>
+        <div id="env2" class="env" style="left:620px;top:820px"><div class="st">ALUGUEL</div></div>
+        <div id="pct" class="abs" style="left:440px;top:400px;padding:8px 26px;border-radius:16px;background:#E5484D;font-size:72px;opacity:0;box-shadow:0 16px 40px rgba(0,0,0,0.4)">+9%</div>
+      </div>
+
+      <!-- J: o que não mudou -->
+      <div id="sJ" class="scene dark clip" data-start="@@IJ@@" data-duration="@@D:IJ,JK@@" data-track-index="7">
+        <div class="card"><div class="dtag"><i></i>O QUE NÃO MUDOU</div><div class="dsrc">FONTES: FIPEZAP · IBGE · 12 MESES ATÉ SET/2026</div></div>
+        <div id="jA" class="abs" style="left:0;top:520px;width:1080px;height:600px">
+          <div class="barw" style="top:0"><div class="lb">ALUGUEL · BRASIL</div><div class="pc" style="color:#FF6B6F">9,13%</div><div class="tr"><div class="fl" id="jb1" style="width:900px;background:#FF6B6F"></div></div></div>
+          <div class="barw" style="top:170px"><div class="lb">INFLAÇÃO (IPCA)</div><div class="pc" style="color:#D6DEEC">4,58%</div><div class="tr"><div class="fl" id="jb2" style="width:451px;background:#8A96AD"></div></div></div>
+          <div id="j2x" class="abs" style="left:700px;top:330px;padding:8px 26px;border-radius:18px;background:var(--y);color:#10151F;font-size:96px;opacity:0;transform:rotate(-6deg)">2×</div>
+        </div>
+        <div id="jB" class="abs" style="left:0;top:520px;width:1080px;height:600px;opacity:0">
+          <div class="abs" style="left:90px;top:0;font-family:Mono700;font-size:28px;color:#D6DEEC">SÃO PAULO · 12 MESES</div>
+          <div class="lane" style="top:80px"><div class="trk"></div><div class="rn" id="rA"><div class="ic" style="background:#FF6B6F">🔑</div></div><div class="lb" style="top:120px">ALUGUEL <span style="color:#FF6B6F">+6,22%</span></div></div>
+          <div class="lane" style="top:300px"><div class="trk"></div><div class="rn" id="rB"><div class="ic" style="background:#3E66A8">🏠</div></div><div class="lb" style="top:120px">PREÇO DO IMÓVEL <span style="color:#8FB3F0">+3,64%</span></div></div>
+          <div class="abs" style="left:985px;top:40px;width:8px;height:440px;background:repeating-linear-gradient(180deg,#fff 0 20px,#10151F 20px 40px)"></div>
+        </div>
+      </div>
+
+      <!-- K: simule antes -->
+      <div id="sK" class="scene dark clip" data-start="@@JK@@" data-duration="@@D:JK,KL@@" data-track-index="8">
+        <div id="fone"><div class="scr">
+          <div class="abs" style="left:34px;top:64px;font-family:Mono700;font-size:24px;color:#6B7280;letter-spacing:2px">SIMULAÇÃO</div>
+          <div class="abs" style="left:34px;top:100px;font-family:InterBlack;font-size:44px">Financiamento</div>
+          <div class="sl" style="top:200px"><div class="l">VALOR DO IMÓVEL</div><div class="t"></div><div class="f" style="width:250px"></div><div class="k" style="left:236px"></div></div>
+          <div class="sl" style="top:300px"><div class="l">ENTRADA</div><div class="t"></div><div class="f" style="width:120px"></div><div class="k" style="left:106px"></div></div>
+          <div class="sl" style="top:400px"><div class="l">PRAZO</div><div class="t"></div><div class="f" style="width:300px"></div><div class="k" style="left:286px"></div></div>
+          <div class="sl" style="top:500px"><div class="l" style="color:#E5484D">JUROS ↑</div><div class="t"></div><div class="f" id="kf" style="width:388px;background:#E5484D"></div><div class="k" id="kk" style="left:120px;border-color:#E5484D"></div></div>
+          <div id="kparc" class="abs" style="left:34px;top:610px;width:388px;height:150px;border-radius:24px;background:#0B1F3A;color:#fff;padding:22px 26px">
+            <div style="font-family:Mono700;font-size:22px;color:#A9B6CA">PARCELA</div><div style="margin-top:6px;height:46px;width:260px;border-radius:10px;background:rgba(255,255,255,0.18)"></div></div>
+        </div></div>
+        <div id="kok" class="abs" style="left:150px;top:1080px;width:780px;padding:20px;border-radius:24px;background:var(--y);color:#10151F;text-align:center;font-size:58px;opacity:0;box-shadow:0 20px 50px rgba(0,0,0,0.4)">✓ SIMULE ANTES DE COMPRAR</div>
+      </div>
+
+      <!-- L: o m² em todos os governos -->
+      <div id="sL" class="scene dark clip" data-start="@@KL@@" data-duration="@@D:KL,LM@@" data-track-index="9">
+        <div class="card"><div class="dtag"><i></i>PREÇO DO M² · SÃO PAULO</div><div class="dsrc">FONTE: FIPEZAP · PREÇO MÉDIO ANUNCIADO (NOMINAL)</div></div>
+        <div id="lval" class="abs" style="left:90px;top:470px;font-family:InterBlack;font-size:110px;letter-spacing:-3px">R$ 3.053</div>
+        <div id="lyr" class="abs" style="left:96px;top:600px;font-family:Mono700;font-size:28px;color:#D6DEEC">/M² · 2008</div>
+        <div id="lbars" class="abs" style="left:90px;top:680px;width:900px;height:460px"></div>
+        <div id="lgov" class="abs" style="left:0;top:0;width:1080px;height:1920px"></div>
+        <div id="ltij" class="abs" style="left:90px;top:470px;padding:10px 28px;border-radius:18px;background:var(--y);color:#10151F;font-size:96px;opacity:0">O TIJOLO FICA</div>
+      </div>
+
+      <!-- M: plantão de vendas -->
+      <div id="sM" class="scene clip" data-start="@@LM@@" data-duration="@@D:LM,MN@@" data-track-index="10" style="background: linear-gradient(180deg, #F7C98B 0%, #F3B178 40%, #E59A6A 62%, #6C7A8E 62%, #5A6679 100%)">
+        <svg class="full" width="1080" height="1920" viewBox="0 0 1080 1920">
+          <circle cx="820" cy="430" r="90" fill="#FFE3A8" opacity="0.8"/>
+          <rect x="60" y="560" width="160" height="630" fill="#C9875E" opacity="0.5"/><rect x="860" y="500" width="180" height="690" fill="#C9875E" opacity="0.5"/>
+          <rect x="190" y="640" width="700" height="560" rx="16" fill="#FAF6EF"/><rect x="190" y="640" width="700" height="110" rx="16" fill="#0B1F3A"/>
+          <text x="540" y="715" text-anchor="middle" font-family="Oswald700" font-size="58" fill="#E2C27F" letter-spacing="3">PLANTÃO DE VENDAS</text>
+          <rect x="250" y="800" width="250" height="300" rx="10" fill="#D9E3EE"/><rect x="580" y="800" width="250" height="390" rx="8" fill="#8BA3BF"/>
+          <g id="maq"><rect x="300" y="900" width="60" height="200" fill="#3E66A8"/><rect x="370" y="860" width="70" height="240" fill="#2A4C86"/><rect x="450" y="930" width="40" height="170" fill="#3E66A8"/></g>
+          <rect x="600" y="830" width="210" height="340" fill="#6E86A3"/><circle cx="790" cy="1010" r="10" fill="#E2C27F"/>
+          <g id="mR"></g><g id="mC"></g>
+        </svg>
+      </div>
+
+      <!-- N: e você? -->
+      <div id="sN" class="scene clip" data-start="@@MN@@" data-duration="@@D:MN,END@@" data-track-index="11">
+        <div id="nL" class="abs" style="left:0;top:0;width:540px;height:1920px;background:linear-gradient(180deg,#B8343A,#7A1F26)"></div>
+        <div id="nR" class="abs" style="left:540px;top:0;width:540px;height:1920px;background:linear-gradient(180deg,#24875A,#14533A)"></div>
+        <div id="nt1" class="abs" style="left:0;top:330px;width:540px;text-align:center;font-size:110px">TIME 13</div>
+        <div id="nt2" class="abs" style="left:540px;top:330px;width:540px;text-align:center;font-size:110px;color:#FFD24A">TIME 22</div>
+        <svg id="nc1" class="abs" style="left:110px;top:500px;width:320px;height:640px" viewBox="0 0 320 640"></svg>
+        <svg id="nc2" class="abs" style="left:650px;top:500px;width:320px;height:640px" viewBox="0 0 320 640"></svg>
+        <div id="nvs" class="abs" style="left:465px;top:740px;width:150px;height:150px;border-radius:50%;background:#0A1428;border:6px solid #fff;font-size:64px;text-align:center;line-height:136px">VS</div>
+        <div id="nq" class="abs" style="left:90px;top:560px;width:900px;padding:30px;border-radius:30px;background:#0A1428;text-align:center;opacity:0;box-shadow:0 30px 80px rgba(0,0,0,0.5)">
+          <div style="font-size:96px;line-height:1">COMPRA <span style="color:var(--gold)">OU</span> ESPERA?</div>
+          <div style="font-family:InterSemi;font-size:36px;color:#A9B6CA;margin-top:14px">Nos próximos anos, o que você vai fazer?</div></div>
+        <div id="ncm" class="abs" style="left:220px;top:1000px;width:640px;padding:18px;border-radius:60px;background:#fff;color:#10151F;text-align:center;font-size:64px;opacity:0">COMENTA AQUI 👇</div>
+      </div>
+
+      <!-- O: cartão final -->
+      <div id="sO" class="scene dark clip" data-start="@@END@@" data-duration="@@D:END,DUR@@" data-track-index="12">
+        <div id="o1" class="abs ctr" style="top:420px;font-size:84px;line-height:1.05">GOVERNO PASSA.<br><span style="color:var(--gold)">O TIJOLO FICA.</span></div>
+        <div class="abs" style="left:240px;top:740px;width:600px;height:2px;background:rgba(255,255,255,0.15)"></div>
+        <div id="o-name" class="abs ctr">Pedro Perioto</div><div id="o-creci" class="abs ctr">Corretor de imóveis · CRECI 258729</div>
+        <div id="o-at" class="abs ctr">@vistabroker.perioto</div><div id="o-logo" class="abs"><img src="assets/vista.png" alt="Vista"></div>
+        <div class="fonte" style="top:1260px">Conteúdo informativo · personagens fictícios · dados com fonte na tela</div>
+      </div>
+
+      <div id="pano" class="full pano clip" data-start="@@CD@@" data-duration="@@D:CD,EF@@" data-track-index="13"></div>
+      <div id="flash" class="full clip" data-start="0" data-duration="@@DUR@@" data-track-index="14" style="background:#fff;opacity:0"></div>
+      <div id="hud" class="full clip" data-start="0" data-duration="@@DUR@@" data-track-index="15">
+        <div id="top"><i></i>PÓS-ELEIÇÃO · DADOS REAIS</div>
+        <div id="lab" class="tag"><span id="labt">DOMINGO · 21H</span></div>
+        <div id="cap"></div>
+      </div>
+      <audio id="som" src="assets/som.wav" data-start="0" data-duration="@@DUR@@" data-volume="1"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const M = @@M@@, C = @@CUTS@@, END = @@END@@, DUR = @@DUR@@;
+      const $ = (s) => document.querySelector(s), $$ = (s) => document.querySelectorAll(s);
+      const show = (root, sel, on, t) => tl.to(root + ' ' + sel, { opacity: on ? 1 : 0, duration: 0.06 }, t);
+      const face = (root, t, m, b) => { ['.m-smile', '.m-open', '.m-frown', '.m-smug'].forEach((k) => show(root, k, k === m, t)); ['.b-neutral', '.b-angry', '.b-up'].forEach((k) => show(root, k, k === b, t)); };
+      const pop = (sel, t, from = {}) => tl.fromTo(sel, Object.assign({ opacity: 0, y: 30, scale: 0.92 }, from), { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: 'back.out(1.8)' }, t);
+      const blurIn = (sel, t, d = 0.25) => tl.fromTo(sel, { opacity: 0, filter: 'blur(10px)', y: 16 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: d, ease: 'power3.out' }, t);
+      const flash = (t, a = 0.85) => { tl.to('#flash', { opacity: a, duration: 0.07 }, t); tl.to('#flash', { opacity: 0, duration: 0.28 }, t + 0.07); };
+      const shake = (sel, t, a = 8) => tl.fromTo(sel, { x: 0 }, { x: a, duration: 0.04, yoyo: true, repeat: 5 }, t);
+      const counters = []; // [proxy, key, el, fmt]
+      const count = (el, from, to, t, d, fmt) => { const o = { v: from }; counters.push([o, el, fmt]); tl.fromTo(o, { v: from }, { v: to, duration: d, ease: 'power3.out' }, t); };
+      const br = (v, n = 2) => v.toFixed(n).replace('.', ',');
+
+      // ================= o mundo (prédio do Tatuapé) =================
+      let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      let s = `<defs><linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#060E1F"/><stop offset="0.6" stop-color="#10234A"/><stop offset="1" stop-color="#1E3460"/></linearGradient>
+        <radialGradient id="lua" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="rgba(255,240,200,0.5)"/><stop offset="1" stop-color="rgba(255,240,200,0)"/></radialGradient>
+        <linearGradient id="quente" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD58A"/><stop offset="1" stop-color="#E9A24E"/></linearGradient>
+        <clipPath id="cj1"><rect x="380" y="880" width="150" height="170"/></clipPath><clipPath id="cj2"><rect x="570" y="880" width="150" height="170"/></clipPath></defs>
+        <rect x="-1400" y="-2400" width="3880" height="5200" fill="url(#ceu)"/>`;
+      for (let i = 0; i < 120; i++) s += `<circle cx="${(rnd() * 2400 - 660) | 0}" cy="${(rnd() * 2600 - 2300) | 0}" r="${(1 + rnd() * 2.2).toFixed(1)}" fill="#fff" opacity="${(0.3 + rnd() * 0.6).toFixed(2)}"/>`;
+      s += `<circle cx="860" cy="250" r="140" fill="url(#lua)"/><circle cx="860" cy="250" r="48" fill="#F5EDD6"/>`;
+      [[0, 1180, 140], [120, 1050, 120], [960, 1100, 140], [-40, 1300, 260], [880, 1250, 240]].forEach(([x, y, w]) => { s += `<rect x="${x}" y="${y}" width="${w}" height="${2700 - y}" fill="#0F1C33"/>`; for (let k = 0; k < 12; k++) if (rnd() > 0.55) s += `<rect x="${x + 16 + (k % 3) * (w / 3.2) | 0}" y="${y + 30 + ((k / 3) | 0) * 70}" width="18" height="26" fill="#F6C46B" opacity="0.5"/>`; });
+      s += `<rect x="140" y="380" width="800" height="2400" fill="#22324F"/><rect x="860" y="380" width="80" height="2400" fill="#1A2740"/><rect x="128" y="360" width="824" height="30" fill="#2C3E60"/>`;
+      for (let r = 0; r < 10; r++) for (let c = 0; c < 4; c++) {
+        const x = 190 + c * 190, y = 460 + r * 210; if (r === 2 && (c === 1 || c === 2)) continue;
+        const lit = rnd() > 0.45; s += `<rect x="${x - 6}" y="${y - 6}" width="162" height="182" fill="#2C3E60"/><rect x="${x}" y="${y}" width="150" height="170" fill="${lit ? 'url(#quente)' : '#1A2742'}" opacity="${lit ? (0.55 + rnd() * 0.35).toFixed(2) : 1}"/><path d="M ${x + 75} ${y} V ${y + 170}" stroke="#2C3E60" stroke-width="5"/>`;
+      }
+      [[380, 'j1', 'cj1'], [570, 'j2', 'cj2']].forEach(([x, id, cp]) => {
+        s += `<rect x="${x - 8}" y="872" width="166" height="186" fill="#33496F"/><g clip-path="url(#${cp})"><rect x="${x}" y="880" width="150" height="170" fill="url(#quente)"/><rect x="${x}" y="1010" width="150" height="40" fill="rgba(0,0,0,0.12)"/><g id="${id}"></g></g>
+          <rect id="${id}g" x="${x - 8}" y="872" width="166" height="186" fill="none" stroke="#FFD58A" stroke-width="6" opacity="0"/>`; });
+      s += `<g clip-path="url(#cj2)"><rect id="cort" x="570" y="880" width="150" height="170" fill="#7A4E6B"/><path id="cortf" d="M 600 880 V 1050 M 630 880 V 1050 M 660 880 V 1050 M 690 880 V 1050" stroke="rgba(0,0,0,0.18)" stroke-width="6" opacity="0"/></g>`;
+      // divisão: o mesmo prédio virou dois países
+      s += `<rect id="tintL" x="140" y="380" width="410" height="2400" fill="#E5484D" opacity="0"/><rect id="tintR" x="550" y="380" width="390" height="2400" fill="#2E9E68" opacity="0"/>
+        <rect id="split" x="546" y="370" width="8" height="2410" fill="#FFF4D6" opacity="0"/><g id="fogos"></g>`;
+      $('#world').innerHTML = s;
+      $('#j1').innerHTML = `<g transform="translate(380 878) scale(0.47)">${rafa('wr')}</g>`;
+      $('#j2').innerHTML = `<g transform="translate(570 878) scale(0.47)">${celia('wc')}</g>`;
+      gsap.set('#cort', { scaleX: 0, svgOrigin: '720 965' });
+      const bursts = [[430, 815, '#FFD58A'], [370, 785, '#FF6B6F'], [505, 790, '#E2C27F']]; let fx = '';
+      bursts.forEach(([x, y, c], i) => { fx += `<g id="fx${i}">`; for (let k = 0; k < 14; k++) { const a = (k / 14) * Math.PI * 2; fx += `<path d="M ${x + Math.cos(a) * 10} ${y + Math.sin(a) * 10} L ${x + Math.cos(a) * 52} ${y + Math.sin(a) * 52}" stroke="${c}" stroke-width="5" stroke-linecap="round"/>`; } fx += `<circle cx="${x}" cy="${y}" r="7" fill="#fff"/></g>`; });
+      $('#fogos').innerHTML = fx + `<path id="rastro" d="M 455 880 L 425 815" stroke="#FFD58A" stroke-width="5" stroke-linecap="round" stroke-dasharray="80" stroke-dashoffset="80"/>`;
+      bursts.forEach(([x, y], i) => gsap.set('#fx' + i, { scale: 0, opacity: 0, svgOrigin: `${x} ${y}` }));
+      gsap.set('#split', { scaleY: 0, svgOrigin: '550 370' }); gsap.set('#pano', { xPercent: 100 });
+
+      // A · gancho
+      tl.fromTo('#world', { attr: { viewBox: '-260 -300 1600 2844' } }, { attr: { viewBox: '40 260 1000 1778' }, duration: C.AB, ease: 'power2.inOut' }, 0);
+      tl.to('#split', { opacity: 1, scaleY: 1, duration: 0.5, ease: 'power3.out' }, M.paises - 0.15);
+      tl.to('#tintL, #tintR', { opacity: 0.22, duration: 0.35 }, M.paises);
+      shake('#world', M.paises + 0.1, 6);
+      // B · janelas
+      tl.to('#world', { attr: { viewBox: '330 720 440 782' }, duration: Math.max(0.8, M.rafa - C.AB), ease: 'power2.inOut' }, C.AB);
+      tl.to('#tintL, #tintR', { opacity: 0.12, duration: 0.4 }, C.AB);
+      tl.fromTo('#j1g', { opacity: 0 }, { opacity: 1, duration: 0.15, yoyo: true, repeat: 1 }, M.rafa);
+      tl.fromTo('#j2g', { opacity: 0 }, { opacity: 1, duration: 0.15, yoyo: true, repeat: 1 }, M.celia);
+      // B→C: a câmera sobe para o céu e vira globo
+      tl.to('#world', { attr: { viewBox: '-100 -1900 1280 2275' }, duration: 0.45, ease: 'power3.in' }, C.BC - 0.4);
+      flash(C.BC - 0.03, 0.6);
+
+      // ================= o globo =================
+      const G = Globo($('#globo'), { cx: 540, cy: 1250, r: 560 });
+      const gs = { lon: -46.6, lat: -23.5, k: 3.2, pB: 0, pS: 0, pT: 0, pN: 0, aST: 0, aTN: 0, br: 1 };
+      const drawG = () => G.draw({ lon: gs.lon, lat: gs.lat, k: gs.k, br: gs.br,
+        pins: [['brasilia', gs.pB], ['sp', gs.pS], ['toquio', gs.pT], ['ny', gs.pN]], arcs: [['sp', 'toquio', gs.aST], ['toquio', 'ny', gs.aTN]] });
+      let st = ''; seed = 21; for (let i = 0; i < 90; i++) st += `<i style="position:absolute;left:${(rnd() * 1080) | 0}px;top:${(rnd() * 760) | 0}px;width:3px;height:3px;border-radius:50%;background:#fff;opacity:${(0.2 + rnd() * 0.6).toFixed(2)}"></i>`; $('#stars').innerHTML = st;
+      gsap.set('#c1, #c2, #c3', { opacity: 0 });
+      // C · resultado
+      tl.fromTo(gs, { lon: -46.6, lat: -23.5, k: 3.2 }, { lon: -47.9, lat: -33, k: 1, duration: 1.0, ease: 'power3.out' }, C.BC);
+      tl.to(gs, { pB: 1, duration: 0.3 }, C.BC + 0.6);
+      pop('#c1', M.sai - 0.1); gsap.set('#c1b2, #c1b3', { opacity: 0 });
+      count('#c1n', 0, 51.79, M.lula, 0.9, (v) => br(v) + '%');
+      blurIn('#c1b2', M.flavio); blurIn('#c1b3', M.virada);
+      tl.fromTo('#c1n', { scale: 1 }, { scale: 1.06, duration: 0.12, yoyo: true, repeat: 1, transformOrigin: '0% 50%' }, M.lula + 0.9);
+      // C→D: mergulha em São Paulo
+      tl.to('#c1', { opacity: 0, y: -30, duration: 0.2 }, C.CD - 0.45);
+      tl.to(gs, { lon: -46.6, lat: -23.5, k: 7, duration: 0.45, ease: 'power3.in' }, C.CD - 0.45);
+      tl.to('#sG', { opacity: 0, duration: 0.05 }, C.CD); flash(C.CD - 0.05, 0.7);
+      // D · rojão e cortina (de volta ao prédio)
+      tl.set('#world', { attr: { viewBox: '330 590 440 782' } }, C.CD);
+      face('#wr', M.rojao, '.m-open', '.b-up'); face('#wc', M.rojao, '.m-frown', '.b-angry');
+      tl.to('#wr .armL', { rotation: 150, svgOrigin: '106 252', duration: 0.25, ease: 'back.out(2)' }, M.rojao + 0.05);
+      tl.to('#rastro', { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, M.rojao + 0.1);
+      bursts.forEach((b, i) => { const t0 = M.rojao + 0.12 + i * 0.3; tl.to('#fx' + i, { scale: 1, opacity: 1, duration: 0.35, ease: 'expo.out' }, t0); tl.to('#fx' + i, { opacity: 0, scale: 1.25, duration: 0.5, ease: 'power2.in' }, t0 + 0.4); });
+      tl.to('#rastro', { opacity: 0, duration: 0.3 }, M.rojao + 0.6);
+      tl.to('#world', { attr: { viewBox: '345 610 410 729' }, duration: C.DE - C.CD, ease: 'none' }, C.CD);
+      tl.to('#wc .eyes', { x: -6, duration: 0.15 }, M.cortina - 0.4);
+      tl.to('#cort', { scaleX: 1, duration: 0.55, ease: 'power2.inOut' }, M.cortina);
+      tl.to('#cortf', { opacity: 1, duration: 0.2 }, M.cortina + 0.25);
+      // D→E: a cortina toma a tela e abre no globo
+      tl.fromTo('#pano', { xPercent: 100 }, { xPercent: 0, duration: 0.35, ease: 'power3.in' }, C.DE - 0.35);
+      tl.to('#pano', { xPercent: -100, duration: 0.45, ease: 'power3.out' }, C.DE + 0.1);
+      // E · Tóquio e Nova York
+      tl.set('#sG', { opacity: 1 }, C.DE); tl.set(gs, { lon: -46.6, lat: -41, k: 1, pB: 0, pS: 1, br: 1 }, C.DE);
+      tl.to(gs, { lon: 139.7, lat: 17, duration: 1.3, ease: 'power2.inOut' }, M.toquio - 0.5);
+      tl.to(gs, { aST: 1, duration: 1.3, ease: 'power2.inOut' }, M.toquio - 0.5);
+      tl.to(gs, { pT: 1, duration: 0.3 }, M.toquio + 0.6);
+      pop('#c2', M.toquio + 0.1); tl.fromTo('#c2n', { scale: 1.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25, ease: 'power3.in', transformOrigin: '0% 50%' }, M.catorze);
+      tl.to('#c2', { opacity: 0, y: -30, duration: 0.2 }, M.ny - 0.3);
+      tl.to(gs, { lon: 286, lat: 22, duration: 1.2, ease: 'power2.inOut' }, M.ny - 0.3);
+      tl.to(gs, { aTN: 1, duration: 1.2, ease: 'power2.inOut' }, M.ny - 0.3);
+      tl.to(gs, { pN: 1, duration: 0.3 }, M.ny + 0.7);
+      pop('#c3', M.ny + 0.2); tl.fromTo('#c3n', { scale: 1.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25, ease: 'power3.in', transformOrigin: '0% 50%' }, M.vinte5);
+      shake('#c3', M.vinte5 + 0.25, 10);
+      // E→F: volta a São Paulo e mergulha
+      tl.to('#c3', { opacity: 0, duration: 0.2 }, C.EF - 0.7);
+      tl.to(gs, { lon: 313.4, lat: -23.5, k: 7, duration: 0.7, ease: 'power3.in' }, C.EF - 0.7);
+      flash(C.EF - 0.05, 0.7);
+
+      // ================= F, G: elevador =================
+      $('#fin').innerHTML = `<g transform="translate(140 470) scale(1.15)">${rafa('fr')}</g><g transform="translate(570 470) scale(1.15)">${celia('fc')}</g>`;
+      ['#fr', '#fc'].forEach((r) => { show(r, '.armL', 0, C.EF); show(r, '.armR', 0, C.EF); show(r, '.armsX', 1, C.EF); });
+      face('#fr', C.EF, '.m-frown', '.b-neutral'); face('#fc', C.EF, '.m-frown', '.b-angry');
+      tl.set('#fr .eyes', { x: -7 }, C.EF); tl.set('#fc .eyes', { x: 7 }, C.EF);
+      
+      pop('#n1', M.celulares, { y: -30 }); pop('#n2', M.celulares + 0.12, { y: -30 });
+      shake('#n1', M.celulares + 0.3, 6); shake('#n2', M.celulares + 0.42, 6);
+      face('#fr', M.celulares + 0.3, '.m-open', '.b-up'); face('#fc', M.celulares + 0.3, '.m-open', '.b-up');
+      tl.to('#fr .eyes, #fc .eyes', { x: 0, y: -8, duration: 0.12 }, M.celulares + 0.3);
+      // F→F2: a notificação vira o painel da B3
+      tl.to('#n1', { scale: 2.6, x: 300, y: 300, opacity: 0, duration: 0.35, ease: 'power3.in' }, C.FF2 - 0.3);
+      tl.fromTo('#sF2', { scale: 0.3, opacity: 0, transformOrigin: '30% 30%' }, { scale: 1, opacity: 1, duration: 0.4, ease: 'expo.out' }, C.FF2);
+      // F2 · B3
+      shake('#lock', C.FF2 + 0.3, 10);
+      tl.fromTo('#selo', { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.2, ease: 'power3.in' }, M.pandemia);
+      pop('#r1', M.ibov); pop('#r2', M.bb); pop('#r3', M.dolar);
+      tl.fromTo('#queda', { strokeDasharray: 1600, strokeDashoffset: 1600 }, { strokeDashoffset: 0, duration: 2.5, ease: 'none' }, C.FF2);
+      // F2→G: o painel volta para dentro do celular
+      tl.to('#sF2', { scale: 0.2, opacity: 0, duration: 0.3, ease: 'power3.in' }, C.F2G - 0.3);
+      tl.set('#n1, #n2', { opacity: 0 }, C.F2G - 0.3);
+      // G · balões
+      face('#fc', C.F2G, '.m-smug', '.b-angry'); face('#fr', C.F2G, '.m-frown', '.b-neutral');
+      tl.set('#fc .eyes', { x: -7, y: 0 }, C.F2G); tl.set('#fr .eyes', { x: 0, y: 0 }, C.F2G);
+      tl.fromTo('#gb1', { opacity: 0, scale: 0.6, transformOrigin: '20% 100%' }, { opacity: 1, scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, M.avisei - 0.05);
+      tl.to('#fc', { y: -12, duration: 0.12, yoyo: true, repeat: 1 }, M.avisei);
+      face('#fr', M.primdia - 0.4, '.m-smug', '.b-up'); tl.set('#fr .eyes', { x: 7 }, M.primdia - 0.4);
+      tl.fromTo('#gb2', { opacity: 0, scale: 0.6, transformOrigin: '80% 100%' }, { opacity: 1, scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, M.primdia - 0.25);
+      tl.to('#sF', { x: -1080, duration: 0.35, ease: 'power3.in' }, C.GH - 0.25);
+
+      // ================= H: por quê =================
+      tl.fromTo('#sH', { x: 1080 }, { x: 0, duration: 0.4, ease: 'power3.out' }, C.GH);
+      gsap.set('#h1, #h2, #hchart, #hv1, #hv2, #hlab', { opacity: 0 });
+      blurIn('#h1', M.medo - 0.1); blurIn('#h2', M.quando + 0.4);
+      tl.to('#hchart, #hlab', { opacity: 1, duration: 0.2 }, M.juros - 0.1);
+      tl.fromTo('#hb1', { scaleY: 0, svgOrigin: '230 380' }, { scaleY: 0.66, duration: 0.5, ease: 'power3.out' }, M.juros);
+      tl.fromTo('#hb2', { scaleY: 0, svgOrigin: '670 380' }, { scaleY: 0.66, duration: 0.3, ease: 'power3.out' }, M.juros + 0.25);
+      tl.to('#hb2', { scaleY: 0.9, duration: 0.6, ease: 'back.out(1.5)' }, M.doisp - 0.1);
+      tl.to('#hv1', { opacity: 1, duration: 0.2 }, M.juros + 0.3);
+      tl.fromTo('#hv2', { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: 0.6, ease: 'back.out(1.5)' }, M.doisp - 0.1);
+      tl.fromTo('#hp', { opacity: 0, scale: 2.2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.2, ease: 'power3.in' }, M.doisp + 0.2);
+      pop('#hhouse', M.pesam);
+      tl.fromTo('#hhouse svg', { rotation: 0 }, { rotation: -6, duration: 0.08, yoyo: true, repeat: 5, transformOrigin: '50% 100%' }, M.financ);
+      // H→I: a casa cresce e vira a portaria
+      tl.to('#hhouse', { scale: 9, y: -200, opacity: 0, duration: 0.4, ease: 'power3.in' }, C.HI - 0.35);
+
+      // ================= I: portaria e boleto =================
+      $('#dentro').innerHTML = `<g transform="translate(200 470) scale(1.12)">${rafa('er')}</g><g transform="translate(530 470) scale(1.12)">${celia('ec')}</g>`;
+      ['#er', '#ec'].forEach((r) => { show(r, '.armL', 0, C.HI); show(r, '.armR', 0, C.HI); show(r, '.armsX', 1, C.HI); });
+      face('#er', C.HI, '.m-smug', '.b-up'); face('#ec', C.HI, '.m-smug', '.b-angry');
+      tl.set('#er .eyes', { x: -7 }, C.HI); tl.set('#ec .eyes', { x: 7 }, C.HI);
+      tl.fromTo('#sI svg', { scale: 1.08 }, { scale: 1, duration: 0.6, ease: 'expo.out' }, C.HI);
+      tl.to('#portaL', { x: -380, duration: 0.55, ease: 'power2.inOut' }, M.porta);
+      tl.to('#portaR', { x: 380, duration: 0.55, ease: 'power2.inOut' }, M.porta);
+      tl.to('#fresta', { opacity: 0, duration: 0.1 }, M.porta);
+      tl.to('#porteiro', { opacity: 1, x: -60, duration: 0.3 }, M.envel - 0.3);
+      tl.fromTo('#env1', { x: 700, y: 120, rotation: 40, opacity: 0 }, { x: 0, y: 0, rotation: -6, opacity: 1, duration: 0.45, ease: 'power3.out' }, M.envel);
+      tl.fromTo('#env2', { x: 400, y: 120, rotation: 50, opacity: 0 }, { x: 0, y: 0, rotation: 5, opacity: 1, duration: 0.45, ease: 'power3.out' }, M.envel + 0.15);
+      face('#er', M.boleto, '.m-open', '.b-up'); face('#ec', M.boleto, '.m-open', '.b-up');
+      tl.to('#er .eyes, #ec .eyes', { x: 0, y: 6, duration: 0.12 }, M.boleto);
+      tl.fromTo('#pct', { opacity: 0, scale: 2.2, rotation: -12 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.2, ease: 'power3.in' }, M.boleto + 0.15);
+      shake('#sI svg, #env1, #env2', M.boleto + 0.35, 6);
+      face('#er', M.proprie + 0.2, '.m-frown', '.b-angry'); face('#ec', M.proprie + 0.2, '.m-frown', '.b-angry');
+      // I→J: o +9% toma a tela
+      tl.to('#pct', { scale: 14, duration: 0.4, ease: 'power3.in' }, C.IJ - 0.35);
+
+      // ================= J: aluguel × inflação, corrida =================
+      tl.fromTo('#sJ', { opacity: 0 }, { opacity: 1, duration: 0.15 }, C.IJ);
+      tl.fromTo('#jb1', { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'power3.out' }, M.alug + 0.3);
+      tl.fromTo('#jb2', { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'power3.out' }, M.alug + 0.6);
+      tl.fromTo('#j2x', { opacity: 0, scale: 2.4, rotation: 10 }, { opacity: 1, scale: 1, rotation: -6, duration: 0.2, ease: 'power3.in' }, M.dobro + 0.1);
+      tl.to('#jA', { opacity: 0, y: -60, duration: 0.25 }, M.sp - 0.3); tl.to('#jB', { opacity: 1, duration: 0.25 }, M.sp - 0.1);
+      tl.fromTo('#rA', { x: 0 }, { x: 860, duration: (M.correndo + 0.8) - M.sp, ease: 'power1.in' }, M.sp);
+      tl.fromTo('#rB', { x: 0 }, { x: 500, duration: (M.correndo + 0.8) - M.sp, ease: 'power1.in' }, M.sp);
+      tl.fromTo('#rA .ic', { y: 0 }, { y: -10, duration: 0.15, yoyo: true, repeat: 15 }, M.sp);
+      tl.fromTo('#rB .ic', { y: 0 }, { y: -8, duration: 0.18, yoyo: true, repeat: 13 }, M.sp);
+      flash(M.correndo + 0.8, 0.35);
+
+      // ================= K: simule antes =================
+      tl.fromTo('#fone', { y: 1100, rotation: 8 }, { y: 0, rotation: 0, duration: 0.55, ease: 'expo.out' }, C.JK);
+      tl.fromTo('#kk', { x: 0 }, { x: 250, duration: 0.8, ease: 'power2.inOut' }, M.simul0 + 0.3);
+      tl.fromTo('#kf', { scaleX: 0.36 }, { scaleX: 1, duration: 0.8, ease: 'power2.inOut' }, M.simul0 + 0.3);
+      tl.fromTo('#kparc', { scale: 1 }, { scale: 1.06, duration: 0.15, yoyo: true, repeat: 3 }, M.simul0 + 1.0);
+      tl.fromTo('#kok', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'power3.in' }, M.simular);
+      tl.to('#fone', { scale: 0.2, y: 300, opacity: 0, duration: 0.35, ease: 'power3.in' }, C.KL - 0.3); tl.to('#kok', { opacity: 0, duration: 0.2 }, C.KL - 0.3);
+
+      // ================= L: m² em todos os governos =================
+      const FIPE = [[2008, 3053], [2009, 3712], [2010, 4602], [2011, 5843], [2012, 6765], [2013, 7706], [2014, 8272], [2015, 8479], [2016, 8513], [2017, 8633], [2018, 8787], [2019, 8986], [2020, 9326], [2021, 9711], [2022, 10202], [2023, 10681], [2024, 11381], [2025, 11900], [2026, 12206]];
+      const LB = $('#lbars'); const bw = 900 / FIPE.length; let lb = '';
+      FIPE.forEach(([y, v], i) => { lb += `<div class="bar2" id="lb${i}" style="left:${(i * bw + 6) | 0}px;width:${(bw - 12) | 0}px;height:${(v / 12206 * 440) | 0}px"></div>`; }); LB.innerHTML = lb;
+      const GOVS = [['LULA', 2008, 2010], ['DILMA', 2011, 2015], ['TEMER', 2016, 2018], ['BOLSONARO', 2019, 2022], ['LULA', 2023, 2026]]; let gv = '';
+      GOVS.forEach(([n, a, b], i) => { const x0 = 90 + (a - 2008) * bw, x1 = 90 + (b - 2008 + 1) * bw; gv += `<div class="gov" id="gv${i}" style="left:${x0 | 0}px;width:${(x1 - x0 - 6) | 0}px">${n}</div>`; }); $('#lgov').innerHTML = gv;
+      const tGrow = M.m2 + 0.2, dGrow = Math.max(1.8, (M.todos + 0.8) - tGrow);
+      FIPE.forEach((f, i) => tl.fromTo('#lb' + i, { scaleY: 0 }, { scaleY: 1, duration: 0.35, ease: 'back.out(1.6)' }, tGrow + i * dGrow / FIPE.length));
+      GOVS.forEach((g, i) => tl.fromTo('#gv' + i, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.25 }, tGrow + ((g[1] - 2008) / FIPE.length) * dGrow));
+      const lv = { v: 3053, y: 2008 }; counters.push([lv, '#lval', (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR')]); counters.push([lv, '#lyr', () => '/M² · ' + Math.round(lv.y)]);
+      tl.fromTo(lv, { v: 3053, y: 2008 }, { v: 12206, y: 2026, duration: dGrow, ease: 'none' }, tGrow);
+      GOVS.forEach((g, i) => tl.to('#gv' + i, { y: -500 - i * 40, x: (i - 2) * 60, rotation: (i - 2) * 8, opacity: 0, duration: 0.6, ease: 'power2.in' }, M.passa + i * 0.05));
+      tl.set('.bar2', { background: 'linear-gradient(180deg, #FFD24A, #C9A24A)' }, M.tijolo);
+      tl.to('#lval, #lyr', { opacity: 0, duration: 0.12 }, M.tijolo); tl.fromTo('#ltij', { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'power3.in', transformOrigin: '0% 50%' }, M.tijolo + 0.1);
+      tl.to('#lbars', { scale: 0.35, x: -40, y: 250, opacity: 0, duration: 0.4, ease: 'power3.in' }, C.LM - 0.35);
+
+      // ================= M: plantão de vendas =================
+      $('#mR').innerHTML = `<g id="mRg" transform="translate(170 690) scale(0.78)">${rafa('mr')}</g>`; $('#mC').innerHTML = `<g id="mCg" transform="translate(660 690) scale(0.78)">${celia('mc')}</g>`;
+      tl.fromTo('#mR', { x: -500 }, { x: 0, duration: 1.0, ease: 'power2.out' }, C.LM);
+      tl.fromTo('#mC', { x: 500 }, { x: 0, duration: 1.0, ease: 'power2.out' }, C.LM + 0.1);
+      tl.fromTo('#mR, #mC', { y: 0 }, { y: -12, duration: 0.17, yoyo: true, repeat: 5 }, C.LM);
+      face('#mr', C.LM, '.m-smile', '.b-neutral'); face('#mc', C.LM, '.m-smile', '.b-neutral');
+      tl.set('#mr .eyes', { x: 7 }, M.fila); tl.set('#mc .eyes', { x: -7 }, M.fila);
+      face('#mr', M.plantao, '.m-smug', '.b-up'); face('#mc', M.plantao, '.m-smug', '.b-up');
+      tl.fromTo('#maq', { y: 0 }, { y: -10, duration: 0.3, yoyo: true, repeat: 3 }, M.plantao);
+
+      // ================= N: e você? =================
+      $('#nc1').innerHTML = rafa('nr'); $('#nc2').innerHTML = celia('nc');
+      tl.fromTo('#nL', { yPercent: -100 }, { yPercent: 0, duration: 0.4, ease: 'expo.out' }, C.MN);
+      tl.fromTo('#nR', { yPercent: 100 }, { yPercent: 0, duration: 0.4, ease: 'expo.out' }, C.MN);
+      pop('#nt1', M.time); pop('#nt2', M.time + 0.35); pop('#nc1', M.time + 0.1); pop('#nc2', M.time + 0.45);
+      tl.fromTo('#nvs', { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: 0.35, ease: 'back.out(2)' }, M.time + 0.6);
+      face('#nr', M.time, '.m-open', '.b-up'); face('#nc', M.time + 0.35, '.m-smug', '.b-angry');
+      tl.to('#nr .armL', { rotation: 150, svgOrigin: '106 252', duration: 0.25, ease: 'back.out(2)' }, M.time + 0.1);
+      tl.to('#nc .armR', { rotation: -150, svgOrigin: '214 252', duration: 0.25, ease: 'back.out(2)' }, M.time + 0.45);
+      tl.to('#nvs', { opacity: 0, duration: 0.15 }, M.compra - 0.25);
+      pop('#nq', M.compra - 0.2);
+      tl.fromTo('#ncm', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: 'back.out(2)' }, M.comenta);
+      tl.fromTo('#ncm', { scale: 1 }, { scale: 1.08, duration: 0.25, yoyo: true, repeat: 5 }, M.comenta + 0.3);
+
+      // ================= O: cartão final =================
+      [['#o1', 0], ['#o-name', 0.35], ['#o-creci', 0.45], ['#o-at', 0.55], ['#o-logo', 0.7]].forEach(([s2, d]) => blurIn(s2, END + d, 0.35));
+
+      // ================= rótulos de cena =================
+      const LAB = [[0, 'DOMINGO · 21H'], [C.AB, 'TATUAPÉ · SÃO PAULO'], [C.BC, 'RESULTADO · 2º TURNO'], [C.CD, 'DOMINGO · 21H40'], [C.DE, 'DOMINGO À NOITE · MERCADO GLOBAL'],
+        [C.EF, 'SEGUNDA · 9H57'], [C.FF2, 'B3 · SÃO PAULO'], [C.F2G, 'SEGUNDA · ELEVADOR'], [C.GH, 'POR QUÊ'], [C.HI, 'PORTARIA'], [C.IJ, 'O QUE A ELEIÇÃO NÃO MUDOU'],
+        [C.JK, 'ANTES DE COMPRAR'], [C.KL, 'PREÇO DO M² · SÃO PAULO'], [C.LM, 'PLANTÃO DE VENDAS'], [C.MN, 'E VOCÊ?']];
+      LAB.forEach(([t, txt]) => { tl.call(() => { $('#labt').textContent = txt; }, null, t + 0.001); tl.fromTo('#lab', { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.18, ease: 'power3.out' }, t + 0.01); });
+      tl.call(() => { $('#labt').textContent = LAB[0][1]; }, null, 0);
+      tl.to('#lab, #top', { opacity: 0, duration: 0.2 }, END - 0.1);
+
+      // ================= legenda (palavra atual em amarelo) =================
+      const CAP = @@CAP@@; const capEl = $('#cap');
+      CAP.forEach((g, gi) => { const el = document.createElement('div'); el.className = 'cg'; el.id = 'cg' + gi; capEl.appendChild(el);
+        g.w.forEach(([w], j) => { const sp = document.createElement('span'); sp.className = 'cw'; sp.id = `cw${gi}_${j}`; sp.textContent = w; el.appendChild(sp); });
+        const t1 = gi + 1 < CAP.length ? CAP[gi + 1].t0 : g.w[g.w.length - 1][2] + 0.6;
+        tl.fromTo(el, { opacity: 0, scale: 0.85, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.1, ease: 'back.out(2.4)' }, Math.max(0, g.t0 - 0.05));
+        tl.to(el, { opacity: 0, duration: 0.04 }, Math.min(t1 - 0.08, g.w[g.w.length - 1][2] + 0.5));
+        g.w.forEach(([w, a, b], j) => { tl.to(`#cw${gi}_${j}`, { color: '#FFD24A', scale: 1.12, duration: 0.05 }, a - 0.02); tl.to(`#cw${gi}_${j}`, { color: '#FFFFFF', scale: 1, duration: 0.12 }, b); }); });
+      tl.to('#cap', { opacity: 0, duration: 0.15 }, END - 0.1);
+
+      // tudo que é desenhado por código (globo, contadores) é redesenhado a cada quadro
+      tl.eventCallback('onUpdate', () => { drawG(); counters.forEach(([o, el, fmt]) => { $(el).textContent = fmt(o.v); }); });
+      drawG();
+      window.__timelines['main'] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

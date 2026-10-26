@@ -1,1 +1,54 @@
-{"timing": [{"cena": "renda", "inicio": 0, "fim": 1.6}, {"cena": "mordida", "inicio": 1.6, "fim": 3}, {"cena": "numeros", "inicio": 3, "fim": 5}, {"cena": "regua", "inicio": 5, "fim": 9.2}, {"cena": "pergunta", "inicio": 9.2, "fim": 10}]}
+{
+"timing": [
+{
+"cena": "renda",
+"inicio": 0,
+"fim": 2.32
+},
+{
+"cena": "morder",
+"inicio": 2.32,
+"fim": 5.05
+},
+{
+"cena": "calma",
+"inicio": 5.05,
+"fim": 7.76
+},
+{
+"cena": "ibs",
+"inicio": 7.76,
+"fim": 12.39
+},
+{
+"cena": "regua",
+"inicio": 12.39,
+"fim": 18.61
+},
+{
+"cena": "marcas",
+"inicio": 18.61,
+"fim": 28.88
+},
+{
+"cena": "exemplos",
+"inicio": 28.88,
+"fim": 40.1
+},
+{
+"cena": "paga",
+"inicio": 40.1,
+"fim": 53.97
+},
+{
+"cena": "avisos",
+"inicio": 53.97,
+"fim": 66.08
+},
+{
+"cena": "cta",
+"inicio": 66.08,
+"fim": 73.2
+}
+]
+}

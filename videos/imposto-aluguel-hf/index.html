@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="pt-BR" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "InterBlack"; src: url("assets/fonts/InterBlack.otf"); }
+      @font-face { font-family: "InterSemi"; src: url("assets/fonts/InterSemi.otf"); }
+      @font-face { font-family: "InterMed"; src: url("assets/fonts/InterMed.otf"); }
+      @font-face { font-family: "Instr"; src: url("assets/fonts/Instr.ttf"); }
+      /* Vista Broker: fundo claro + navy + dourado; legenda dentro da faixa segura (168–1330 px) */
+      :root { --ground: #F3F4F6; --navy: #0B1F3A; --ink: #1D1D1F; --mute: #86868B; --gold: #C9A86A; --gold2: #E2C27F; --red: #D62828; --card: #FFFFFF; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--ground); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "InterSemi", sans-serif; color: var(--ink); }
+      .abs { position: absolute; }
+      .full { position: absolute; inset: 0; }
+      .scene { position: absolute; inset: 0; }
+      .center { left: 0; width: 1080px; text-align: center; }
+      .w { display: inline-block; white-space: pre; }
+      .card { background: var(--card); border-radius: 44px; box-shadow: 0 30px 70px rgba(16,24,40,0.14); }
+
+      /* fundo */
+      #ground { background: radial-gradient(1200px 900px at 50% 45%, #FFFFFF 0%, #F3F4F6 55%, #E9EAED 100%); }
+      #flood { background: radial-gradient(1200px 1000px at 50% 45%, #13305A 0%, #0B1F3A 60%, #071328 100%); clip-path: circle(0px at 540px 760px); }
+
+      /* cena A: gancho sobre o vídeo */
+      #a-cam { position: absolute; inset: 0; transform-origin: 50% 45%; }
+      #a-video { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      #a-shade { background: linear-gradient(180deg, rgba(6,16,32,0.62) 0%, rgba(6,16,32,0.25) 40%, rgba(6,16,32,0.55) 100%); }
+      #a-l1 { top: 330px; font-family: "InterBlack"; font-size: 104px; line-height: 1.02; color: #fff; letter-spacing: -2px; }
+      #a-l2 { top: 600px; font-family: "InterSemi"; font-size: 54px; color: rgba(255,255,255,0.9); }
+      #a-pill { left: 240px; top: 720px; width: 600px; height: 300px; border-radius: 150px; background: #fff; box-shadow: 0 30px 80px rgba(0,0,0,0.35); overflow: hidden; }
+      #a-year { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 190px; color: var(--navy); letter-spacing: -6px; }
+      #a-year-roll { position: relative; height: 230px; overflow: hidden; }
+      #a-year-strip { display: flex; flex-direction: column; }
+      #a-year-strip span { height: 230px; line-height: 230px; display: block; }
+      #a-under { left: 330px; top: 1000px; width: 420px; height: 14px; border-radius: 7px; background: var(--red); transform-origin: 0 50%; }
+      #a-tag { top: 1075px; font-family: "InterBlack"; font-size: 40px; color: var(--gold2); letter-spacing: 4px; }
+
+      /* cena B: 2027 olha para 2026 */
+      #b-track { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+      .cal { position: absolute; width: 400px; height: 440px; border-radius: 44px; background: #fff; box-shadow: 0 30px 70px rgba(16,24,40,0.16); overflow: hidden; }
+      .cal .hd { height: 110px; background: var(--red); color: #fff; font-family: "InterBlack"; font-size: 34px; letter-spacing: 4px; display: flex; align-items: center; justify-content: center; }
+      .cal .yr { height: 330px; display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 150px; color: var(--navy); letter-spacing: -5px; }
+      #cal27 { left: 340px; top: 650px; }
+      #cal26 { left: -520px; top: 650px; }
+      #cal26 .hd { background: var(--navy); }
+      #b-title { top: 300px; }
+      #b-t1 { font-family: "InterSemi"; font-size: 60px; color: var(--ink); }
+      #b-t2 { font-family: "InterBlack"; font-size: 84px; color: var(--gold); letter-spacing: -1px; }
+      #b-label { top: 1130px; font-family: "InterSemi"; font-size: 40px; color: var(--mute); }
+      #b-arrow { left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+      #b-glow { left: 40px; top: 610px; width: 480px; height: 520px; border-radius: 70px; background: radial-gradient(closest-side, rgba(226,194,127,0.55), rgba(226,194,127,0)); }
+      .coin { position: absolute; width: 74px; height: 74px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #F6E2AE, #D7B56F 60%, #A9843F); box-shadow: 0 8px 18px rgba(120,90,30,0.35); display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 26px; color: #7A5A22; }
+
+      /* cena C: calma + duas luzes */
+      #c-l1 { top: 300px; font-family: "Instr"; font-size: 170px; color: var(--gold2); }
+      #c-l2 { top: 520px; font-family: "InterSemi"; font-size: 58px; color: #fff; }
+      .bulb { position: absolute; top: 300px; width: 300px; height: 700px; }
+      #bulb1 { left: 160px; } #bulb2 { left: 620px; }
+      .bulb .wire { position: absolute; left: 148px; top: -300px; width: 4px; height: 520px; background: linear-gradient(180deg, rgba(107,122,147,0) 0%, rgba(107,122,147,0) 80%, #6B7A93 88%); }
+      .bulb .lamp { position: absolute; left: 0; top: 200px; width: 300px; height: 380px; }
+      .bulb .num { position: absolute; left: 0; top: 590px; width: 300px; text-align: center; font-family: "InterBlack"; font-size: 64px; color: #fff; }
+      .halo { position: absolute; left: -210px; top: 30px; width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,214,120,0.85), rgba(255,214,120,0.25) 45%, rgba(255,214,120,0)); opacity: 0; }
+
+      /* cena D: luz 1 */
+      #d-kicker { top: 250px; font-family: "InterBlack"; font-size: 40px; letter-spacing: 8px; color: var(--gold2); }
+      #d-title { top: 330px; font-family: "InterBlack"; font-size: 96px; color: #fff; line-height: 1.05; }
+      #d-sub { top: 560px; font-family: "InterMed"; font-size: 44px; color: #A9B6CA; }
+      #d-bulb { left: 405px; top: 620px; width: 270px; height: 342px; }
+      #d-halo { left: 180px; top: 430px; width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,214,120,0.9), rgba(255,214,120,0.3) 45%, rgba(255,214,120,0)); opacity: 0; }
+      #d-houses { left: 120px; top: 990px; width: 840px; height: 170px; display: flex; justify-content: space-between; }
+      .house { width: 180px; height: 170px; position: relative; }
+      .house svg { width: 180px; height: 150px; }
+      .house .n { position: absolute; left: 0; top: 150px; width: 180px; text-align: center; font-family: "InterBlack"; font-size: 30px; color: #6B7A93; }
+
+      /* legenda (texto que será narrado) */
+      #cap { position: absolute; left: 0; top: 1235px; width: 1080px; height: 110px; text-align: center; font-family: "InterBlack"; font-size: 56px; }
+      .cg { position: absolute; left: 0; top: 0; width: 1080px; opacity: 0; }
+      .cw { display: inline-block; margin: 0 7px; color: rgba(255,255,255,0.45); -webkit-text-stroke: 0; }
+      .light .cw { color: rgba(29,29,31,0.3); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1080" data-height="1920" data-motion-blur="on">
+      <div id="ground" class="full clip" data-start="0" data-duration="15" data-track-index="0"></div>
+
+      <!-- A · gancho (0–3,7 s) -->
+      <video id="a-video" class="clip" src="assets/video/predios.mp4" muted playsinline data-start="0" data-duration="3.75" data-track-index="1"></video>
+      <div id="sceneA" class="scene clip" data-start="0" data-duration="3.75" data-track-index="2">
+        <div id="a-shade" class="full"></div>
+        <div id="a-l1" class="abs center"><span class="w">Tem imóvel</span><br><span class="w">alugado?</span></div>
+        <div id="a-l2" class="abs center">Então faça esta conta ainda em</div>
+        <div id="a-pill" class="abs"><div id="a-year"><div id="a-year-roll"><div id="a-year-strip"><span>2023</span><span>2024</span><span>2025</span><span>2026</span></div></div></div></div>
+        <div id="a-under" class="abs"></div>
+        <div id="a-tag" class="abs center">ANTES QUE O ANO ACABE</div>
+      </div>
+
+      <!-- B · 2027 olha para 2026 (3,6–8,9 s) -->
+      <div id="sceneB" class="scene clip" data-start="3.6" data-duration="5.3" data-track-index="2">
+        <div id="b-title" class="abs center"><div id="b-t1">Em 2027 começa</div><div id="b-t2">o imposto novo do aluguel</div></div>
+        <div id="b-track">
+          <div id="b-glow" class="abs"></div>
+          <div id="cal26" class="cal"><div class="hd">ESTE ANO</div><div class="yr">2026</div></div>
+          <div id="cal27" class="cal"><div class="hd">IMPOSTO NOVO</div><div class="yr">2027</div></div>
+          <div id="coins"></div>
+        </div>
+        <svg id="b-arrow" class="abs" viewBox="0 0 1080 1920"><path id="b-arrow-path" d="M 800 635 C 700 500, 380 500, 290 615" fill="none" stroke="#C9A86A" stroke-width="12" stroke-linecap="round"/><path id="b-arrow-head" d="M 258 587 L 290 625 L 332 596" fill="none" stroke="#C9A86A" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div id="b-label" class="abs center">a conta usa o que você recebeu em 2026</div>
+      </div>
+
+      <!-- C · fundo navy: calma + duas luzes (8,6–12,6 s) -->
+      <div id="flood" class="full clip" data-start="8.5" data-duration="6.5" data-track-index="3"></div>
+      <div id="sceneC" class="scene clip" data-start="8.6" data-duration="4.0" data-track-index="4">
+        <div id="c-l1" class="abs center"><span class="w">Mas </span><span class="w">calma.</span></div>
+        <div id="c-l2" class="abs center">A regra é simples: duas luzes.</div>
+        <div id="bulb1" class="bulb"><div class="wire"></div><svg class="lamp" viewBox="0 0 300 380"><use href="#lampshape"/></svg><div class="halo" id="halo1"></div><div class="num">1</div></div>
+        <div id="bulb2" class="bulb"><div class="wire"></div><svg class="lamp" viewBox="0 0 300 380"><use href="#lampshape"/></svg><div class="halo"></div><div class="num">2</div></div>
+      </div>
+
+      <!-- D · luz 1 (12,3–15 s) -->
+      <div id="sceneD" class="scene clip" data-start="12.3" data-duration="2.7" data-track-index="5">
+        <div id="d-kicker" class="abs center">LUZ 1</div>
+        <div id="d-title" class="abs center">Mais de 3 imóveis<br>alugados</div>
+        <div id="d-sub" class="abs center">no seu nome (CPF)</div>
+        <div id="d-halo" class="abs"></div>
+        <svg id="d-bulb" class="abs" viewBox="0 0 300 380"><use id="d-lamp" href="#lampshape"/></svg>
+        <div id="d-houses" class="abs">
+          <div class="house" id="h1"><svg viewBox="0 0 180 150"><use href="#houseshape"/></svg><div class="n">1</div></div>
+          <div class="house" id="h2"><svg viewBox="0 0 180 150"><use href="#houseshape"/></svg><div class="n">2</div></div>
+          <div class="house" id="h3"><svg viewBox="0 0 180 150"><use href="#houseshape"/></svg><div class="n">3</div></div>
+          <div class="house" id="h4"><svg viewBox="0 0 180 150"><use href="#houseshape"/></svg><div class="n">4</div></div>
+        </div>
+      </div>
+
+      <div id="cap" class="clip" data-start="0" data-duration="15" data-track-index="6"></div>
+
+      <audio id="trilha" src="assets/som.wav" data-start="0" data-duration="15" data-volume="1"></audio>
+
+      <svg width="0" height="0" style="position:absolute">
+        <defs>
+          <g id="lampshape">
+            <path d="M150 20 C 65 20, 20 90, 20 160 C 20 225, 70 260, 95 300 L 205 300 C 230 260, 280 225, 280 160 C 280 90, 235 20, 150 20 Z" fill="currentColor" stroke="#C9D2E3" stroke-width="8"/>
+            <rect x="100" y="305" width="100" height="22" rx="8" fill="#8A97AD"/><rect x="108" y="332" width="84" height="20" rx="8" fill="#6B7A93"/><rect x="125" y="356" width="50" height="16" rx="8" fill="#56637A"/>
+            <path d="M120 230 L 135 150 L 150 200 L 165 150 L 180 230" fill="none" stroke="#C9D2E3" stroke-width="7" stroke-linejoin="round"/>
+          </g>
+          <g id="houseshape"><path d="M90 8 L 170 78 L 150 78 L 150 142 L 30 142 L 30 78 L 10 78 Z" fill="currentColor"/><rect x="75" y="98" width="30" height="44" rx="6" fill="#0B1F3A"/></g>
+        </defs>
+      </svg>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const P = (s, x) => tl.set(s, x, 0);
+
+      // ---------- estado inicial ----------
+      P('#sceneB, #sceneC, #sceneD', {});
+      document.querySelectorAll('.lamp, #d-bulb').forEach(e => e.style.color = '#2A3F63');
+      document.querySelectorAll('.house').forEach(e => e.style.color = '#2A3F63');
+
+      // ---------- A · gancho ----------
+      tl.fromTo('#a-l1', { scale: 1.05 }, { scale: 1, duration: 0.6, ease: 'expo.out' }, 0);
+      tl.fromTo('#a-l2', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.2, ease: 'power4.out' }, 1.2);
+      tl.fromTo('#a-pill', { scale: 0.2, opacity: 0, y: 40 }, { scale: 1, opacity: 1, y: 0, duration: 0.55, ease: 'back.out(1.6)' }, 1.95);
+      tl.fromTo('#a-year-strip', { y: 0 }, { y: -690, duration: 0.6, ease: 'power3.out' }, 2.0);
+      tl.fromTo('#a-under', { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: 'expo.out' }, 2.7);
+      tl.fromTo('#a-tag', { opacity: 0, scale: 1.25, filter: 'blur(8px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'expo.out' }, 2.85);
+      // objeto vira o mundo: a pílula do ano cresce e vira o fundo claro da próxima cena
+      tl.to('#a-l1, #a-l2, #a-tag, #a-under', { opacity: 0, filter: 'blur(14px)', duration: 0.25, ease: 'power3.in' }, 3.25);
+      tl.to('#a-year', { opacity: 0, duration: 0.15 }, 3.3);
+      tl.to('#a-pill', { scale: 9, borderRadius: '0px', backgroundColor: '#F3F4F6', duration: 0.45, ease: 'power2.in' }, 3.3);
+
+      // ---------- B · 2027 olha para 2026 ----------
+      tl.fromTo('#b-t1', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.18, ease: 'power4.out' }, 3.75);
+      tl.fromTo('#b-t2', { opacity: 0, filter: 'blur(8px)', y: 10 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.22, ease: 'power4.out' }, 4.5);
+      tl.fromTo('#cal27', { y: -1300, rotation: -8 }, { y: 0, rotation: 0, duration: 0.7, ease: 'back.out(1.3)' }, 3.8);
+      // câmera anda para a esquerda: aparece 2026
+            tl.fromTo('#cal26', { x: 0 }, { x: 600, duration: 0.6, ease: 'power3.out' }, 6.05);
+      tl.to('#cal27', { x: 260, duration: 0.6, ease: 'power2.inOut' }, 6.05);
+      tl.fromTo('#b-arrow-path', { strokeDasharray: 600, strokeDashoffset: 600 }, { strokeDashoffset: 0, duration: 0.45, ease: 'power2.out' }, 6.6);
+      tl.fromTo('#b-arrow-head', { opacity: 0 }, { opacity: 1, duration: 0.1 }, 7.0);
+            tl.fromTo('#b-glow', { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 7.0);
+      tl.fromTo('#b-label', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.2, ease: 'power4.out' }, 7.1);
+      // moedas caindo dentro do 2026 ("o que você recebeu")
+      for (let i = 0; i < 6; i++) {
+        const c = document.createElement('div'); c.className = 'coin'; c.id = 'coin' + i; c.textContent = 'R$'; c.style.left = (180 + (i % 3) * 70) + 'px'; c.style.top = '300px';
+        document.getElementById('coins').appendChild(c);
+        tl.fromTo(c, { y: -200, opacity: 0, rotation: -30 }, { y: 690 + (i % 2) * 30, opacity: 1, rotation: 0, duration: 0.45, ease: 'bounce.out' }, 7.3 + i * 0.09);
+        tl.to(c, { opacity: 0, scale: 0.4, duration: 0.2, ease: 'power3.in' }, 8.25 + i * 0.03);
+      }
+      tl.to('#b-title, #b-label, #b-arrow', { opacity: 0, filter: 'blur(12px)', duration: 0.22, ease: 'power3.in' }, 8.5);
+      tl.to('#cal27, #cal26, #b-glow', { scale: 0.85, opacity: 0, filter: 'blur(10px)', duration: 0.3, ease: 'power3.in' }, 8.55);
+
+      // ---------- C · inundação navy, calma, duas luzes ----------
+      tl.fromTo('#flood', { clipPath: 'circle(0px at 540px 760px)' }, { clipPath: 'circle(1500px at 540px 760px)', duration: 0.5, ease: 'power2.inOut' }, 8.5);
+      tl.fromTo('#c-l1 .w', { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.18, stagger: 0.22, ease: 'power4.out' }, 8.95);
+      tl.fromTo('#c-l2', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.2, ease: 'power4.out' }, 9.9);
+      tl.to('#c-l1', { y: -130, scale: 0.6, transformOrigin: '50% 0%', duration: 0.5, ease: 'power2.inOut' }, 10.8);
+      tl.to('#c-l2', { y: -150, duration: 0.5, ease: 'power2.inOut' }, 10.8);
+      tl.fromTo('#bulb1', { y: -900 }, { y: 0, duration: 0.9, ease: 'elastic.out(1, 0.6)' }, 10.95);
+      tl.fromTo('#bulb2', { y: -900 }, { y: 0, duration: 0.9, ease: 'elastic.out(1, 0.6)' }, 11.12);
+      tl.fromTo('#bulb1', { rotation: 0, transformOrigin: '150px 0px' }, { rotation: 4, duration: 0.6, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 11.6);
+      // zoom através da luz 1
+      tl.to('#sceneC', { x: 230, duration: 0.3, ease: 'power2.inOut' }, 11.95);
+      tl.to('#c-l1, #c-l2, #bulb2', { opacity: 0, filter: 'blur(14px)', duration: 0.25, ease: 'power3.in' }, 12.0);
+      tl.to('#bulb1', { scale: 5, transformOrigin: '150px 390px', opacity: 0, duration: 0.4, ease: 'power3.in' }, 12.2);
+
+      // ---------- D · luz 1 ----------
+      tl.fromTo('#d-bulb', { scale: 1.6, opacity: 0, filter: 'blur(12px)' }, { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.45, ease: 'expo.out' }, 12.35);
+      tl.fromTo('#d-kicker', { opacity: 0, scale: 1.3, filter: 'blur(8px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'expo.out' }, 12.4);
+      tl.fromTo('#d-title', { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.2, ease: 'power4.out' }, 12.55);
+      tl.fromTo('#d-sub', { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power2.out' }, 14.2);
+      ['#h1', '#h2', '#h3', '#h4'].forEach((h, i) => {
+        tl.fromTo(h, { y: 60, opacity: 0, scale: 0.7 }, { y: 0, opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.8)' }, 13.1 + i * 0.2);
+        tl.to(h, { color: i === 3 ? '#E2C27F' : '#FFFFFF', duration: 0.12 }, 13.15 + i * 0.2);
+        tl.to(h + ' .n', { color: i === 3 ? '#E2C27F' : '#FFFFFF', duration: 0.12 }, 13.15 + i * 0.2);
+      });
+      tl.to('#d-lamp', { color: '#FFD678', duration: 0.12, ease: 'power2.out' }, 13.85);
+      tl.fromTo('#d-halo', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' }, 13.85);
+      tl.to('#d-bulb', { scale: 1.08, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, 13.85);
+
+      // ---------- legenda (texto planejado da narração) ----------
+      const CAP = [[0.15, 'Tem imóvel alugado?'], [1.25, 'Então tem uma conta'], [2.05, 'que você precisa fazer'], [2.75, 'AINDA em 2026.'], [3.7, 'Porque em 2027'], [4.55, 'começa o imposto novo'], [5.5, 'do aluguel.'], [6.2, 'E ele olha pro que'], [7.0, 'você recebeu ESSE ano.'], [9.0, 'Mas calma.'], [9.9, 'A regra é simples.'], [10.9, 'Pensa em duas luzes.'], [12.3, 'Luz um: você tem'], [13.2, 'mais de TRÊS imóveis'], [14.1, 'alugados no seu nome.']];
+      const capEl = document.getElementById('cap');
+      CAP.forEach(([t0, s], g) => {
+        const t1 = g + 1 < CAP.length ? CAP[g + 1][0] : 15, el = document.createElement('div'); el.className = 'cg' + ((t0 >= 3.6 && t0 < 8.6) ? ' light' : ''); el.id = 'cg' + g;
+        const ws = s.split(' '); ws.forEach((w, j) => { const sp = document.createElement('span'); sp.className = 'cw'; sp.id = `cw${g}_${j}`; sp.textContent = w; el.appendChild(sp); });
+        capEl.appendChild(el);
+        tl.fromTo(el, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.12, ease: 'power3.out' }, t0);
+        tl.to(el, { opacity: 0, duration: 0.08 }, Math.min(15, t1 - 0.04));
+        const dt = (t1 - t0 - 0.15) / ws.length, light = t0 >= 3.6 && t0 < 8.6;
+        ws.forEach((w, j) => { const caps = w === w.toUpperCase() && /[A-ZÃÉÊ]/.test(w);
+          tl.to(`#cw${g}_${j}`, { color: light ? '#B8955A' : '#E2C27F', scale: 1.14, duration: 0.06 }, t0 + j * dt);
+          tl.to(`#cw${g}_${j}`, { color: caps ? (light ? '#B8955A' : '#E2C27F') : (light ? '#1D1D1F' : '#FFFFFF'), scale: 1, duration: 0.15 }, t0 + (j + 1) * dt); });
+      });
+      tl.to('#root', { opacity: 1, duration: 0.01 }, 14.99);
+
+      window.__timelines['main'] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

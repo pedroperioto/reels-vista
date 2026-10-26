@@ -1,0 +1,12 @@
+{
+  "video": "/caminho/do/video_horizontal.mp4",
+  "saida": "out",
+  "kicker": "À VENDA · BAIRRO",
+  "titulo": "000 m² · 0 suítes",
+  "subtitulo": "frase curta com o diferencial do imóvel",
+  "cta": "Toque no link ou responda *QUERO VER*",
+  "partes": [
+    { "inicio": 0, "fim": 26.2, "rotulo": "ÁREA SOCIAL", "destaques": ["0 vagas", "0 banheiros", "1 apto por andar"] },
+    { "inicio": 26.2, "fim": 46.0, "rotulo": "VARANDA E COZINHA", "destaques": ["Churrasqueira", "Vista livre", "Adega"] }
+  ]
+}

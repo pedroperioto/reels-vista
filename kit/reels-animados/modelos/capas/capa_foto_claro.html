@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8">
+<style>
+  @font-face { font-family: "InterBlack"; src: url("../base/assets/fonts/InterBlack.otf"); }
+  @font-face { font-family: "InterSemi"; src: url("../base/assets/fonts/InterSemi.otf"); }
+  @font-face { font-family: "Instr"; src: url("../base/assets/fonts/Instr.ttf"); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1080px; height: 1920px; overflow: hidden; background: #0B1F3A; }
+  #c { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+  #bg { position: absolute; inset: 0; width: 1080px; height: 1920px; object-fit: cover; filter: saturate(0.95) contrast(1.05); }
+  #shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,16,32,0.92) 0%, rgba(6,16,32,0.78) 38%, rgba(6,16,32,0.35) 58%, rgba(6,16,32,0.55) 78%, rgba(6,16,32,0.9) 100%); }
+  .ctr { position: absolute; left: 0; width: 1080px; text-align: center; }
+  /* tudo dentro do recorte 4:5 do perfil (y 285–1635) */
+  #kick { top: 330px; } #kick span { display: inline-block; padding: 16px 34px; border-radius: 40px; border: 3px solid #E2C27F; color: #E2C27F; font-family: "InterBlack"; font-size: 38px; letter-spacing: 5px; }
+  #t1 { top: 450px; font-family: "InterBlack"; font-size: 122px; line-height: 1.0; color: #fff; letter-spacing: -4px; text-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+  #t1 .g { color: #E2C27F; }
+  #t2 { top: 710px; font-family: "Instr"; font-style: italic; font-size: 124px; color: #fff; text-shadow: 0 8px 30px rgba(0,0,0,0.6); }
+  #card { top: 1270px; }
+  #card .l { font-family: "InterSemi"; font-size: 44px; color: #fff; text-shadow: 0 4px 20px rgba(0,0,0,0.6); margin-bottom: 22px; }
+  #pill { display: inline-block; position: relative; padding: 6px 70px 14px; border-radius: 120px; background: #fff; box-shadow: 0 24px 60px rgba(0,0,0,0.45); font-family: "InterBlack"; font-size: 150px; color: #0B1F3A; letter-spacing: -5px; }
+  #pill i { position: absolute; left: 22%; right: 22%; bottom: 22px; height: 12px; border-radius: 6px; background: #E5484D; }
+</style></head>
+<body><div id="c">
+  <img id="bg" src="fundo.jpg"><div id="shade"></div>
+  <div id="kick" class="ctr"><span>TEM IMÓVEL ALUGADO?</span></div>
+  <div id="t1" class="ctr">IMPOSTO NOVO<br><span class="g">NO ALUGUEL</span></div>
+  <div id="t2" class="ctr">você vai pagar?</div>
+  <div id="card" class="ctr"><div class="l">A conta é feita ainda em</div><div id="pill">2026<i></i></div></div>
+</div></body></html>

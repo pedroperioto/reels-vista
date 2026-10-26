@@ -1,0 +1,112 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Kit de vídeos animados com Claude</title><style>
+@font-face{font-family:IB;src:url(../reels-animados/modelos/base/assets/fonts/InterBlack.otf)}@font-face{font-family:IS;src:url(../reels-animados/modelos/base/assets/fonts/InterSemi.otf)}
+@font-face{font-family:IM;src:url(../reels-animados/modelos/base/assets/fonts/InterMed.otf)}@font-face{font-family:SI;src:url(../reels-animados/modelos/base/assets/fonts/Instr.ttf)}
+@font-face{font-family:MO;src:url(../reels-animados/modelos/base/assets/fonts/Mono500.woff2)}
+@page{size:A4;margin:16mm 16mm 18mm}
+body{font-family:IM;color:#1D1D1F;font-size:11pt;line-height:1.5}
+h1{font-family:IB;font-size:28pt;color:#0B1F3A;letter-spacing:-.5pt;margin:0 0 2mm}
+.sub{font-family:SI;font-size:16pt;color:#B8955A;margin:0 0 8mm}
+h2{font-family:IB;font-size:15pt;color:#0B1F3A;margin:9mm 0 3mm;padding-top:3mm;border-top:1.5pt solid #E2C27F}
+h3{font-family:IS;font-size:11.5pt;color:#0B1F3A;margin:5mm 0 1.5mm}
+b{font-family:IS;font-weight:normal;color:#0B1F3A}
+code,.mono{font-family:MO;font-size:9.5pt;background:#F2F3F5;padding:0 3px;border-radius:3px}
+.box{background:#F6F3EC;border-left:4pt solid #E2C27F;padding:3mm 4mm;margin:3mm 0;border-radius:2mm}
+.warn{background:#FDEEEE;border-left-color:#E5484D}
+pre{font-family:MO;font-size:9.5pt;background:#0B1F3A;color:#F3DDA8;padding:4mm;border-radius:2mm;white-space:pre-wrap;line-height:1.45}
+table{border-collapse:collapse;width:100%;font-size:10pt;margin:2mm 0}td,th{border-bottom:.6pt solid #DDD;padding:2mm 2mm;text-align:left;vertical-align:top}th{font-family:IS;color:#0B1F3A}
+ol li,ul li{margin:1mm 0}
+</style></head><body>
+<h1>Kit de vídeos animados com Claude</h1>
+<p class="sub">tudo o que usamos para chegar nos Reels do @vistabroker.perioto, pronto para instalar</p>
+
+<p>Com este kit, você só passa o <b>tema</b>, grava a <b>narração</b> no Google AI Studio (grátis) e o Claude faz o resto:
+roteiro com dados checados, animação, legenda sincronizada, trilha, efeitos sonoros, capa e legenda do post. Também
+transforma vídeo horizontal de imóvel em stories verticais.</p>
+
+<h2>1. O que vem no kit</h2>
+<table>
+<tr><th>Arquivo</th><th>O que é</th></tr>
+<tr><td class="mono">reels-animados.zip</td><td><b>A skill principal.</b> O passo a passo completo, as regras que aprendemos, os modelos de vídeo
+(história + dados com globo 3D; estilo claro), personagens, trilha original, efeitos sonoros, stories e capas.</td></tr>
+<tr><td class="mono">motion-design-principios.zip</td><td>Princípios de animação (tempo, suavização, coreografia).</td></tr>
+<tr><td class="mono">edicao-vertical-creator.zip</td><td>Regras de edição de Reels nível criador (ganchos, cortes, legendas).</td></tr>
+<tr><td class="mono">motion-graphic-beat.zip</td><td>Animações sincronizadas na batida da música (aberturas, tipografia).</td></tr>
+</table>
+<div class="box">As três skills menores baixam o material público delas do GitHub na hora de usar. A principal já vem completa.</div>
+
+<h2>2. Preparar o Claude (uma vez)</h2>
+<ol>
+<li>Entre no Claude com a sua conta. Qualquer plano usa skills, mas um plano pago dá mais folga: um vídeo de 2 minutos leva
+umas 2 horas de trabalho do Claude e quase 30 minutos só de render.</li>
+<li>Ligue a execução de código: <b>Configurações (Settings) → Recursos (Capabilities) → "Criar e editar arquivos" (Create and edit files)</b> (execução de código e criação de arquivos).</li>
+<li>Instale as skills: <b>Personalizar (Customize) → Skills → "+" → "Criar skill" (Create skill) → "Fazer upload" (Upload a skill)</b> e envie cada <span class="mono">.zip</span>,
+sem descompactar. Deixe as quatro <b>ativadas</b>.</li>
+<li>Deixe a <b>pesquisa na web</b> ligada. O Claude pesquisa os dados do tema na hora.</li>
+</ol>
+
+<h2>3. Conectores e contas</h2>
+<table>
+<tr><th>Item</th><th>Precisa?</th><th>Para quê</th></tr>
+<tr><td>Google AI Studio <span class="mono">aistudio.google.com</span></td><td><b>Sim</b> (grátis, conta Google)</td><td>Gravar a narração com voz de IA.</td></tr>
+<tr><td>Pexels <span class="mono">pexels.com</span></td><td>Só no estilo claro</td><td>Clipes de vídeo grátis. Você baixa e manda para o Claude.</td></tr>
+<tr><td>Navegador no app do computador (Claude in Chrome ou navegador do app)</td><td>Opcional</td><td>O Claude abrir links do Instagram/TikTok de referência e ver métricas.
+Sem ele, grave a tela do vídeo de referência e mande o arquivo.</td></tr>
+<tr><td>GitHub</td><td>Opcional</td><td>Guardar o histórico dos projetos. O Pedro pode te dar acesso ao repositório dele com todos os vídeos já feitos.</td></tr>
+</table>
+<div class="box">Não precisa de ElevenLabs, Artlist, Runway nem outra ferramenta paga. A trilha e os efeitos são gerados por código e não têm problema de direitos autorais.</div>
+
+<h2>4. Antes do primeiro vídeo: seus dados</h2>
+<p>No primeiro pedido, mande junto o seu <b>nome</b>, a <b>profissão/registro</b> (ex.: CRECI), o <b>@ do Instagram</b>, o <b>logo em PNG</b>
+e, se quiser, as cores da marca. O Claude coloca no cartão final, na capa e na legenda do post.</p>
+
+<h2>5. Como pedir um vídeo</h2>
+<pre>Use a skill reels-animados.
+Tema: [ex.: o que muda no financiamento com a Selic nova]
+Público: [ex.: quem pensa em comprar o primeiro imóvel]
+Estilo: [história com personagens e dados / claro com vídeos do Pexels]
+Duração: [ex.: até 90 segundos]
+Meus dados: [nome · CRECI · @] (logo em anexo)
+Referências: [links ou gravações de tela de vídeos que você gostou]</pre>
+<h3>O que acontece depois</h3>
+<ol>
+<li>O Claude pesquisa e te mostra o <b>roteiro + a lista de cenas</b>, com a fonte de cada número. Você ajusta e aprova.</li>
+<li>Ele te manda a <b>narração no formato do AI Studio</b>, com um bloco de estilo e o texto com marcações de pausa e entonação.</li>
+<li>Você grava (passo 6) e manda o <b>WAV</b>. Enquanto isso, ele monta uma <b>prévia de ~15 s</b> para você aprovar o visual.</li>
+<li>Ele sincroniza tudo com a sua voz e te manda os <b>quadros de conferência</b>, depois o <b>vídeo final</b>.</li>
+<li>Ele entrega a <b>capa</b> e a <b>legenda do post</b> prontas para colar, com dicas de como responder os comentários.</li>
+</ol>
+
+<h2>6. Gravando a narração no Google AI Studio</h2>
+<ol>
+<li>Abra <span class="mono">aistudio.google.com</span> → <b>Generate speech</b> → <b>Single-speaker</b>.</li>
+<li>Escolha a voz (sugestão: <b>Charon</b> ou <b>Sadaltager</b>). Use sempre a mesma nos vídeos da mesma série.</li>
+<li>Cole o <b>bloco de estilo</b> no campo de estilo e o <b>texto</b> no campo principal, exatamente como o Claude mandou.</li>
+<li>Gere e ouça. Se uma palavra sair estranha, gere de novo, porque costuma acertar na segunda.</li>
+<li>Baixe em <b>WAV</b> e mande no chat. Texto longo demais? Divida em 2 partes e mande as duas.</li>
+</ol>
+
+<h2>7. Stories de imóvel (vídeo horizontal → vertical)</h2>
+<pre>Use a skill reels-animados para fazer stories verticais deste vídeo.
+Anúncio do imóvel: [link]
+(vídeo em anexo)</pre>
+<p>Ele divide o vídeo por ambiente, em partes de até 60 s. Coloca área, suítes, vagas e diferenciais tirados do anúncio e
+deixa o espaço do adesivo de link. Antes de pôr preço na tela, ele pergunta.</p>
+
+<h2>8. Regras que o kit já segue</h2>
+<ul>
+<li><b>Confirma antes de criar:</b> o roteiro primeiro, depois a prévia e só então o vídeo completo.</li>
+<li><b>Nunca inventa dado:</b> todo número aparece com a fonte e a data na tela.</li>
+<li><b>Imparcial em política:</b> os dois lados com o mesmo tratamento, sem caricatura de político. Os personagens são originais.</li>
+<li><b>Linguagem simples:</b> uma ideia por cena, como se fosse para uma criança entender.</li>
+</ul>
+<div class="box warn"><b>Música:</b> a biblioteca do Instagram só cobre 90 s. Em vídeo maior, a trilha vai embutida no arquivo,
+por isso o kit usa trilha original. Música comercial embutida pode fazer o Instagram silenciar o vídeo inteiro.</div>
+
+<h2>9. Dúvidas comuns</h2>
+<table>
+<tr><td><b>Demora quanto?</b></td><td>Roteiro em minutos. Montagem e render de um vídeo de 1 a 2 min levam de 1 a 2 horas no total, com quase 30 min só de render.</td></tr>
+<tr><td><b>Posso pedir mudanças?</b></td><td>Sim, a qualquer momento. Trocar só a música ou o volume é rápido e não precisa renderizar de novo.</td></tr>
+<tr><td><b>Ele não abriu meu link do Instagram</b></td><td>O Instagram bloqueia leitura automática. Grave a tela com som e mande o arquivo.</td></tr>
+<tr><td><b>A skill não aparece</b></td><td>Confira se a execução de código está ligada e se a skill está ativada em Personalizar → Skills. Escreva "use a skill reels-animados" no pedido.</td></tr>
+</table>
+</body></html>

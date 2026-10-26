@@ -1,0 +1,9 @@
+{
+  "nome": "Seu Nome",
+  "cargo": "Corretor de imóveis · CRECI 000000",
+  "arroba": "@seuperfil",
+  "logo": "logo.png",
+  "cores": { "navy": "#0B1F3A", "dourado": "#E2C27F", "amarelo": "#FFD24A" },
+  "regiao": "bairros/cidade onde atua",
+  "observacao": "Preencha antes do primeiro vídeo. O Claude usa estes dados no cartão final, na capa e na legenda."
+}

@@ -1,0 +1,2 @@
+Coloque aqui as fotos usadas na capa: a.jpg e b.jpg (capa_pb.html) e ../fundo.jpg (capa_foto_claro.html, um quadro do vídeo).
+Ajuste o foco de cada foto em FOC no fim do HTML.

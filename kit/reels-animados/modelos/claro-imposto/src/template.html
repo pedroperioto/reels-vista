@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="pt-BR" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "InterBlack"; src: url("assets/fonts/InterBlack.otf"); }
+      @font-face { font-family: "InterSemi"; src: url("assets/fonts/InterSemi.otf"); }
+      @font-face { font-family: "InterMed"; src: url("assets/fonts/InterMed.otf"); }
+      @font-face { font-family: "Instr"; src: url("assets/fonts/Instr.ttf"); }
+      /* claro + navy + dourado · texto entre 168 e 1330 px (área segura do Reels) */
+      :root { --ground: #F3F4F6; --navy: #0B1F3A; --ink: #1D1D1F; --mute: #86868B; --gold: #C9A86A; --gold2: #E2C27F; --red: #E5484D; --green: #34C77B; --lamp-off: #2A3F63; --lamp-on: #FFD678; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--ground); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "InterSemi", sans-serif; color: var(--ink); }
+      .abs { position: absolute; } .full { position: absolute; inset: 0; } .scene { position: absolute; inset: 0; }
+      .center { left: 0; width: 1080px; text-align: center; } .w { display: inline-block; white-space: pre; }
+      .kicker { top: 250px; font-family: "InterBlack"; font-size: 40px; letter-spacing: 8px; color: var(--gold2); }
+      .h1w { font-family: "InterBlack"; font-size: 96px; color: #fff; line-height: 1.05; letter-spacing: -1px; }
+      .sub { font-family: "InterMed"; font-size: 44px; color: #A9B6CA; }
+      .fonte { top: 1170px; font-family: "InterMed"; font-size: 26px; color: #7F8DA6; }
+      .fonte.l { color: #8A8F98; }
+      .vid { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      .shade { background: linear-gradient(180deg, rgba(6,16,32,0.84) 0%, rgba(6,16,32,0.55) 45%, rgba(6,16,32,0.78) 100%); }
+      #a-l1, #a-l2, .ovl-t1 { text-shadow: 0 6px 30px rgba(0,0,0,0.45); }
+      .ovl-t1 { top: 330px; font-family: "InterBlack"; font-size: 100px; line-height: 1.04; color: #fff; letter-spacing: -2px; }
+
+      #ground { background: radial-gradient(1200px 900px at 50% 45%, #FFFFFF 0%, #F3F4F6 55%, #E9EAED 100%); }
+      #flood { background: radial-gradient(1200px 1000px at 50% 42%, #13305A 0%, #0B1F3A 60%, #071328 100%); clip-path: circle(0px at 540px 760px); }
+
+      /* A · gancho */
+      #a-l1 { top: 330px; font-family: "InterBlack"; font-size: 104px; line-height: 1.02; color: #fff; letter-spacing: -2px; }
+      #a-l2 { top: 606px; font-family: "InterSemi"; font-size: 46px; color: rgba(255,255,255,0.92); }
+      #a-pill { left: 240px; top: 720px; width: 600px; height: 300px; border-radius: 150px; background: #fff; box-shadow: 0 30px 80px rgba(0,0,0,0.35); overflow: hidden; }
+      #a-year { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 190px; color: var(--navy); letter-spacing: -6px; }
+      #a-year-roll { position: relative; height: 230px; overflow: hidden; } #a-year-strip span { height: 230px; line-height: 230px; display: block; }
+      #a-under { left: 330px; top: 1000px; width: 420px; height: 14px; border-radius: 7px; background: var(--red); transform-origin: 0 50%; }
+      #a-tag { top: 1075px; font-family: "InterBlack"; font-size: 40px; color: var(--gold2); letter-spacing: 4px; }
+
+      /* B · 2027 olha para 2026 */
+      .cal { position: absolute; width: 400px; height: 440px; border-radius: 44px; background: #fff; box-shadow: 0 30px 70px rgba(16,24,40,0.16); overflow: hidden; }
+      .cal .hd { height: 110px; background: #D62828; color: #fff; font-family: "InterBlack"; font-size: 34px; letter-spacing: 4px; display: flex; align-items: center; justify-content: center; }
+      .cal .yr { height: 330px; display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 150px; color: var(--navy); letter-spacing: -5px; }
+      #cal27 { left: 340px; top: 650px; } #cal26 { left: -520px; top: 650px; } #cal26 .hd { background: var(--navy); }
+      #b-title { top: 300px; } #b-t1 { font-family: "InterSemi"; font-size: 60px; color: var(--ink); } #b-t2 { font-family: "InterBlack"; font-size: 84px; color: var(--gold); letter-spacing: -1px; }
+      #b-label { top: 1130px; font-family: "InterSemi"; font-size: 40px; color: var(--mute); }
+      #b-glow { left: 40px; top: 610px; width: 480px; height: 520px; border-radius: 70px; background: radial-gradient(closest-side, rgba(226,194,127,0.55), rgba(226,194,127,0)); }
+      .coin { position: absolute; width: 74px; height: 74px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #F6E2AE, #D7B56F 60%, #A9843F); box-shadow: 0 8px 18px rgba(120,90,30,0.35); display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 28px; color: #7A5A22; }
+
+      /* lâmpadas */
+      .lampsvg { color: var(--lamp-off); }
+      .halo { position: absolute; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,214,120,0.9), rgba(255,214,120,0.3) 45%, rgba(255,214,120,0)); opacity: 0; }
+      #c-l1 { top: 300px; font-family: "Instr"; font-size: 170px; color: var(--gold2); } #c-l2 { top: 520px; font-family: "InterSemi"; font-size: 58px; color: #fff; }
+      .bulb { position: absolute; top: 300px; width: 300px; height: 700px; } #bulb1 { left: 160px; } #bulb2 { left: 620px; }
+      .bulb .wire { position: absolute; left: 148px; top: -300px; width: 4px; height: 520px; background: linear-gradient(180deg, rgba(107,122,147,0) 0%, rgba(107,122,147,0) 80%, #6B7A93 88%); }
+      .bulb .lamp { position: absolute; left: 0; top: 200px; width: 300px; height: 380px; }
+      .bulb .num { position: absolute; left: 0; top: 590px; width: 300px; text-align: center; font-family: "InterBlack"; font-size: 64px; color: #fff; }
+
+      /* D/E · luz 1 e luz 2 */
+      #d-sub { top: 560px; } #d-bulb { left: 405px; top: 620px; width: 270px; height: 342px; } #d-halo { left: 180px; top: 430px; width: 720px; height: 720px; }
+      #d-houses { left: 120px; top: 990px; width: 840px; height: 170px; display: flex; justify-content: space-between; }
+      .house { width: 180px; height: 170px; position: relative; color: var(--lamp-off); } .house svg { width: 180px; height: 150px; }
+      .house .n { position: absolute; left: 0; top: 150px; width: 180px; text-align: center; font-family: "InterBlack"; font-size: 30px; color: #6B7A93; }
+      #e-title { top: 320px; } #e-num { font-family: "InterBlack"; font-size: 120px; color: var(--gold2); letter-spacing: -3px; } #e-sub { top: 560px; }
+      #v-din { left: 140px; top: 660px; width: 800px; height: 440px; border-radius: 44px; object-fit: cover; }
+      #e-chip { top: 1060px; } .chip { display: inline-block; padding: 18px 36px; border-radius: 40px; background: var(--gold2); color: var(--navy); font-family: "InterBlack"; font-size: 36px; }
+      #e-bulb { left: 405px; top: 690px; width: 270px; height: 342px; } #e-halo { left: 180px; top: 500px; width: 720px; height: 720px; }
+
+      /* F/G/H · as duas luzes + placa IMPOSTO */
+      .pair { position: absolute; top: 500px; width: 260px; height: 330px; } #f-b1, #g-b1 { left: 170px; } #f-b2, #g-b2 { left: 650px; }
+      .pairhalo { position: absolute; top: 320px; width: 620px; height: 620px; } #f-h1, #g-h1 { left: -10px; } #f-h2, #g-h2 { left: 470px; }
+      .plus { top: 650px; font-family: "InterBlack"; font-size: 110px; color: #6B7A93; }
+      .sign { position: absolute; left: 240px; top: 960px; width: 600px; height: 150px; border-radius: 30px; border: 6px solid #3B4F72; display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 72px; letter-spacing: 6px; color: #3B4F72; }
+      .lbl { position: absolute; top: 845px; width: 340px; text-align: center; font-family: "InterBlack"; font-size: 36px; color: #A9B6CA; }
+      #g-l1 { left: 130px; } #g-l2 { left: 610px; }
+      .stamp { position: absolute; left: 190px; top: 955px; width: 700px; height: 210px; border-radius: 26px; border: 12px solid var(--green); color: var(--green); background: rgba(7,19,40,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 84px; line-height: 1; transform: rotate(-5deg); opacity: 0; }
+      .stamp small { font-size: 40px; margin-top: 8px; }
+      #h-sign { top: 560px; } #h-bar { left: 160px; top: 800px; width: 760px; height: 70px; border-radius: 35px; background: rgba(255,255,255,0.12); overflow: hidden; }
+      #h-fill { width: 760px; height: 70px; border-radius: 35px; background: var(--red); transform-origin: 0 50%; }
+      #h-tag { left: 418px; top: 905px; padding: 14px 28px; border-radius: 22px; background: var(--gold2); color: var(--navy); font-family: "InterBlack"; font-size: 72px; transform: rotate(-4deg); opacity: 0; }
+      #h-cap { top: 1060px; font-family: "InterSemi"; font-size: 44px; color: #fff; }
+
+      /* I · comentário · J · cartão final */
+      #i-card { left: 90px; top: 420px; width: 900px; height: 520px; border-radius: 44px; background: #fff; box-shadow: 0 30px 80px rgba(0,0,0,0.35); }
+      #i-hd { left: 0; top: 40px; width: 900px; text-align: center; font-family: "InterSemi"; font-size: 34px; color: var(--ink); }
+      #i-line { left: 0; top: 104px; width: 900px; height: 2px; background: #E3E3E8; }
+      #i-post { left: 60px; top: 150px; display: flex; align-items: center; gap: 26px; opacity: 0; }
+      #i-av { width: 84px; height: 84px; border-radius: 50%; background: #2A4A7A; } #i-who { font-family: "InterSemi"; font-size: 28px; color: var(--mute); } #i-txt { font-family: "InterBlack"; font-size: 60px; color: var(--ink); }
+      #i-input { left: 40px; top: 380px; width: 700px; height: 100px; border-radius: 50px; background: #F2F3F5; }
+      #i-typed { left: 80px; top: 404px; font-family: "InterBlack"; font-size: 52px; color: var(--ink); white-space: pre; }
+      #i-ph { left: 80px; top: 412px; font-family: "InterMed"; font-size: 34px; color: #A0A4AB; opacity: 0; }
+      #i-send { left: 770px; top: 380px; width: 100px; height: 100px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; }
+      #i-dm { left: 140px; top: 1000px; width: 800px; height: 130px; border-radius: 34px; background: #16365F; border: 3px solid rgba(226,194,127,0.5); display: flex; align-items: center; gap: 26px; padding-left: 40px; opacity: 0; }
+      #i-dm .ok { width: 76px; height: 76px; border-radius: 50%; background: var(--gold2); display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 40px; color: var(--navy); }
+      #i-dm .t1 { font-family: "InterSemi"; font-size: 34px; color: #fff; } #i-dm .t2 { font-family: "InterMed"; font-size: 26px; color: var(--gold2); }
+      #j-c1 { top: 300px; font-family: "InterBlack"; font-size: 100px; color: #fff; } #j-pill { top: 430px; }
+      #j-pill span { display: inline-block; padding: 26px 70px; border-radius: 80px; background: var(--gold2); color: var(--navy); font-family: "InterBlack"; font-size: 96px; }
+      #j-c2 { top: 620px; font-family: "InterSemi"; font-size: 46px; color: #A9B6CA; } #j-line { left: 240px; top: 720px; width: 600px; height: 2px; background: rgba(255,255,255,0.15); }
+      #j-name { top: 770px; font-family: "InterBlack"; font-size: 76px; color: #fff; } #j-creci { top: 870px; font-family: "InterMed"; font-size: 32px; color: #A9B6CA; }
+      #j-at { top: 940px; font-family: "InterSemi"; font-size: 40px; color: var(--gold2); }
+      #j-logo { left: 400px; top: 1020px; width: 280px; height: 145px; border-radius: 26px; background: #fff; display: flex; align-items: center; justify-content: center; } #j-logo img { width: 230px; }
+      #j-note { top: 1200px; font-family: "InterMed"; font-size: 26px; color: #7F8DA6; }
+
+      /* legenda */
+      #cap { position: absolute; left: 0; top: 1235px; width: 1080px; height: 110px; text-align: center; font-family: "InterBlack"; font-size: 56px; }
+      .cg { position: absolute; left: 168px; top: 0; width: 744px; opacity: 0; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 30px; } .cw { display: inline-block; color: rgba(255,255,255,0.55); } .light .cw { color: rgba(29,29,31,0.3); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="@@DUR@@" data-width="1080" data-height="1920" data-motion-blur="on">
+      <div id="ground" class="full clip" data-start="0" data-duration="@@DUR@@" data-track-index="0"></div>
+
+      <video id="v-predios" class="vid clip" src="assets/video/predios.mp4" muted playsinline data-start="0" data-duration="@@D:0,AB@@" data-track-index="1"></video>
+      <div id="sceneA" class="scene clip" data-start="0" data-duration="@@D:0,AB@@" data-track-index="2">
+        <div class="full shade"></div>
+        <div id="a-l1" class="abs center"><span class="w">Tem imóvel</span><br><span class="w">alugado?</span></div>
+        <div id="a-l2" class="abs center">Então tem uma conta pra fazer ainda em</div>
+        <div id="a-pill" class="abs"><div id="a-year"><div id="a-year-roll"><div id="a-year-strip"><span>2023</span><span>2024</span><span>2025</span><span>2026</span></div></div></div></div>
+        <div id="a-under" class="abs"></div>
+        <div id="a-tag" class="abs center">ANTES QUE O ANO ACABE</div>
+      </div>
+
+      <div id="sceneB" class="scene clip" data-start="@@AB@@" data-duration="@@D:AB,BC@@" data-track-index="3">
+        <div id="b-title" class="abs center"><div id="b-t1">Em 2027 começa</div><div id="b-t2">o imposto novo do aluguel</div></div>
+        <div id="b-glow" class="abs"></div>
+        <div id="cal26" class="cal"><div class="hd">ESTE ANO</div><div class="yr">2026</div></div>
+        <div id="cal27" class="cal"><div class="hd">IMPOSTO NOVO</div><div class="yr">2027</div></div>
+        <div id="coins"></div>
+        <svg id="b-arrow" class="abs" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920"><path id="b-arrow-path" d="M 800 635 C 700 500, 380 500, 290 615" fill="none" stroke="#C9A86A" stroke-width="12" stroke-linecap="round"/><path id="b-arrow-head" d="M 258 587 L 290 625 L 332 596" fill="none" stroke="#C9A86A" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div id="b-label" class="abs center">a conta usa o que você recebeu em 2026</div>
+        <div class="abs center fonte l" style="top:1190px">Critério do ano anterior · LC 214/2025, art. 251</div>
+      </div>
+
+      <div id="flood" class="full clip" data-start="@@BC@@" data-duration="@@D:BC,DUR@@" data-track-index="4"></div>
+
+      <div id="sceneC" class="scene clip" data-start="@@BC@@" data-duration="@@D:BC,CD@@" data-track-index="5">
+        <div id="c-l1" class="abs center"><span class="w">Mas </span><span class="w">calma.</span></div>
+        <div id="c-l2" class="abs center">A regra é simples: duas luzes.</div>
+        <div id="bulb1" class="bulb"><div class="wire"></div><svg class="lamp lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg><div class="num">1</div></div>
+        <div id="bulb2" class="bulb"><div class="wire"></div><svg class="lamp lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg><div class="num">2</div></div>
+      </div>
+
+      <div id="sceneD" class="scene clip" data-start="@@CD@@" data-duration="@@D:CD,DE@@" data-track-index="6">
+        <div class="abs center kicker">LUZ 1</div>
+        <div id="d-title" class="abs center h1w" style="top:330px">Mais de 3 imóveis<br>alugados</div>
+        <div id="d-sub" class="abs center sub">no seu nome (CPF)</div>
+        <div id="d-halo" class="abs halo"></div>
+        <svg id="d-bulb" class="abs lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg>
+        <div id="d-houses" class="abs">
+          <div class="house" id="h1"><svg viewBox="0 0 180 150"><use href="#houseshape"/></svg><div class="n">1</div></div>
+          <div class="house" id="h2"><svg viewBox="0 0 180 150"><use href="#houseshape"/></svg><div class="n">2</div></div>
+          <div class="house" id="h3"><svg viewBox="0 0 180 150"><use href="#houseshape"/></svg><div class="n">3</div></div>
+          <div class="house" id="h4"><svg viewBox="0 0 180 150"><use href="#houseshape"/></svg><div class="n">4</div></div>
+        </div>
+      </div>
+
+      <div id="sceneE" class="scene clip" data-start="@@DE@@" data-duration="@@D:DE,EF@@" data-track-index="7">
+        <div class="abs center kicker">LUZ 2</div>
+        <div id="e-title" class="abs center"><div class="h1w">Mais de</div><div id="e-num">R$ 0 mil</div></div>
+        <div id="e-sub" class="abs center sub">de aluguel por ano</div>
+        <div id="e-halo" class="abs halo"></div>
+        <svg id="e-bulb" class="abs lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg>
+        <div id="e-chip" class="abs center"><span class="chip">somando todos os aluguéis</span></div>
+      </div>
+      <video id="v-din" class="clip" src="assets/video/dinheiro.mp4" muted playsinline data-start="@@dinA@@" data-duration="@@D:dinA,dinB@@" data-track-index="8"></video>
+
+      <div id="sceneF" class="scene clip" data-start="@@EF@@" data-duration="@@D:EF,FG@@" data-track-index="10">
+        <div id="f-title" class="abs center" style="top:270px"><div class="h1w" style="font-size:80px">O imposto só liga</div><div class="h1w" style="font-size:80px;color:#E2C27F">se as DUAS acenderem</div></div>
+        <div id="f-h1" class="halo pairhalo"></div><div id="f-h2" class="halo pairhalo"></div>
+        <svg id="f-b1" class="pair lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg>
+        <div class="abs center plus">+</div>
+        <svg id="f-b2" class="pair lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg>
+        <div id="f-sign" class="sign">IMPOSTO</div>
+        <div class="abs center fonte" style="top:1150px">LC 214/2025, art. 251 · Decreto 12.955/2026</div>
+      </div>
+
+      <div id="sceneG" class="scene clip" data-start="@@FG@@" data-duration="@@D:FG,GH@@" data-track-index="11">
+        <div id="g-t1" class="abs center h1w" style="top:300px;font-size:84px">Tem 2 imóveis?</div>
+        <div id="g-t2" class="abs center h1w" style="top:270px;font-size:72px;opacity:0">Tem 5, mas recebe<br><span style="color:#E2C27F">R$ 200 mil?</span></div>
+        <div id="g-h1" class="halo pairhalo"></div><div id="g-h2" class="halo pairhalo"></div>
+        <svg id="g-b1" class="pair lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg>
+        <svg id="g-b2" class="pair lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg>
+        <div id="g-l1" class="lbl">2 imóveis</div><div id="g-l2" class="lbl">—</div>
+        <div id="g-s1" class="stamp">NÃO PAGA</div>
+        <div id="g-s2" class="stamp">TAMBÉM<small>NÃO PAGA</small></div>
+        <div class="abs center fonte" style="top:1190px">Exemplos ilustrativos · LC 214/2025, art. 251</div>
+      </div>
+      <video id="v-chaves" class="vid clip" src="assets/video/chaves.mp4" muted playsinline data-start="@@chA@@" data-duration="@@D:chA,chB@@" data-track-index="12"></video>
+      <div id="g-over" class="scene clip" data-start="@@chA@@" data-duration="@@D:chA,chB@@" data-track-index="13"><div class="full shade"></div><div class="abs center ovl-t1">Tem 2 imóveis?</div></div>
+
+      <div id="sceneH" class="scene clip" data-start="@@GH@@" data-duration="@@D:GH,HI@@" data-track-index="14">
+        <div id="h-title" class="abs center" style="top:300px"><div class="h1w" style="font-size:80px">Quem paga ainda tem</div><div class="h1w" style="font-size:80px;color:#E2C27F">desconto</div></div>
+        <div id="h-sign" class="sign">IMPOSTO</div>
+        <div id="h-tag" class="abs">−70%</div>
+        <div id="h-bar" class="abs"><div id="h-fill"></div></div>
+        <div id="h-cap" class="abs center">paga só 30% da alíquota cheia</div>
+        <div class="abs center fonte" style="top:1150px">LC 214/2025, art. 261</div>
+      </div>
+
+      <div id="sceneI" class="scene clip" data-start="@@HI@@" data-duration="@@D:HI,ENDV@@" data-track-index="15">
+        <div id="i-card" class="abs">
+          <div id="i-hd" class="abs">Comentários</div><div id="i-line" class="abs"></div>
+          <div id="i-post" class="abs"><div id="i-av"></div><div><div id="i-who">você</div><div id="i-txt">CONTA</div></div></div>
+          <div id="i-input" class="abs"></div><div id="i-typed" class="abs"></div><div id="i-ph" class="abs">Adicione um comentário…</div>
+          <div id="i-send" class="abs"><svg width="44" height="44" viewBox="0 0 44 44"><path d="M6 8 L40 22 L6 36 L13 22 Z" fill="#fff"/></svg></div>
+        </div>
+        <div id="i-dm" class="abs"><div class="ok">✓</div><div><div class="t1">Sua conta chega no direct</div><div class="t2">@@MARCA_ARROBA@@</div></div></div>
+      </div>
+      <video id="v-calc" class="vid clip" src="assets/video/calc.mp4" muted playsinline data-start="@@caA@@" data-duration="@@D:caA,caB@@" data-track-index="16"></video>
+      <div id="i-over" class="scene clip" data-start="@@caA@@" data-duration="@@D:caA,caB@@" data-track-index="17"><div class="full shade"></div><div class="abs center ovl-t1">Quer que eu faça<br><span style="color:#E2C27F">a sua conta?</span></div></div>
+
+      <div id="sceneJ" class="scene clip" data-start="@@ENDV@@" data-duration="@@D:ENDV,DUR@@" data-track-index="18">
+        <div id="j-c1" class="abs center">Comenta</div>
+        <div id="j-pill" class="abs center"><span>CONTA</span></div>
+        <div id="j-c2" class="abs center">que eu faço a sua conta</div>
+        <div id="j-line" class="abs"></div>
+        <div id="j-name" class="abs center">@@MARCA_NOME@@</div>
+        <div id="j-creci" class="abs center">@@MARCA_CARGO@@</div>
+        <div id="j-at" class="abs center">@@MARCA_ARROBA@@</div>
+        <div id="j-logo" class="abs"><img src="assets/@@MARCA_LOGO@@" alt="logo"></div>
+        <div id="j-note" class="abs center">Conteúdo informativo · consulte seu contador</div>
+      </div>
+
+      <div id="cap" class="clip" data-start="0" data-duration="@@DUR@@" data-track-index="19"></div>
+      <audio id="som" src="assets/som.wav" data-start="0" data-duration="@@DUR@@" data-volume="1"></audio>
+
+      <svg width="0" height="0" style="position:absolute">
+        <defs>
+          <g id="lampshape">
+            <path d="M150 20 C 65 20, 20 90, 20 160 C 20 225, 70 260, 95 300 L 205 300 C 230 260, 280 225, 280 160 C 280 90, 235 20, 150 20 Z" fill="currentColor" stroke="#C9D2E3" stroke-width="8"/>
+            <rect x="100" y="305" width="100" height="22" rx="8" fill="#8A97AD"/><rect x="108" y="332" width="84" height="20" rx="8" fill="#6B7A93"/><rect x="125" y="356" width="50" height="16" rx="8" fill="#56637A"/>
+            <path d="M120 230 L 135 150 L 150 200 L 165 150 L 180 230" fill="none" stroke="#C9D2E3" stroke-width="7" stroke-linejoin="round"/>
+          </g>
+          <g id="houseshape"><path d="M90 8 L 170 78 L 150 78 L 150 142 L 30 142 L 30 78 L 10 78 Z" fill="currentColor"/><rect x="75" y="98" width="30" height="44" rx="6" fill="#0B1F3A"/></g>
+        </defs>
+      </svg>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const WS = @@WORDS@@; const S = (i) => WS[i][0], E = (i) => WS[i][1];
+      const CUT = { AB: @@AB@@, BC: @@BC@@, CD: @@CD@@, DE: @@DE@@, EF: @@EF@@, FG: @@FG@@, GH: @@GH@@, HI: @@HI@@ }, ENDV = @@ENDV@@, DUR = @@DUR@@;
+      const blurIn = (sel, t, d = 0.2) => tl.fromTo(sel, { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)', duration: d, ease: 'power4.out' }, t);
+      const blurOut = (sel, t, d = 0.22) => tl.to(sel, { opacity: 0, filter: 'blur(12px)', duration: d, ease: 'power3.in' }, t);
+      const lampOn = (sel, halo, t) => { tl.to(sel, { color: '#FFD678', duration: 0.12, ease: 'power2.out' }, t); tl.fromTo(halo, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' }, t); tl.fromTo(sel, { scale: 1 }, { scale: 1.08, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, t); };
+
+      // ---------- A · gancho (frame 0 já mostra a pergunta) ----------
+      tl.fromTo('#a-l1', { scale: 1.05 }, { scale: 1, duration: 0.6, ease: 'expo.out' }, 0);
+      blurIn('#a-l2', S(3));
+      tl.fromTo('#a-pill', { scale: 0.2, opacity: 0, y: 40 }, { scale: 1, opacity: 1, y: 0, duration: 0.55, ease: 'back.out(1.6)' }, S(11) - 0.15);
+      tl.fromTo('#a-year-strip', { y: 0 }, { y: -690, duration: S(18) - S(11) + 0.1, ease: 'power3.out' }, S(11) - 0.1);
+      tl.fromTo('#a-under', { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: 'expo.out' }, S(18));
+      tl.fromTo('#a-tag', { opacity: 0, scale: 1.25, filter: 'blur(8px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'expo.out' }, S(11) + 0.05);
+      blurOut('#a-l1, #a-l2, #a-tag, #a-under', CUT.AB - 0.4, 0.25);
+      tl.to('#a-year', { opacity: 0, duration: 0.15 }, CUT.AB - 0.35);
+      tl.to('#a-pill', { scale: 9, borderRadius: '0px', backgroundColor: '#F3F4F6', duration: 0.45, ease: 'power2.in' }, CUT.AB - 0.35);
+
+      // ---------- B · 2027 olha para 2026 ----------
+      blurIn('#b-t1', S(19)); blurIn('#b-t2', S(27));
+      tl.fromTo('#cal27', { y: -1300, rotation: -8 }, { y: 0, rotation: 0, duration: 0.7, ease: 'back.out(1.3)' }, S(21));
+      tl.fromTo('#cal26', { x: 0 }, { x: 600, duration: 0.6, ease: 'power3.out' }, S(33) - 0.1);
+      tl.to('#cal27', { x: 260, duration: 0.6, ease: 'power2.inOut' }, S(33) - 0.1);
+      tl.fromTo('#b-arrow-path', { strokeDasharray: 600, strokeDashoffset: 600 }, { strokeDashoffset: 0, duration: 0.45, ease: 'power2.out' }, S(35));
+      tl.fromTo('#b-arrow-head', { opacity: 0 }, { opacity: 1, duration: 0.1 }, S(35) + 0.4);
+      tl.fromTo('#b-glow', { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' }, S(39));
+      blurIn('#b-label', S(39));
+      tl.fromTo('#cal26', { scale: 1 }, { scale: 1.06, duration: 0.12, yoyo: true, repeat: 3, ease: 'power2.out' }, S(40) + 0.36);
+      for (let i = 0; i < 6; i++) {
+        const c = document.createElement('div'); c.className = 'coin'; c.id = 'coin' + i; c.textContent = 'R$'; c.style.left = (180 + (i % 3) * 70) + 'px'; c.style.top = '300px';
+        document.getElementById('coins').appendChild(c);
+        tl.fromTo(c, { y: -200, opacity: 0, rotation: -30 }, { y: 560, opacity: 1, rotation: 0, duration: 0.38, ease: 'power2.in' }, S(40) + i * 0.08);
+        tl.to(c, { opacity: 0, scale: 0.3, duration: 0.12, ease: 'power3.in' }, S(40) + i * 0.08 + 0.36);
+      }
+      blurOut('#b-title, #b-label, #b-arrow', CUT.BC - 0.3);
+      tl.to('#cal27, #cal26, #b-glow', { scale: 0.85, opacity: 0, filter: 'blur(10px)', duration: 0.3, ease: 'power3.in' }, CUT.BC - 0.25);
+
+      // ---------- C · navy: calma + duas luzes ----------
+      tl.fromTo('#flood', { clipPath: 'circle(0px at 540px 760px)' }, { clipPath: 'circle(1500px at 540px 760px)', duration: 0.5, ease: 'power2.inOut' }, CUT.BC - 0.1);
+      tl.fromTo('#c-l1 .w', { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.18, stagger: S(43) - S(42), ease: 'power4.out' }, S(42));
+      blurIn('#c-l2', S(44));
+      tl.to('#c-l1', { y: -130, scale: 0.6, transformOrigin: '50% 0%', duration: 0.5, ease: 'power2.inOut' }, S(48) - 0.1);
+      tl.to('#c-l2', { y: -150, duration: 0.5, ease: 'power2.inOut' }, S(48) - 0.1);
+      tl.fromTo('#bulb1', { y: -900, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'elastic.out(1, 0.6)' }, S(48));
+      tl.fromTo('#bulb2', { y: -900, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'elastic.out(1, 0.6)' }, S(50));
+      tl.to('#sceneC', { x: 230, duration: 0.3, ease: 'power2.inOut' }, CUT.CD - 0.35);
+      blurOut('#c-l1, #c-l2, #bulb2', CUT.CD - 0.3, 0.25);
+      tl.to('#bulb1', { scale: 5, transformOrigin: '150px 390px', opacity: 0, duration: 0.4, ease: 'power3.in' }, CUT.CD - 0.15);
+
+      // ---------- D · luz 1 ----------
+      tl.fromTo('#d-bulb', { scale: 1.6, opacity: 0, filter: 'blur(12px)' }, { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.45, ease: 'expo.out' }, CUT.CD + 0.05);
+      tl.fromTo('#sceneD .kicker', { opacity: 0, scale: 1.3, filter: 'blur(8px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'expo.out' }, S(52));
+      blurIn('#d-title', S(56) - 0.1);
+      blurIn('#d-sub', S(59));
+      ['#h1', '#h2', '#h3', '#h4'].forEach((h, i) => { const t0 = S(58) + i * ((S(60) - S(58)) / 3);
+        tl.fromTo(h, { y: 60, opacity: 0, scale: 0.7 }, { y: 0, opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.8)' }, t0);
+        tl.to(h, { color: i === 3 ? '#E2C27F' : '#FFFFFF', duration: 0.12 }, t0 + 0.05); tl.to(h + ' .n', { color: i === 3 ? '#E2C27F' : '#FFFFFF', duration: 0.12 }, t0 + 0.05); });
+      lampOn('#d-bulb', '#d-halo', S(60) + 0.1);
+      tl.to('#sceneD', { x: -1080, duration: 0.35, ease: 'power3.in' }, CUT.DE - 0.2);
+
+      // ---------- E · luz 2 (dinheiro somando) ----------
+      tl.fromTo('#sceneE', { x: 1080 }, { x: 0, duration: 0.4, ease: 'power3.out' }, CUT.DE);
+      tl.fromTo('#sceneE .kicker', { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'expo.out' }, S(64));
+      blurIn('#e-title', S(66) - 0.1); blurIn('#e-sub', S(75));
+      const cnt = { v: 0 }; tl.fromTo(cnt, { v: 0 }, { v: 240, duration: E(73) - S(70), ease: 'power2.out', onUpdate: () => { document.getElementById('e-num').textContent = 'R$ ' + Math.round(cnt.v) + ' mil'; } }, S(70));
+      tl.fromTo('#v-din', { opacity: 0 }, { opacity: 1, duration: 0.25 }, S(66) - 0.1);
+      tl.fromTo('#e-chip', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: 'back.out(1.6)' }, S(78));
+      tl.to('#v-din', { opacity: 0, duration: 0.2 }, S(79) - 0.05);
+      tl.fromTo('#e-bulb', { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.6)' }, S(79) - 0.05);
+      lampOn('#e-bulb', '#e-halo', S(79) + 0.15);
+
+      // ---------- F · as duas acesas ligam o imposto ----------
+      blurIn('#f-title', CUT.EF + 0.05);
+      tl.fromTo('#f-b1, #f-b2', { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'expo.out', stagger: 0.1 }, CUT.EF + 0.1);
+      tl.fromTo('#f-sign', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'expo.out' }, S(81));
+      lampOn('#f-b1', '#f-h1', S(86)); lampOn('#f-b2', '#f-h2', S(86) + 0.18);
+      tl.to('#f-sign', { borderColor: '#E5484D', color: '#FF6B6F', boxShadow: '0 0 60px rgba(229,72,77,0.7)', duration: 0.15, ease: 'power2.out' }, S(87) + 0.1);
+      tl.fromTo('#f-sign', { scale: 1 }, { scale: 1.08, duration: 0.12, yoyo: true, repeat: 1 }, S(87) + 0.1);
+      tl.to('#sceneF', { y: -1920, duration: 0.4, ease: 'power3.in' }, CUT.FG - 0.25);
+
+      // ---------- G · exemplos ----------
+      tl.fromTo('#v-chaves', { opacity: 0 }, { opacity: 1, duration: 0.15 }, CUT.FG - 0.05);
+      tl.to('#v-chaves, #g-over', { opacity: 0, duration: 0.2 }, S(91) - 0.32);
+      tl.fromTo('#g-t1', { opacity: 0 }, { opacity: 1, duration: 0.2 }, S(91) - 0.32);
+      tl.fromTo('#g-b1, #g-b2', { opacity: 1 }, { opacity: 1, duration: 0.01 }, CUT.FG);
+      tl.fromTo('#g-s1', { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.18, ease: 'power3.in' }, S(91) - 0.02);
+      tl.to('#g-s1', { opacity: 0, duration: 0.15 }, S(93) - 0.25);
+      blurOut('#g-t1', S(93) - 0.25, 0.18); blurIn('#g-t2', S(93));
+      tl.to('#g-l1', { opacity: 0, duration: 0.1 }, S(93) - 0.2); tl.call(() => { }, null, 0);
+      tl.fromTo('#g-l1', { textContent: '2 imóveis' }, { textContent: '5 imóveis', duration: 0.01 }, S(94) - 0.05);
+      tl.to('#g-l1', { opacity: 1, duration: 0.15 }, S(94) - 0.05);
+      lampOn('#g-b1', '#g-h1', S(94) + 0.1);
+      tl.fromTo('#g-l2', { textContent: '—' }, { textContent: 'R$ 200 mil', duration: 0.01 }, S(97));
+      tl.to('#g-b2', { color: '#5B6E92', duration: 0.06, yoyo: true, repeat: 3 }, S(98) + 0.1);
+      tl.fromTo('#g-s2', { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.18, ease: 'power3.in' }, S(99) - 0.02);
+      tl.to('#sceneG', { x: -1080, duration: 0.35, ease: 'power3.in' }, CUT.GH - 0.2);
+
+      // ---------- H · desconto de 70% ----------
+      tl.fromTo('#sceneH', { x: 1080 }, { x: 0, duration: 0.4, ease: 'power3.out' }, CUT.GH);
+      tl.fromTo('#h-title', { opacity: 0 }, { opacity: 1, duration: 0.2 }, CUT.GH + 0.05);
+      tl.set('#h-sign', { borderColor: '#E5484D', color: '#FF6B6F', boxShadow: '0 0 60px rgba(229,72,77,0.6)' }, CUT.GH);
+      tl.fromTo('#h-tag', { opacity: 0, scale: 2.2, rotation: 12 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.2, ease: 'power3.in' }, S(108) - 0.05);
+      tl.fromTo('#h-fill', { scaleX: 1 }, { scaleX: 0.3, duration: 0.7, ease: 'expo.out' }, S(108) + 0.15);
+      tl.to('#h-fill', { backgroundColor: '#E2C27F', duration: 0.3 }, S(108) + 0.15);
+      blurIn('#h-cap', S(110));
+
+      // ---------- I · comentário ----------
+      tl.fromTo('#v-calc', { opacity: 0 }, { opacity: 1, duration: 0.15 }, CUT.HI - 0.05);
+      tl.to('#v-calc, #i-over', { opacity: 0, duration: 0.2 }, S(118) - 0.28);
+      tl.fromTo('#i-card', { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'expo.out' }, S(118) - 0.25);
+      const ty = { n: 0 }; tl.fromTo(ty, { n: 0 }, { n: 5, duration: Math.max(0.3, E(119) - S(119)), ease: 'none', onUpdate: () => { document.getElementById('i-typed').textContent = 'CONTA'.slice(0, Math.round(ty.n)); } }, S(119));
+      tl.fromTo('#i-send', { scale: 1 }, { scale: 0.88, duration: 0.08, yoyo: true, repeat: 1 }, E(119) + 0.08);
+      tl.to('#i-typed', { opacity: 0, duration: 0.05 }, E(119) + 0.15); tl.to('#i-ph', { opacity: 1, duration: 0.1 }, E(119) + 0.2);
+      tl.fromTo('#i-post', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: 'back.out(1.6)' }, E(119) + 0.15);
+      tl.fromTo('#i-dm', { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.35, ease: 'expo.out' }, S(123) - 0.1);
+      blurOut('#i-card, #i-dm', ENDV - 0.2, 0.2);
+
+      // ---------- J · cartão final ----------
+      [['#j-c1', 0], ['#j-pill', 0.12], ['#j-c2', 0.3], ['#j-line', 0.45], ['#j-name', 0.55], ['#j-creci', 0.65], ['#j-at', 0.75], ['#j-logo', 0.85], ['#j-note', 1.0]].forEach(([s, d]) =>
+        tl.fromTo(s, { opacity: 0, y: 24, filter: 'blur(8px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.35, ease: 'expo.out' }, ENDV + d));
+
+      // ---------- legenda presa às palavras ----------
+      const CAP = @@CAP@@; const capEl = document.getElementById('cap');
+      const lightAt = (t) => t >= CUT.AB && t < CUT.BC;
+      CAP.forEach((g, gi) => {
+        const t0 = g.t0, t1 = gi + 1 < CAP.length ? CAP[gi + 1].t0 : Math.min(DUR, g.w[g.w.length - 1][2] + 0.6), light = lightAt(t0);
+        const el = document.createElement('div'); el.className = 'cg' + (light ? ' light' : ''); el.id = 'cg' + gi; capEl.appendChild(el);
+        g.w.forEach(([w], j) => { const sp = document.createElement('span'); sp.className = 'cw'; sp.id = `cw${gi}_${j}`; sp.textContent = w; el.appendChild(sp); });
+        tl.fromTo(el, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.08, ease: 'power3.out' }, Math.max(0, t0 - 0.04));
+        tl.to(el, { opacity: 0, duration: 0.04 }, Math.min(t1 - 0.09, g.w[g.w.length - 1][2] + 0.5));
+        g.w.forEach(([w, a, b], j) => { const caps = w === w.toUpperCase() && /[A-ZÃÉÊÍÓÚ0-9]/.test(w), hi = light ? '#B8955A' : '#E2C27F', base = light ? '#1D1D1F' : '#FFFFFF';
+          tl.to(`#cw${gi}_${j}`, { color: hi, scale: 1.14, duration: 0.06 }, a - 0.02);
+          tl.to(`#cw${gi}_${j}`, { color: caps ? hi : base, scale: 1, duration: 0.15 }, b); });
+      });
+      tl.to('#cap', { opacity: 0, duration: 0.2 }, ENDV - 0.1);
+
+      window.__timelines['main'] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

@@ -9,124 +9,144 @@
       @font-face { font-family: "InterSemi"; src: url("assets/fonts/InterSemi.otf"); }
       @font-face { font-family: "InterMed"; src: url("assets/fonts/InterMed.otf"); }
       @font-face { font-family: "Instr"; src: url("assets/fonts/Instr.ttf"); }
-      /* Vista Broker: fundo claro + navy + dourado; legenda dentro da faixa segura (168–1330 px) */
-      :root { --ground: #F3F4F6; --navy: #0B1F3A; --ink: #1D1D1F; --mute: #86868B; --gold: #C9A86A; --gold2: #E2C27F; --red: #D62828; --card: #FFFFFF; }
+      /* Vista Broker · claro + navy + dourado · texto entre 168 e 1330 px (área segura do Reels) */
+      :root { --ground: #F3F4F6; --navy: #0B1F3A; --ink: #1D1D1F; --mute: #86868B; --gold: #C9A86A; --gold2: #E2C27F; --red: #E5484D; --green: #34C77B; --lamp-off: #2A3F63; --lamp-on: #FFD678; }
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--ground); }
       #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "InterSemi", sans-serif; color: var(--ink); }
-      .abs { position: absolute; }
-      .full { position: absolute; inset: 0; }
-      .scene { position: absolute; inset: 0; }
-      .center { left: 0; width: 1080px; text-align: center; }
-      .w { display: inline-block; white-space: pre; }
-      .card { background: var(--card); border-radius: 44px; box-shadow: 0 30px 70px rgba(16,24,40,0.14); }
+      .abs { position: absolute; } .full { position: absolute; inset: 0; } .scene { position: absolute; inset: 0; }
+      .center { left: 0; width: 1080px; text-align: center; } .w { display: inline-block; white-space: pre; }
+      .kicker { top: 250px; font-family: "InterBlack"; font-size: 40px; letter-spacing: 8px; color: var(--gold2); }
+      .h1w { font-family: "InterBlack"; font-size: 96px; color: #fff; line-height: 1.05; letter-spacing: -1px; }
+      .sub { font-family: "InterMed"; font-size: 44px; color: #A9B6CA; }
+      .fonte { top: 1170px; font-family: "InterMed"; font-size: 26px; color: #7F8DA6; }
+      .fonte.l { color: #8A8F98; }
+      .vid { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      .shade { background: linear-gradient(180deg, rgba(6,16,32,0.84) 0%, rgba(6,16,32,0.55) 45%, rgba(6,16,32,0.78) 100%); }
+      #a-l1, #a-l2, .ovl-t1 { text-shadow: 0 6px 30px rgba(0,0,0,0.45); }
+      .ovl-t1 { top: 330px; font-family: "InterBlack"; font-size: 100px; line-height: 1.04; color: #fff; letter-spacing: -2px; }
 
-      /* fundo */
       #ground { background: radial-gradient(1200px 900px at 50% 45%, #FFFFFF 0%, #F3F4F6 55%, #E9EAED 100%); }
-      #flood { background: radial-gradient(1200px 1000px at 50% 45%, #13305A 0%, #0B1F3A 60%, #071328 100%); clip-path: circle(0px at 540px 760px); }
+      #flood { background: radial-gradient(1200px 1000px at 50% 42%, #13305A 0%, #0B1F3A 60%, #071328 100%); clip-path: circle(0px at 540px 760px); }
 
-      /* cena A: gancho sobre o vídeo */
-      #a-cam { position: absolute; inset: 0; transform-origin: 50% 45%; }
-      #a-video { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
-      #a-shade { background: linear-gradient(180deg, rgba(6,16,32,0.62) 0%, rgba(6,16,32,0.25) 40%, rgba(6,16,32,0.55) 100%); }
+      /* A · gancho */
       #a-l1 { top: 330px; font-family: "InterBlack"; font-size: 104px; line-height: 1.02; color: #fff; letter-spacing: -2px; }
-      #a-l2 { top: 600px; font-family: "InterSemi"; font-size: 54px; color: rgba(255,255,255,0.9); }
+      #a-l2 { top: 606px; font-family: "InterSemi"; font-size: 46px; color: rgba(255,255,255,0.92); }
       #a-pill { left: 240px; top: 720px; width: 600px; height: 300px; border-radius: 150px; background: #fff; box-shadow: 0 30px 80px rgba(0,0,0,0.35); overflow: hidden; }
       #a-year { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 190px; color: var(--navy); letter-spacing: -6px; }
-      #a-year-roll { position: relative; height: 230px; overflow: hidden; }
-      #a-year-strip { display: flex; flex-direction: column; }
-      #a-year-strip span { height: 230px; line-height: 230px; display: block; }
+      #a-year-roll { position: relative; height: 230px; overflow: hidden; } #a-year-strip span { height: 230px; line-height: 230px; display: block; }
       #a-under { left: 330px; top: 1000px; width: 420px; height: 14px; border-radius: 7px; background: var(--red); transform-origin: 0 50%; }
       #a-tag { top: 1075px; font-family: "InterBlack"; font-size: 40px; color: var(--gold2); letter-spacing: 4px; }
 
-      /* cena B: 2027 olha para 2026 */
-      #b-track { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+      /* B · 2027 olha para 2026 */
       .cal { position: absolute; width: 400px; height: 440px; border-radius: 44px; background: #fff; box-shadow: 0 30px 70px rgba(16,24,40,0.16); overflow: hidden; }
-      .cal .hd { height: 110px; background: var(--red); color: #fff; font-family: "InterBlack"; font-size: 34px; letter-spacing: 4px; display: flex; align-items: center; justify-content: center; }
+      .cal .hd { height: 110px; background: #D62828; color: #fff; font-family: "InterBlack"; font-size: 34px; letter-spacing: 4px; display: flex; align-items: center; justify-content: center; }
       .cal .yr { height: 330px; display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 150px; color: var(--navy); letter-spacing: -5px; }
-      #cal27 { left: 340px; top: 650px; }
-      #cal26 { left: -520px; top: 650px; }
-      #cal26 .hd { background: var(--navy); }
-      #b-title { top: 300px; }
-      #b-t1 { font-family: "InterSemi"; font-size: 60px; color: var(--ink); }
-      #b-t2 { font-family: "InterBlack"; font-size: 84px; color: var(--gold); letter-spacing: -1px; }
+      #cal27 { left: 340px; top: 650px; } #cal26 { left: -520px; top: 650px; } #cal26 .hd { background: var(--navy); }
+      #b-title { top: 300px; } #b-t1 { font-family: "InterSemi"; font-size: 60px; color: var(--ink); } #b-t2 { font-family: "InterBlack"; font-size: 84px; color: var(--gold); letter-spacing: -1px; }
       #b-label { top: 1130px; font-family: "InterSemi"; font-size: 40px; color: var(--mute); }
-      #b-arrow { left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
       #b-glow { left: 40px; top: 610px; width: 480px; height: 520px; border-radius: 70px; background: radial-gradient(closest-side, rgba(226,194,127,0.55), rgba(226,194,127,0)); }
-      .coin { position: absolute; width: 74px; height: 74px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #F6E2AE, #D7B56F 60%, #A9843F); box-shadow: 0 8px 18px rgba(120,90,30,0.35); display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 26px; color: #7A5A22; }
+      .coin { position: absolute; width: 74px; height: 74px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #F6E2AE, #D7B56F 60%, #A9843F); box-shadow: 0 8px 18px rgba(120,90,30,0.35); display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 28px; color: #7A5A22; }
 
-      /* cena C: calma + duas luzes */
-      #c-l1 { top: 300px; font-family: "Instr"; font-size: 170px; color: var(--gold2); }
-      #c-l2 { top: 520px; font-family: "InterSemi"; font-size: 58px; color: #fff; }
-      .bulb { position: absolute; top: 300px; width: 300px; height: 700px; }
-      #bulb1 { left: 160px; } #bulb2 { left: 620px; }
+      /* lâmpadas */
+      .lampsvg { color: var(--lamp-off); }
+      .halo { position: absolute; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,214,120,0.9), rgba(255,214,120,0.3) 45%, rgba(255,214,120,0)); opacity: 0; }
+      #c-l1 { top: 300px; font-family: "Instr"; font-size: 170px; color: var(--gold2); } #c-l2 { top: 520px; font-family: "InterSemi"; font-size: 58px; color: #fff; }
+      .bulb { position: absolute; top: 300px; width: 300px; height: 700px; } #bulb1 { left: 160px; } #bulb2 { left: 620px; }
       .bulb .wire { position: absolute; left: 148px; top: -300px; width: 4px; height: 520px; background: linear-gradient(180deg, rgba(107,122,147,0) 0%, rgba(107,122,147,0) 80%, #6B7A93 88%); }
       .bulb .lamp { position: absolute; left: 0; top: 200px; width: 300px; height: 380px; }
       .bulb .num { position: absolute; left: 0; top: 590px; width: 300px; text-align: center; font-family: "InterBlack"; font-size: 64px; color: #fff; }
-      .halo { position: absolute; left: -210px; top: 30px; width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,214,120,0.85), rgba(255,214,120,0.25) 45%, rgba(255,214,120,0)); opacity: 0; }
 
-      /* cena D: luz 1 */
-      #d-kicker { top: 250px; font-family: "InterBlack"; font-size: 40px; letter-spacing: 8px; color: var(--gold2); }
-      #d-title { top: 330px; font-family: "InterBlack"; font-size: 96px; color: #fff; line-height: 1.05; }
-      #d-sub { top: 560px; font-family: "InterMed"; font-size: 44px; color: #A9B6CA; }
-      #d-bulb { left: 405px; top: 620px; width: 270px; height: 342px; }
-      #d-halo { left: 180px; top: 430px; width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,214,120,0.9), rgba(255,214,120,0.3) 45%, rgba(255,214,120,0)); opacity: 0; }
+      /* D/E · luz 1 e luz 2 */
+      #d-sub { top: 560px; } #d-bulb { left: 405px; top: 620px; width: 270px; height: 342px; } #d-halo { left: 180px; top: 430px; width: 720px; height: 720px; }
       #d-houses { left: 120px; top: 990px; width: 840px; height: 170px; display: flex; justify-content: space-between; }
-      .house { width: 180px; height: 170px; position: relative; }
-      .house svg { width: 180px; height: 150px; }
+      .house { width: 180px; height: 170px; position: relative; color: var(--lamp-off); } .house svg { width: 180px; height: 150px; }
       .house .n { position: absolute; left: 0; top: 150px; width: 180px; text-align: center; font-family: "InterBlack"; font-size: 30px; color: #6B7A93; }
+      #e-title { top: 320px; } #e-num { font-family: "InterBlack"; font-size: 120px; color: var(--gold2); letter-spacing: -3px; } #e-sub { top: 560px; }
+      #v-din { left: 140px; top: 660px; width: 800px; height: 440px; border-radius: 44px; object-fit: cover; }
+      #e-chip { top: 1060px; } .chip { display: inline-block; padding: 18px 36px; border-radius: 40px; background: var(--gold2); color: var(--navy); font-family: "InterBlack"; font-size: 36px; }
+      #e-bulb { left: 405px; top: 690px; width: 270px; height: 342px; } #e-halo { left: 180px; top: 500px; width: 720px; height: 720px; }
 
-      /* legenda (texto que será narrado) */
+      /* F/G/H · as duas luzes + placa IMPOSTO */
+      .pair { position: absolute; top: 500px; width: 260px; height: 330px; } #f-b1, #g-b1 { left: 170px; } #f-b2, #g-b2 { left: 650px; }
+      .pairhalo { position: absolute; top: 320px; width: 620px; height: 620px; } #f-h1, #g-h1 { left: -10px; } #f-h2, #g-h2 { left: 470px; }
+      .plus { top: 650px; font-family: "InterBlack"; font-size: 110px; color: #6B7A93; }
+      .sign { position: absolute; left: 240px; top: 960px; width: 600px; height: 150px; border-radius: 30px; border: 6px solid #3B4F72; display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 72px; letter-spacing: 6px; color: #3B4F72; }
+      .lbl { position: absolute; top: 845px; width: 340px; text-align: center; font-family: "InterBlack"; font-size: 36px; color: #A9B6CA; }
+      #g-l1 { left: 130px; } #g-l2 { left: 610px; }
+      .stamp { position: absolute; left: 190px; top: 955px; width: 700px; height: 210px; border-radius: 26px; border: 12px solid var(--green); color: var(--green); background: rgba(7,19,40,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 84px; line-height: 1; transform: rotate(-5deg); opacity: 0; }
+      .stamp small { font-size: 40px; margin-top: 8px; }
+      #h-sign { top: 560px; } #h-bar { left: 160px; top: 800px; width: 760px; height: 70px; border-radius: 35px; background: rgba(255,255,255,0.12); overflow: hidden; }
+      #h-fill { width: 760px; height: 70px; border-radius: 35px; background: var(--red); transform-origin: 0 50%; }
+      #h-tag { left: 418px; top: 905px; padding: 14px 28px; border-radius: 22px; background: var(--gold2); color: var(--navy); font-family: "InterBlack"; font-size: 72px; transform: rotate(-4deg); opacity: 0; }
+      #h-cap { top: 1060px; font-family: "InterSemi"; font-size: 44px; color: #fff; }
+
+      /* I · comentário · J · cartão final */
+      #i-card { left: 90px; top: 420px; width: 900px; height: 520px; border-radius: 44px; background: #fff; box-shadow: 0 30px 80px rgba(0,0,0,0.35); }
+      #i-hd { left: 0; top: 40px; width: 900px; text-align: center; font-family: "InterSemi"; font-size: 34px; color: var(--ink); }
+      #i-line { left: 0; top: 104px; width: 900px; height: 2px; background: #E3E3E8; }
+      #i-post { left: 60px; top: 150px; display: flex; align-items: center; gap: 26px; opacity: 0; }
+      #i-av { width: 84px; height: 84px; border-radius: 50%; background: #2A4A7A; } #i-who { font-family: "InterSemi"; font-size: 28px; color: var(--mute); } #i-txt { font-family: "InterBlack"; font-size: 60px; color: var(--ink); }
+      #i-input { left: 40px; top: 380px; width: 700px; height: 100px; border-radius: 50px; background: #F2F3F5; }
+      #i-typed { left: 80px; top: 404px; font-family: "InterBlack"; font-size: 52px; color: var(--ink); white-space: pre; }
+      #i-ph { left: 80px; top: 412px; font-family: "InterMed"; font-size: 34px; color: #A0A4AB; opacity: 0; }
+      #i-send { left: 770px; top: 380px; width: 100px; height: 100px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; }
+      #i-dm { left: 140px; top: 1000px; width: 800px; height: 130px; border-radius: 34px; background: #16365F; border: 3px solid rgba(226,194,127,0.5); display: flex; align-items: center; gap: 26px; padding-left: 40px; opacity: 0; }
+      #i-dm .ok { width: 76px; height: 76px; border-radius: 50%; background: var(--gold2); display: flex; align-items: center; justify-content: center; font-family: "InterBlack"; font-size: 40px; color: var(--navy); }
+      #i-dm .t1 { font-family: "InterSemi"; font-size: 34px; color: #fff; } #i-dm .t2 { font-family: "InterMed"; font-size: 26px; color: var(--gold2); }
+      #j-c1 { top: 300px; font-family: "InterBlack"; font-size: 100px; color: #fff; } #j-pill { top: 430px; }
+      #j-pill span { display: inline-block; padding: 26px 70px; border-radius: 80px; background: var(--gold2); color: var(--navy); font-family: "InterBlack"; font-size: 96px; }
+      #j-c2 { top: 620px; font-family: "InterSemi"; font-size: 46px; color: #A9B6CA; } #j-line { left: 240px; top: 720px; width: 600px; height: 2px; background: rgba(255,255,255,0.15); }
+      #j-name { top: 770px; font-family: "InterBlack"; font-size: 76px; color: #fff; } #j-creci { top: 870px; font-family: "InterMed"; font-size: 32px; color: #A9B6CA; }
+      #j-at { top: 940px; font-family: "InterSemi"; font-size: 40px; color: var(--gold2); }
+      #j-logo { left: 400px; top: 1020px; width: 280px; height: 145px; border-radius: 26px; background: #fff; display: flex; align-items: center; justify-content: center; } #j-logo img { width: 230px; }
+      #j-note { top: 1200px; font-family: "InterMed"; font-size: 26px; color: #7F8DA6; }
+
+      /* legenda */
       #cap { position: absolute; left: 0; top: 1235px; width: 1080px; height: 110px; text-align: center; font-family: "InterBlack"; font-size: 56px; }
-      .cg { position: absolute; left: 0; top: 0; width: 1080px; opacity: 0; }
-      .cw { display: inline-block; margin: 0 7px; color: rgba(255,255,255,0.45); -webkit-text-stroke: 0; }
-      .light .cw { color: rgba(29,29,31,0.3); }
+      .cg { position: absolute; left: 168px; top: 0; width: 744px; opacity: 0; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 30px; } .cw { display: inline-block; color: rgba(255,255,255,0.55); } .light .cw { color: rgba(29,29,31,0.3); }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1080" data-height="1920" data-motion-blur="on">
-      <div id="ground" class="full clip" data-start="0" data-duration="15" data-track-index="0"></div>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="42.6" data-width="1080" data-height="1920" data-motion-blur="on">
+      <div id="ground" class="full clip" data-start="0" data-duration="42.6" data-track-index="0"></div>
 
-      <!-- A · gancho (0–3,7 s) -->
-      <video id="a-video" class="clip" src="assets/video/predios.mp4" muted playsinline data-start="0" data-duration="3.75" data-track-index="1"></video>
-      <div id="sceneA" class="scene clip" data-start="0" data-duration="3.75" data-track-index="2">
-        <div id="a-shade" class="full"></div>
+      <video id="v-predios" class="vid clip" src="assets/video/predios.mp4" muted playsinline data-start="0" data-duration="5.48" data-track-index="1"></video>
+      <div id="sceneA" class="scene clip" data-start="0" data-duration="5.48" data-track-index="2">
+        <div class="full shade"></div>
         <div id="a-l1" class="abs center"><span class="w">Tem imóvel</span><br><span class="w">alugado?</span></div>
-        <div id="a-l2" class="abs center">Então faça esta conta ainda em</div>
+        <div id="a-l2" class="abs center">Então tem uma conta pra fazer ainda em</div>
         <div id="a-pill" class="abs"><div id="a-year"><div id="a-year-roll"><div id="a-year-strip"><span>2023</span><span>2024</span><span>2025</span><span>2026</span></div></div></div></div>
         <div id="a-under" class="abs"></div>
         <div id="a-tag" class="abs center">ANTES QUE O ANO ACABE</div>
       </div>
 
-      <!-- B · 2027 olha para 2026 (3,6–8,9 s) -->
-      <div id="sceneB" class="scene clip" data-start="3.6" data-duration="5.3" data-track-index="2">
+      <div id="sceneB" class="scene clip" data-start="5.48" data-duration="5.915" data-track-index="3">
         <div id="b-title" class="abs center"><div id="b-t1">Em 2027 começa</div><div id="b-t2">o imposto novo do aluguel</div></div>
-        <div id="b-track">
-          <div id="b-glow" class="abs"></div>
-          <div id="cal26" class="cal"><div class="hd">ESTE ANO</div><div class="yr">2026</div></div>
-          <div id="cal27" class="cal"><div class="hd">IMPOSTO NOVO</div><div class="yr">2027</div></div>
-          <div id="coins"></div>
-        </div>
-        <svg id="b-arrow" class="abs" viewBox="0 0 1080 1920"><path id="b-arrow-path" d="M 800 635 C 700 500, 380 500, 290 615" fill="none" stroke="#C9A86A" stroke-width="12" stroke-linecap="round"/><path id="b-arrow-head" d="M 258 587 L 290 625 L 332 596" fill="none" stroke="#C9A86A" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div id="b-glow" class="abs"></div>
+        <div id="cal26" class="cal"><div class="hd">ESTE ANO</div><div class="yr">2026</div></div>
+        <div id="cal27" class="cal"><div class="hd">IMPOSTO NOVO</div><div class="yr">2027</div></div>
+        <div id="coins"></div>
+        <svg id="b-arrow" class="abs" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920"><path id="b-arrow-path" d="M 800 635 C 700 500, 380 500, 290 615" fill="none" stroke="#C9A86A" stroke-width="12" stroke-linecap="round"/><path id="b-arrow-head" d="M 258 587 L 290 625 L 332 596" fill="none" stroke="#C9A86A" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <div id="b-label" class="abs center">a conta usa o que você recebeu em 2026</div>
+        <div class="abs center fonte l" style="top:1190px">Critério do ano anterior · LC 214/2025, art. 251</div>
       </div>
 
-      <!-- C · fundo navy: calma + duas luzes (8,6–12,6 s) -->
-      <div id="flood" class="full clip" data-start="8.5" data-duration="6.5" data-track-index="3"></div>
-      <div id="sceneC" class="scene clip" data-start="8.6" data-duration="4.0" data-track-index="4">
+      <div id="flood" class="full clip" data-start="11.395" data-duration="31.205" data-track-index="4"></div>
+
+      <div id="sceneC" class="scene clip" data-start="11.395" data-duration="3.73" data-track-index="5">
         <div id="c-l1" class="abs center"><span class="w">Mas </span><span class="w">calma.</span></div>
         <div id="c-l2" class="abs center">A regra é simples: duas luzes.</div>
-        <div id="bulb1" class="bulb"><div class="wire"></div><svg class="lamp" viewBox="0 0 300 380"><use href="#lampshape"/></svg><div class="halo" id="halo1"></div><div class="num">1</div></div>
-        <div id="bulb2" class="bulb"><div class="wire"></div><svg class="lamp" viewBox="0 0 300 380"><use href="#lampshape"/></svg><div class="halo"></div><div class="num">2</div></div>
+        <div id="bulb1" class="bulb"><div class="wire"></div><svg class="lamp lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg><div class="num">1</div></div>
+        <div id="bulb2" class="bulb"><div class="wire"></div><svg class="lamp lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg><div class="num">2</div></div>
       </div>
 
-      <!-- D · luz 1 (12,3–15 s) -->
-      <div id="sceneD" class="scene clip" data-start="12.3" data-duration="2.7" data-track-index="5">
-        <div id="d-kicker" class="abs center">LUZ 1</div>
-        <div id="d-title" class="abs center">Mais de 3 imóveis<br>alugados</div>
-        <div id="d-sub" class="abs center">no seu nome (CPF)</div>
-        <div id="d-halo" class="abs"></div>
-        <svg id="d-bulb" class="abs" viewBox="0 0 300 380"><use id="d-lamp" href="#lampshape"/></svg>
+      <div id="sceneD" class="scene clip" data-start="15.125" data-duration="3.66" data-track-index="6">
+        <div class="abs center kicker">LUZ 1</div>
+        <div id="d-title" class="abs center h1w" style="top:330px">Mais de 3 imóveis<br>alugados</div>
+        <div id="d-sub" class="abs center sub">no seu nome (CPF)</div>
+        <div id="d-halo" class="abs halo"></div>
+        <svg id="d-bulb" class="abs lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg>
         <div id="d-houses" class="abs">
           <div class="house" id="h1"><svg viewBox="0 0 180 150"><use href="#houseshape"/></svg><div class="n">1</div></div>
           <div class="house" id="h2"><svg viewBox="0 0 180 150"><use href="#houseshape"/></svg><div class="n">2</div></div>
@@ -135,9 +155,75 @@
         </div>
       </div>
 
-      <div id="cap" class="clip" data-start="0" data-duration="15" data-track-index="6"></div>
+      <div id="sceneE" class="scene clip" data-start="18.785" data-duration="5.065" data-track-index="7">
+        <div class="abs center kicker">LUZ 2</div>
+        <div id="e-title" class="abs center"><div class="h1w">Mais de</div><div id="e-num">R$ 0 mil</div></div>
+        <div id="e-sub" class="abs center sub">de aluguel por ano</div>
+        <div id="e-halo" class="abs halo"></div>
+        <svg id="e-bulb" class="abs lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg>
+        <div id="e-chip" class="abs center"><span class="chip">somando todos os aluguéis</span></div>
+      </div>
+      <video id="v-din" class="clip" src="assets/video/dinheiro.mp4" muted playsinline data-start="19.79" data-duration="3.63" data-track-index="8"></video>
 
-      <audio id="trilha" src="assets/som.wav" data-start="0" data-duration="15" data-volume="1"></audio>
+      <div id="sceneF" class="scene clip" data-start="23.85" data-duration="2.86" data-track-index="10">
+        <div id="f-title" class="abs center" style="top:270px"><div class="h1w" style="font-size:80px">O imposto só liga</div><div class="h1w" style="font-size:80px;color:#E2C27F">se as DUAS acenderem</div></div>
+        <div id="f-h1" class="halo pairhalo"></div><div id="f-h2" class="halo pairhalo"></div>
+        <svg id="f-b1" class="pair lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg>
+        <div class="abs center plus">+</div>
+        <svg id="f-b2" class="pair lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg>
+        <div id="f-sign" class="sign">IMPOSTO</div>
+        <div class="abs center fonte" style="top:1150px">LC 214/2025, art. 251 · Decreto 12.955/2026</div>
+      </div>
+
+      <div id="sceneG" class="scene clip" data-start="26.71" data-duration="5.385" data-track-index="11">
+        <div id="g-t1" class="abs center h1w" style="top:300px;font-size:84px">Tem 2 imóveis?</div>
+        <div id="g-t2" class="abs center h1w" style="top:270px;font-size:72px;opacity:0">Tem 5, mas recebe<br><span style="color:#E2C27F">R$ 200 mil?</span></div>
+        <div id="g-h1" class="halo pairhalo"></div><div id="g-h2" class="halo pairhalo"></div>
+        <svg id="g-b1" class="pair lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg>
+        <svg id="g-b2" class="pair lampsvg" viewBox="0 0 300 380"><use href="#lampshape"/></svg>
+        <div id="g-l1" class="lbl">2 imóveis</div><div id="g-l2" class="lbl">—</div>
+        <div id="g-s1" class="stamp">NÃO PAGA</div>
+        <div id="g-s2" class="stamp">TAMBÉM<small>NÃO PAGA</small></div>
+        <div class="abs center fonte" style="top:1190px">Exemplos ilustrativos · LC 214/2025, art. 251</div>
+      </div>
+      <video id="v-chaves" class="vid clip" src="assets/video/chaves.mp4" muted playsinline data-start="26.66" data-duration="1.42" data-track-index="12"></video>
+      <div id="g-over" class="scene clip" data-start="26.66" data-duration="1.42" data-track-index="13"><div class="full shade"></div><div class="abs center ovl-t1">Tem 2 imóveis?</div></div>
+
+      <div id="sceneH" class="scene clip" data-start="32.095" data-duration="3.325" data-track-index="14">
+        <div id="h-title" class="abs center" style="top:300px"><div class="h1w" style="font-size:80px">Quem paga ainda tem</div><div class="h1w" style="font-size:80px;color:#E2C27F">desconto</div></div>
+        <div id="h-sign" class="sign">IMPOSTO</div>
+        <div id="h-tag" class="abs">−70%</div>
+        <div id="h-bar" class="abs"><div id="h-fill"></div></div>
+        <div id="h-cap" class="abs center">paga só 30% da alíquota cheia</div>
+        <div class="abs center fonte" style="top:1150px">LC 214/2025, art. 261</div>
+      </div>
+
+      <div id="sceneI" class="scene clip" data-start="35.42" data-duration="3.78" data-track-index="15">
+        <div id="i-card" class="abs">
+          <div id="i-hd" class="abs">Comentários</div><div id="i-line" class="abs"></div>
+          <div id="i-post" class="abs"><div id="i-av"></div><div><div id="i-who">você</div><div id="i-txt">CONTA</div></div></div>
+          <div id="i-input" class="abs"></div><div id="i-typed" class="abs"></div><div id="i-ph" class="abs">Adicione um comentário…</div>
+          <div id="i-send" class="abs"><svg width="44" height="44" viewBox="0 0 44 44"><path d="M6 8 L40 22 L6 36 L13 22 Z" fill="#fff"/></svg></div>
+        </div>
+        <div id="i-dm" class="abs"><div class="ok">✓</div><div><div class="t1">Sua conta chega no direct</div><div class="t2">@vistabroker.perioto</div></div></div>
+      </div>
+      <video id="v-calc" class="vid clip" src="assets/video/calc.mp4" muted playsinline data-start="35.37" data-duration="1.64" data-track-index="16"></video>
+      <div id="i-over" class="scene clip" data-start="35.37" data-duration="1.64" data-track-index="17"><div class="full shade"></div><div class="abs center ovl-t1">Quer que eu faça<br><span style="color:#E2C27F">a sua conta?</span></div></div>
+
+      <div id="sceneJ" class="scene clip" data-start="39.2" data-duration="3.4" data-track-index="18">
+        <div id="j-c1" class="abs center">Comenta</div>
+        <div id="j-pill" class="abs center"><span>CONTA</span></div>
+        <div id="j-c2" class="abs center">que eu faço a sua conta</div>
+        <div id="j-line" class="abs"></div>
+        <div id="j-name" class="abs center">Pedro Perioto</div>
+        <div id="j-creci" class="abs center">Corretor de imóveis · CRECI 258729</div>
+        <div id="j-at" class="abs center">@vistabroker.perioto</div>
+        <div id="j-logo" class="abs"><img src="assets/vista.png" alt="Vista"></div>
+        <div id="j-note" class="abs center">Conteúdo informativo · consulte seu contador</div>
+      </div>
+
+      <div id="cap" class="clip" data-start="0" data-duration="42.6" data-track-index="19"></div>
+      <audio id="som" src="assets/som.wav" data-start="0" data-duration="42.6" data-volume="1"></audio>
 
       <svg width="0" height="0" style="position:absolute">
         <defs>
@@ -154,89 +240,140 @@
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      const P = (s, x) => tl.set(s, x, 0);
+      const WS = [[0.3, 0.35], [0.44, 0.76], [0.76, 1.25], [1.57, 1.88], [1.94, 1.97], [2, 2.13], [2.28, 2.57], [2.62, 2.66], [2.67, 2.9], [2.95, 3.28], [3.29, 3.77], [3.79, 4.19], [4.19, 4.25], [4.27, 4.51], [4.51, 4.6], [4.6, 4.63], [4.64, 4.79], [4.8, 4.8], [4.83, 5.19], [5.77, 5.95], [5.95, 5.98], [6.01, 6.22], [6.22, 6.32], [6.32, 6.36], [6.37, 6.53], [6.55, 6.55], [6.56, 6.88], [6.91, 7.26], [7.26, 7.34], [7.34, 7.7], [7.71, 8.02], [8.02, 8.16], [8.16, 8.62], [8.89, 8.96], [9, 9.14], [9.22, 9.5], [9.56, 9.61], [9.66, 9.69], [9.7, 9.93], [9.94, 10.5], [10.5, 10.82], [10.87, 11.09], [11.7, 11.83], [11.89, 12.13], [12.36, 12.4], [12.41, 12.66], [12.66, 12.73], [12.74, 13.24], [13.82, 14.05], [14.05, 14.24], [14.27, 14.51], [14.51, 14.85], [15.4, 15.6], [15.6, 15.75], [16.05, 16.27], [16.31, 16.37], [16.37, 16.63], [16.63, 16.7], [16.8, 17.11], [17.11, 17.54], [17.54, 18.01], [18.01, 18.1], [18.11, 18.25], [18.26, 18.52], [19.05, 19.19], [19.21, 19.55], [19.89, 20.07], [20.08, 20.43], [20.44, 20.67], [20.68, 20.77], [20.77, 21.28], [21.28, 21.3], [21.36, 21.66], [21.67, 21.9], [21.9, 21.98], [22.01, 22.31], [22.38, 22.49], [22.49, 22.67], [22.8, 23.17], [23.27, 23.5], [24.2, 24.23], [24.23, 24.67], [24.68, 24.82], [24.83, 25.08], [25.09, 25.22], [25.25, 25.38], [25.53, 25.81], [25.81, 26.32], [27.1, 27.17], [27.19, 27.4], [27.4, 27.83], [28.2, 28.32], [28.35, 28.61], [29.11, 29.25], [29.26, 29.54], [29.59, 29.81], [29.82, 30.16], [30.16, 30.57], [30.57, 30.75], [31.18, 31.58], [31.58, 31.83], [32.36, 32.42], [32.47, 32.63], [32.72, 32.99], [32.99, 33.25], [33.29, 33.39], [33.42, 33.81], [33.81, 33.9], [33.91, 34.58], [34.66, 34.74], [34.75, 35.1], [35.74, 35.88], [35.93, 35.94], [35.95, 35.99], [36.01, 36.22], [36.22, 36.23], [36.25, 36.38], [36.44, 36.68], [37.09, 37.4], [37.54, 37.87], [37.97, 38.04], [38.07, 38.12], [38.14, 38.18], [38.19, 38.49], [38.5, 38.54], [38.54, 38.95]]; const S = (i) => WS[i][0], E = (i) => WS[i][1];
+      const CUT = { AB: 5.48, BC: 11.395, CD: 15.125, DE: 18.785, EF: 23.85, FG: 26.71, GH: 32.095, HI: 35.42 }, ENDV = 39.2, DUR = 42.6;
+      const blurIn = (sel, t, d = 0.2) => tl.fromTo(sel, { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)', duration: d, ease: 'power4.out' }, t);
+      const blurOut = (sel, t, d = 0.22) => tl.to(sel, { opacity: 0, filter: 'blur(12px)', duration: d, ease: 'power3.in' }, t);
+      const lampOn = (sel, halo, t) => { tl.to(sel, { color: '#FFD678', duration: 0.12, ease: 'power2.out' }, t); tl.fromTo(halo, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' }, t); tl.fromTo(sel, { scale: 1 }, { scale: 1.08, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, t); };
 
-      // ---------- estado inicial ----------
-      P('#sceneB, #sceneC, #sceneD', {});
-      document.querySelectorAll('.lamp, #d-bulb').forEach(e => e.style.color = '#2A3F63');
-      document.querySelectorAll('.house').forEach(e => e.style.color = '#2A3F63');
-
-      // ---------- A · gancho ----------
+      // ---------- A · gancho (frame 0 já mostra a pergunta) ----------
       tl.fromTo('#a-l1', { scale: 1.05 }, { scale: 1, duration: 0.6, ease: 'expo.out' }, 0);
-      tl.fromTo('#a-l2', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.2, ease: 'power4.out' }, 1.2);
-      tl.fromTo('#a-pill', { scale: 0.2, opacity: 0, y: 40 }, { scale: 1, opacity: 1, y: 0, duration: 0.55, ease: 'back.out(1.6)' }, 1.95);
-      tl.fromTo('#a-year-strip', { y: 0 }, { y: -690, duration: 0.6, ease: 'power3.out' }, 2.0);
-      tl.fromTo('#a-under', { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: 'expo.out' }, 2.7);
-      tl.fromTo('#a-tag', { opacity: 0, scale: 1.25, filter: 'blur(8px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'expo.out' }, 2.85);
-      // objeto vira o mundo: a pílula do ano cresce e vira o fundo claro da próxima cena
-      tl.to('#a-l1, #a-l2, #a-tag, #a-under', { opacity: 0, filter: 'blur(14px)', duration: 0.25, ease: 'power3.in' }, 3.25);
-      tl.to('#a-year', { opacity: 0, duration: 0.15 }, 3.3);
-      tl.to('#a-pill', { scale: 9, borderRadius: '0px', backgroundColor: '#F3F4F6', duration: 0.45, ease: 'power2.in' }, 3.3);
+      blurIn('#a-l2', S(3));
+      tl.fromTo('#a-pill', { scale: 0.2, opacity: 0, y: 40 }, { scale: 1, opacity: 1, y: 0, duration: 0.55, ease: 'back.out(1.6)' }, S(11) - 0.15);
+      tl.fromTo('#a-year-strip', { y: 0 }, { y: -690, duration: S(18) - S(11) + 0.1, ease: 'power3.out' }, S(11) - 0.1);
+      tl.fromTo('#a-under', { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: 'expo.out' }, S(18));
+      tl.fromTo('#a-tag', { opacity: 0, scale: 1.25, filter: 'blur(8px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'expo.out' }, S(11) + 0.05);
+      blurOut('#a-l1, #a-l2, #a-tag, #a-under', CUT.AB - 0.4, 0.25);
+      tl.to('#a-year', { opacity: 0, duration: 0.15 }, CUT.AB - 0.35);
+      tl.to('#a-pill', { scale: 9, borderRadius: '0px', backgroundColor: '#F3F4F6', duration: 0.45, ease: 'power2.in' }, CUT.AB - 0.35);
 
       // ---------- B · 2027 olha para 2026 ----------
-      tl.fromTo('#b-t1', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.18, ease: 'power4.out' }, 3.75);
-      tl.fromTo('#b-t2', { opacity: 0, filter: 'blur(8px)', y: 10 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.22, ease: 'power4.out' }, 4.5);
-      tl.fromTo('#cal27', { y: -1300, rotation: -8 }, { y: 0, rotation: 0, duration: 0.7, ease: 'back.out(1.3)' }, 3.8);
-      // câmera anda para a esquerda: aparece 2026
-            tl.fromTo('#cal26', { x: 0 }, { x: 600, duration: 0.6, ease: 'power3.out' }, 6.05);
-      tl.to('#cal27', { x: 260, duration: 0.6, ease: 'power2.inOut' }, 6.05);
-      tl.fromTo('#b-arrow-path', { strokeDasharray: 600, strokeDashoffset: 600 }, { strokeDashoffset: 0, duration: 0.45, ease: 'power2.out' }, 6.6);
-      tl.fromTo('#b-arrow-head', { opacity: 0 }, { opacity: 1, duration: 0.1 }, 7.0);
-            tl.fromTo('#b-glow', { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 7.0);
-      tl.fromTo('#b-label', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.2, ease: 'power4.out' }, 7.1);
-      // moedas caindo dentro do 2026 ("o que você recebeu")
+      blurIn('#b-t1', S(19)); blurIn('#b-t2', S(27));
+      tl.fromTo('#cal27', { y: -1300, rotation: -8 }, { y: 0, rotation: 0, duration: 0.7, ease: 'back.out(1.3)' }, S(21));
+      tl.fromTo('#cal26', { x: 0 }, { x: 600, duration: 0.6, ease: 'power3.out' }, S(33) - 0.1);
+      tl.to('#cal27', { x: 260, duration: 0.6, ease: 'power2.inOut' }, S(33) - 0.1);
+      tl.fromTo('#b-arrow-path', { strokeDasharray: 600, strokeDashoffset: 600 }, { strokeDashoffset: 0, duration: 0.45, ease: 'power2.out' }, S(35));
+      tl.fromTo('#b-arrow-head', { opacity: 0 }, { opacity: 1, duration: 0.1 }, S(35) + 0.4);
+      tl.fromTo('#b-glow', { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' }, S(39));
+      blurIn('#b-label', S(39));
+      tl.fromTo('#cal26', { scale: 1 }, { scale: 1.06, duration: 0.12, yoyo: true, repeat: 3, ease: 'power2.out' }, S(40) + 0.36);
       for (let i = 0; i < 6; i++) {
         const c = document.createElement('div'); c.className = 'coin'; c.id = 'coin' + i; c.textContent = 'R$'; c.style.left = (180 + (i % 3) * 70) + 'px'; c.style.top = '300px';
         document.getElementById('coins').appendChild(c);
-        tl.fromTo(c, { y: -200, opacity: 0, rotation: -30 }, { y: 690 + (i % 2) * 30, opacity: 1, rotation: 0, duration: 0.45, ease: 'bounce.out' }, 7.3 + i * 0.09);
-        tl.to(c, { opacity: 0, scale: 0.4, duration: 0.2, ease: 'power3.in' }, 8.25 + i * 0.03);
+        tl.fromTo(c, { y: -200, opacity: 0, rotation: -30 }, { y: 560, opacity: 1, rotation: 0, duration: 0.38, ease: 'power2.in' }, S(40) + i * 0.08);
+        tl.to(c, { opacity: 0, scale: 0.3, duration: 0.12, ease: 'power3.in' }, S(40) + i * 0.08 + 0.36);
       }
-      tl.to('#b-title, #b-label, #b-arrow', { opacity: 0, filter: 'blur(12px)', duration: 0.22, ease: 'power3.in' }, 8.5);
-      tl.to('#cal27, #cal26, #b-glow', { scale: 0.85, opacity: 0, filter: 'blur(10px)', duration: 0.3, ease: 'power3.in' }, 8.55);
+      blurOut('#b-title, #b-label, #b-arrow', CUT.BC - 0.3);
+      tl.to('#cal27, #cal26, #b-glow', { scale: 0.85, opacity: 0, filter: 'blur(10px)', duration: 0.3, ease: 'power3.in' }, CUT.BC - 0.25);
 
-      // ---------- C · inundação navy, calma, duas luzes ----------
-      tl.fromTo('#flood', { clipPath: 'circle(0px at 540px 760px)' }, { clipPath: 'circle(1500px at 540px 760px)', duration: 0.5, ease: 'power2.inOut' }, 8.5);
-      tl.fromTo('#c-l1 .w', { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.18, stagger: 0.22, ease: 'power4.out' }, 8.95);
-      tl.fromTo('#c-l2', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.2, ease: 'power4.out' }, 9.9);
-      tl.to('#c-l1', { y: -130, scale: 0.6, transformOrigin: '50% 0%', duration: 0.5, ease: 'power2.inOut' }, 10.8);
-      tl.to('#c-l2', { y: -150, duration: 0.5, ease: 'power2.inOut' }, 10.8);
-      tl.fromTo('#bulb1', { y: -900 }, { y: 0, duration: 0.9, ease: 'elastic.out(1, 0.6)' }, 10.95);
-      tl.fromTo('#bulb2', { y: -900 }, { y: 0, duration: 0.9, ease: 'elastic.out(1, 0.6)' }, 11.12);
-      tl.fromTo('#bulb1', { rotation: 0, transformOrigin: '150px 0px' }, { rotation: 4, duration: 0.6, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 11.6);
-      // zoom através da luz 1
-      tl.to('#sceneC', { x: 230, duration: 0.3, ease: 'power2.inOut' }, 11.95);
-      tl.to('#c-l1, #c-l2, #bulb2', { opacity: 0, filter: 'blur(14px)', duration: 0.25, ease: 'power3.in' }, 12.0);
-      tl.to('#bulb1', { scale: 5, transformOrigin: '150px 390px', opacity: 0, duration: 0.4, ease: 'power3.in' }, 12.2);
+      // ---------- C · navy: calma + duas luzes ----------
+      tl.fromTo('#flood', { clipPath: 'circle(0px at 540px 760px)' }, { clipPath: 'circle(1500px at 540px 760px)', duration: 0.5, ease: 'power2.inOut' }, CUT.BC - 0.1);
+      tl.fromTo('#c-l1 .w', { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.18, stagger: S(43) - S(42), ease: 'power4.out' }, S(42));
+      blurIn('#c-l2', S(44));
+      tl.to('#c-l1', { y: -130, scale: 0.6, transformOrigin: '50% 0%', duration: 0.5, ease: 'power2.inOut' }, S(48) - 0.1);
+      tl.to('#c-l2', { y: -150, duration: 0.5, ease: 'power2.inOut' }, S(48) - 0.1);
+      tl.fromTo('#bulb1', { y: -900, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'elastic.out(1, 0.6)' }, S(48));
+      tl.fromTo('#bulb2', { y: -900, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'elastic.out(1, 0.6)' }, S(50));
+      tl.to('#sceneC', { x: 230, duration: 0.3, ease: 'power2.inOut' }, CUT.CD - 0.35);
+      blurOut('#c-l1, #c-l2, #bulb2', CUT.CD - 0.3, 0.25);
+      tl.to('#bulb1', { scale: 5, transformOrigin: '150px 390px', opacity: 0, duration: 0.4, ease: 'power3.in' }, CUT.CD - 0.15);
 
       // ---------- D · luz 1 ----------
-      tl.fromTo('#d-bulb', { scale: 1.6, opacity: 0, filter: 'blur(12px)' }, { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.45, ease: 'expo.out' }, 12.35);
-      tl.fromTo('#d-kicker', { opacity: 0, scale: 1.3, filter: 'blur(8px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'expo.out' }, 12.4);
-      tl.fromTo('#d-title', { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.2, ease: 'power4.out' }, 12.55);
-      tl.fromTo('#d-sub', { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power2.out' }, 14.2);
-      ['#h1', '#h2', '#h3', '#h4'].forEach((h, i) => {
-        tl.fromTo(h, { y: 60, opacity: 0, scale: 0.7 }, { y: 0, opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.8)' }, 13.1 + i * 0.2);
-        tl.to(h, { color: i === 3 ? '#E2C27F' : '#FFFFFF', duration: 0.12 }, 13.15 + i * 0.2);
-        tl.to(h + ' .n', { color: i === 3 ? '#E2C27F' : '#FFFFFF', duration: 0.12 }, 13.15 + i * 0.2);
-      });
-      tl.to('#d-lamp', { color: '#FFD678', duration: 0.12, ease: 'power2.out' }, 13.85);
-      tl.fromTo('#d-halo', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' }, 13.85);
-      tl.to('#d-bulb', { scale: 1.08, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, 13.85);
+      tl.fromTo('#d-bulb', { scale: 1.6, opacity: 0, filter: 'blur(12px)' }, { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.45, ease: 'expo.out' }, CUT.CD + 0.05);
+      tl.fromTo('#sceneD .kicker', { opacity: 0, scale: 1.3, filter: 'blur(8px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'expo.out' }, S(52));
+      blurIn('#d-title', S(56) - 0.1);
+      blurIn('#d-sub', S(59));
+      ['#h1', '#h2', '#h3', '#h4'].forEach((h, i) => { const t0 = S(58) + i * ((S(60) - S(58)) / 3);
+        tl.fromTo(h, { y: 60, opacity: 0, scale: 0.7 }, { y: 0, opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.8)' }, t0);
+        tl.to(h, { color: i === 3 ? '#E2C27F' : '#FFFFFF', duration: 0.12 }, t0 + 0.05); tl.to(h + ' .n', { color: i === 3 ? '#E2C27F' : '#FFFFFF', duration: 0.12 }, t0 + 0.05); });
+      lampOn('#d-bulb', '#d-halo', S(60) + 0.1);
+      tl.to('#sceneD', { x: -1080, duration: 0.35, ease: 'power3.in' }, CUT.DE - 0.2);
 
-      // ---------- legenda (texto planejado da narração) ----------
-      const CAP = [[0.15, 'Tem imóvel alugado?'], [1.25, 'Então tem uma conta'], [2.05, 'que você precisa fazer'], [2.75, 'AINDA em 2026.'], [3.7, 'Porque em 2027'], [4.55, 'começa o imposto novo'], [5.5, 'do aluguel.'], [6.2, 'E ele olha pro que'], [7.0, 'você recebeu ESSE ano.'], [9.0, 'Mas calma.'], [9.9, 'A regra é simples.'], [10.9, 'Pensa em duas luzes.'], [12.3, 'Luz um: você tem'], [13.2, 'mais de TRÊS imóveis'], [14.1, 'alugados no seu nome.']];
-      const capEl = document.getElementById('cap');
-      CAP.forEach(([t0, s], g) => {
-        const t1 = g + 1 < CAP.length ? CAP[g + 1][0] : 15, el = document.createElement('div'); el.className = 'cg' + ((t0 >= 3.6 && t0 < 8.6) ? ' light' : ''); el.id = 'cg' + g;
-        const ws = s.split(' '); ws.forEach((w, j) => { const sp = document.createElement('span'); sp.className = 'cw'; sp.id = `cw${g}_${j}`; sp.textContent = w; el.appendChild(sp); });
-        capEl.appendChild(el);
-        tl.fromTo(el, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.12, ease: 'power3.out' }, t0);
-        tl.to(el, { opacity: 0, duration: 0.08 }, Math.min(15, t1 - 0.04));
-        const dt = (t1 - t0 - 0.15) / ws.length, light = t0 >= 3.6 && t0 < 8.6;
-        ws.forEach((w, j) => { const caps = w === w.toUpperCase() && /[A-ZÃÉÊ]/.test(w);
-          tl.to(`#cw${g}_${j}`, { color: light ? '#B8955A' : '#E2C27F', scale: 1.14, duration: 0.06 }, t0 + j * dt);
-          tl.to(`#cw${g}_${j}`, { color: caps ? (light ? '#B8955A' : '#E2C27F') : (light ? '#1D1D1F' : '#FFFFFF'), scale: 1, duration: 0.15 }, t0 + (j + 1) * dt); });
+      // ---------- E · luz 2 (dinheiro somando) ----------
+      tl.fromTo('#sceneE', { x: 1080 }, { x: 0, duration: 0.4, ease: 'power3.out' }, CUT.DE);
+      tl.fromTo('#sceneE .kicker', { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'expo.out' }, S(64));
+      blurIn('#e-title', S(66) - 0.1); blurIn('#e-sub', S(75));
+      const cnt = { v: 0 }; tl.fromTo(cnt, { v: 0 }, { v: 240, duration: E(73) - S(70), ease: 'power2.out', onUpdate: () => { document.getElementById('e-num').textContent = 'R$ ' + Math.round(cnt.v) + ' mil'; } }, S(70));
+      tl.fromTo('#v-din', { opacity: 0 }, { opacity: 1, duration: 0.25 }, S(66) - 0.1);
+      tl.fromTo('#e-chip', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: 'back.out(1.6)' }, S(78));
+      tl.to('#v-din', { opacity: 0, duration: 0.2 }, S(79) - 0.05);
+      tl.fromTo('#e-bulb', { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.6)' }, S(79) - 0.05);
+      lampOn('#e-bulb', '#e-halo', S(79) + 0.15);
+
+      // ---------- F · as duas acesas ligam o imposto ----------
+      blurIn('#f-title', CUT.EF + 0.05);
+      tl.fromTo('#f-b1, #f-b2', { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'expo.out', stagger: 0.1 }, CUT.EF + 0.1);
+      tl.fromTo('#f-sign', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'expo.out' }, S(81));
+      lampOn('#f-b1', '#f-h1', S(86)); lampOn('#f-b2', '#f-h2', S(86) + 0.18);
+      tl.to('#f-sign', { borderColor: '#E5484D', color: '#FF6B6F', boxShadow: '0 0 60px rgba(229,72,77,0.7)', duration: 0.15, ease: 'power2.out' }, S(87) + 0.1);
+      tl.fromTo('#f-sign', { scale: 1 }, { scale: 1.08, duration: 0.12, yoyo: true, repeat: 1 }, S(87) + 0.1);
+      tl.to('#sceneF', { y: -1920, duration: 0.4, ease: 'power3.in' }, CUT.FG - 0.25);
+
+      // ---------- G · exemplos ----------
+      tl.fromTo('#v-chaves', { opacity: 0 }, { opacity: 1, duration: 0.15 }, CUT.FG - 0.05);
+      tl.to('#v-chaves, #g-over', { opacity: 0, duration: 0.2 }, S(91) - 0.32);
+      tl.fromTo('#g-t1', { opacity: 0 }, { opacity: 1, duration: 0.2 }, S(91) - 0.32);
+      tl.fromTo('#g-b1, #g-b2', { opacity: 1 }, { opacity: 1, duration: 0.01 }, CUT.FG);
+      tl.fromTo('#g-s1', { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.18, ease: 'power3.in' }, S(91) - 0.02);
+      tl.to('#g-s1', { opacity: 0, duration: 0.15 }, S(93) - 0.25);
+      blurOut('#g-t1', S(93) - 0.25, 0.18); blurIn('#g-t2', S(93));
+      tl.to('#g-l1', { opacity: 0, duration: 0.1 }, S(93) - 0.2); tl.call(() => { }, null, 0);
+      tl.fromTo('#g-l1', { textContent: '2 imóveis' }, { textContent: '5 imóveis', duration: 0.01 }, S(94) - 0.05);
+      tl.to('#g-l1', { opacity: 1, duration: 0.15 }, S(94) - 0.05);
+      lampOn('#g-b1', '#g-h1', S(94) + 0.1);
+      tl.fromTo('#g-l2', { textContent: '—' }, { textContent: 'R$ 200 mil', duration: 0.01 }, S(97));
+      tl.to('#g-b2', { color: '#5B6E92', duration: 0.06, yoyo: true, repeat: 3 }, S(98) + 0.1);
+      tl.fromTo('#g-s2', { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.18, ease: 'power3.in' }, S(99) - 0.02);
+      tl.to('#sceneG', { x: -1080, duration: 0.35, ease: 'power3.in' }, CUT.GH - 0.2);
+
+      // ---------- H · desconto de 70% ----------
+      tl.fromTo('#sceneH', { x: 1080 }, { x: 0, duration: 0.4, ease: 'power3.out' }, CUT.GH);
+      tl.fromTo('#h-title', { opacity: 0 }, { opacity: 1, duration: 0.2 }, CUT.GH + 0.05);
+      tl.set('#h-sign', { borderColor: '#E5484D', color: '#FF6B6F', boxShadow: '0 0 60px rgba(229,72,77,0.6)' }, CUT.GH);
+      tl.fromTo('#h-tag', { opacity: 0, scale: 2.2, rotation: 12 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.2, ease: 'power3.in' }, S(108) - 0.05);
+      tl.fromTo('#h-fill', { scaleX: 1 }, { scaleX: 0.3, duration: 0.7, ease: 'expo.out' }, S(108) + 0.15);
+      tl.to('#h-fill', { backgroundColor: '#E2C27F', duration: 0.3 }, S(108) + 0.15);
+      blurIn('#h-cap', S(110));
+
+      // ---------- I · comentário ----------
+      tl.fromTo('#v-calc', { opacity: 0 }, { opacity: 1, duration: 0.15 }, CUT.HI - 0.05);
+      tl.to('#v-calc, #i-over', { opacity: 0, duration: 0.2 }, S(118) - 0.28);
+      tl.fromTo('#i-card', { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'expo.out' }, S(118) - 0.25);
+      const ty = { n: 0 }; tl.fromTo(ty, { n: 0 }, { n: 5, duration: Math.max(0.3, E(119) - S(119)), ease: 'none', onUpdate: () => { document.getElementById('i-typed').textContent = 'CONTA'.slice(0, Math.round(ty.n)); } }, S(119));
+      tl.fromTo('#i-send', { scale: 1 }, { scale: 0.88, duration: 0.08, yoyo: true, repeat: 1 }, E(119) + 0.08);
+      tl.to('#i-typed', { opacity: 0, duration: 0.05 }, E(119) + 0.15); tl.to('#i-ph', { opacity: 1, duration: 0.1 }, E(119) + 0.2);
+      tl.fromTo('#i-post', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: 'back.out(1.6)' }, E(119) + 0.15);
+      tl.fromTo('#i-dm', { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.35, ease: 'expo.out' }, S(123) - 0.1);
+      blurOut('#i-card, #i-dm', ENDV - 0.2, 0.2);
+
+      // ---------- J · cartão final ----------
+      [['#j-c1', 0], ['#j-pill', 0.12], ['#j-c2', 0.3], ['#j-line', 0.45], ['#j-name', 0.55], ['#j-creci', 0.65], ['#j-at', 0.75], ['#j-logo', 0.85], ['#j-note', 1.0]].forEach(([s, d]) =>
+        tl.fromTo(s, { opacity: 0, y: 24, filter: 'blur(8px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.35, ease: 'expo.out' }, ENDV + d));
+
+      // ---------- legenda presa às palavras ----------
+      const CAP = [{"t0": 0.3, "w": [["Tem", 0.3, 0.35], ["imóvel", 0.44, 0.76], ["alugado?", 0.76, 1.25]]}, {"t0": 1.57, "w": [["Então", 1.57, 1.88], ["tem", 1.94, 1.97], ["uma", 2, 2.13]]}, {"t0": 2.28, "w": [["conta", 2.28, 2.57], ["que", 2.62, 2.66], ["você", 2.67, 2.9]]}, {"t0": 2.95, "w": [["precisa", 2.95, 3.28], ["fazer", 3.29, 3.77], ["AINDA", 3.79, 4.19]]}, {"t0": 4.19, "w": [["em", 4.19, 4.25], ["2026.", 4.27, 5.19]]}, {"t0": 5.77, "w": [["Porque", 5.77, 5.95], ["em", 5.95, 5.98], ["2027", 6.01, 6.88]]}, {"t0": 6.91, "w": [["começa", 6.91, 7.26], ["o", 7.26, 7.34], ["imposto", 7.34, 7.7]]}, {"t0": 7.71, "w": [["novo", 7.71, 8.02], ["do", 8.02, 8.16], ["aluguel.", 8.16, 8.62]]}, {"t0": 8.89, "w": [["E", 8.89, 8.96], ["ele", 9, 9.14], ["olha", 9.22, 9.5]]}, {"t0": 9.56, "w": [["pro", 9.56, 9.61], ["que", 9.66, 9.69], ["você", 9.7, 9.93]]}, {"t0": 9.94, "w": [["recebeu", 9.94, 10.5], ["ESSE", 10.5, 10.82], ["ano.", 10.87, 11.09]]}, {"t0": 11.7, "w": [["Mas", 11.7, 11.83], ["calma.", 11.89, 12.13]]}, {"t0": 12.36, "w": [["A", 12.36, 12.4], ["regra", 12.41, 12.66], ["é", 12.66, 12.73]]}, {"t0": 12.74, "w": [["simples.", 12.74, 13.24]]}, {"t0": 13.82, "w": [["Pensa", 13.82, 14.05], ["em", 14.05, 14.24], ["duas", 14.27, 14.51]]}, {"t0": 14.51, "w": [["luzes.", 14.51, 14.85]]}, {"t0": 15.4, "w": [["Luz", 15.4, 15.6], ["um:", 15.6, 15.75]]}, {"t0": 16.05, "w": [["você", 16.05, 16.27], ["tem", 16.31, 16.37], ["mais", 16.37, 16.63]]}, {"t0": 16.63, "w": [["de", 16.63, 16.7], ["TRÊS", 16.8, 17.11], ["imóveis", 17.11, 17.54]]}, {"t0": 17.54, "w": [["alugados", 17.54, 18.01], ["no", 18.01, 18.1], ["seu", 18.11, 18.25]]}, {"t0": 18.26, "w": [["nome.", 18.26, 18.52]]}, {"t0": 19.05, "w": [["Luz", 19.05, 19.19], ["dois:", 19.21, 19.55]]}, {"t0": 19.89, "w": [["você", 19.89, 20.07], ["recebe", 20.08, 20.43], ["mais", 20.44, 20.67]]}, {"t0": 20.68, "w": [["de", 20.68, 20.77], ["R$ 240 mil", 20.77, 21.9], ["de", 21.9, 21.98]]}, {"t0": 22.01, "w": [["aluguel", 22.01, 22.31], ["por", 22.38, 22.49], ["ano,", 22.49, 22.67]]}, {"t0": 22.8, "w": [["somando", 22.8, 23.17], ["tudo.", 23.27, 23.5]]}, {"t0": 24.2, "w": [["O", 24.2, 24.23], ["imposto", 24.23, 24.67], ["só", 24.68, 24.82]]}, {"t0": 24.83, "w": [["liga", 24.83, 25.08], ["se", 25.09, 25.22], ["as", 25.25, 25.38]]}, {"t0": 25.53, "w": [["DUAS", 25.53, 25.81], ["acenderem.", 25.81, 26.32]]}, {"t0": 27.1, "w": [["Tem", 27.1, 27.17], ["2", 27.19, 27.4], ["imóveis?", 27.4, 27.83]]}, {"t0": 28.2, "w": [["Não", 28.2, 28.32], ["paga.", 28.35, 28.61]]}, {"t0": 29.11, "w": [["Tem", 29.11, 29.25], ["5,", 29.26, 29.54]]}, {"t0": 29.59, "w": [["mas", 29.59, 29.81], ["recebe", 29.82, 30.16], ["R$ 200 mil?", 30.16, 30.75]]}, {"t0": 31.18, "w": [["TAMBÉM", 31.18, 31.58], ["não.", 31.58, 31.83]]}, {"t0": 32.36, "w": [["E", 32.36, 32.42], ["quem", 32.47, 32.63], ["paga", 32.72, 32.99]]}, {"t0": 32.99, "w": [["ainda", 32.99, 33.25], ["tem", 33.29, 33.39], ["desconto", 33.42, 33.81]]}, {"t0": 33.81, "w": [["de", 33.81, 33.9], ["70%.", 33.91, 35.1]]}, {"t0": 35.74, "w": [["Quer", 35.74, 35.88], ["que", 35.93, 35.94], ["eu", 35.95, 35.99]]}, {"t0": 36.01, "w": [["faça", 36.01, 36.22], ["a", 36.22, 36.23], ["sua", 36.25, 36.38]]}, {"t0": 36.44, "w": [["conta?", 36.44, 36.68]]}, {"t0": 37.09, "w": [["Comenta", 37.09, 37.4], ["CONTA", 37.54, 37.87], ["que", 37.97, 38.04]]}, {"t0": 38.07, "w": [["eu", 38.07, 38.12], ["te", 38.14, 38.18], ["mando", 38.19, 38.49]]}, {"t0": 38.5, "w": [["no", 38.5, 38.54], ["direct.", 38.54, 38.95]]}]; const capEl = document.getElementById('cap');
+      const lightAt = (t) => t >= CUT.AB && t < CUT.BC;
+      CAP.forEach((g, gi) => {
+        const t0 = g.t0, t1 = gi + 1 < CAP.length ? CAP[gi + 1].t0 : Math.min(DUR, g.w[g.w.length - 1][2] + 0.6), light = lightAt(t0);
+        const el = document.createElement('div'); el.className = 'cg' + (light ? ' light' : ''); el.id = 'cg' + gi; capEl.appendChild(el);
+        g.w.forEach(([w], j) => { const sp = document.createElement('span'); sp.className = 'cw'; sp.id = `cw${gi}_${j}`; sp.textContent = w; el.appendChild(sp); });
+        tl.fromTo(el, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.08, ease: 'power3.out' }, Math.max(0, t0 - 0.04));
+        tl.to(el, { opacity: 0, duration: 0.04 }, Math.min(t1 - 0.09, g.w[g.w.length - 1][2] + 0.5));
+        g.w.forEach(([w, a, b], j) => { const caps = w === w.toUpperCase() && /[A-ZÃÉÊÍÓÚ0-9]/.test(w), hi = light ? '#B8955A' : '#E2C27F', base = light ? '#1D1D1F' : '#FFFFFF';
+          tl.to(`#cw${gi}_${j}`, { color: hi, scale: 1.14, duration: 0.06 }, a - 0.02);
+          tl.to(`#cw${gi}_${j}`, { color: caps ? hi : base, scale: 1, duration: 0.15 }, b); });
       });
-      tl.to('#root', { opacity: 1, duration: 0.01 }, 14.99);
+      tl.to('#cap', { opacity: 0, duration: 0.2 }, ENDV - 0.1);
 
       window.__timelines['main'] = tl;
       tl.seek(0);

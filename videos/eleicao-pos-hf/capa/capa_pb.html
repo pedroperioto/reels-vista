@@ -1,0 +1,43 @@
+<!doctype html><html><head><meta charset="utf-8">
+<script src="../assets/d3.min.js"></script><script src="../assets/topojson-client.min.js"></script><script src="../assets/mundo.js"></script><script src="../assets/globo.js"></script><script src="../assets/personagens.js"></script>
+<style>
+@font-face{font-family:Oswald700;src:url(../assets/fonts/Oswald700.woff2)}@font-face{font-family:M7;src:url(../assets/fonts/Mono700.woff2)}@font-face{font-family:M5;src:url(../assets/fonts/Mono500.woff2)}
+*{margin:0;padding:0;box-sizing:border-box}html,body{width:1080px;height:1920px;overflow:hidden;background:#09090B}
+#c{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:Oswald700;color:#fff;background:radial-gradient(900px 800px at 50% 30%,#1E1E22,#09090B 70%)}
+#gl{position:absolute;left:0;top:0;width:1080px;height:1920px;filter:grayscale(1) brightness(1.15) contrast(1.1);opacity:.75}
+.ctr{position:absolute;left:0;width:1080px;text-align:center}
+#tag{top:300px}#tag span{display:inline-flex;align-items:center;gap:14px;padding:10px 24px;border-radius:40px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.6);font-family:M7;font-size:28px;letter-spacing:3px}#tag i{width:16px;height:16px;border-radius:50%;background:#FFD24A;box-shadow:0 0 14px #FFD24A}
+#duo{position:absolute;left:0;width:1080px;top:380px;display:flex;justify-content:center;gap:70px}
+.p{display:flex;flex-direction:column;align-items:center}
+canvas{width:280px;height:280px;border-radius:50%;filter:grayscale(1) contrast(1.15);border:6px solid #fff;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.pc{margin-top:14px;font-size:76px;line-height:1}.nm{margin-top:6px;font-family:M7;font-size:22px;letter-spacing:5px;color:#A1A1AA}
+#x{position:absolute;left:490px;top:470px;width:100px;height:100px;border-radius:50%;background:#FFD24A;color:#09090B;font-size:60px;text-align:center;line-height:96px;border:5px solid #09090B;z-index:2}
+#h{top:822px;font-size:132px;line-height:.98;text-transform:uppercase;letter-spacing:1px;text-shadow:0 10px 40px rgba(0,0,0,.8)}#h b{color:#FFD24A;font-weight:normal}
+#lock{position:absolute;left:150px;top:1122px;width:780px;padding:16px 26px;border-radius:18px;background:#E5484D;display:flex;align-items:center;gap:20px;transform:rotate(-3deg);box-shadow:0 20px 50px rgba(0,0,0,.6)}
+#lock .t{font-size:46px;line-height:1}#lock .s{font-family:M7;font-size:21px;margin-top:4px;letter-spacing:1px}
+#q{top:1290px}#q span{display:inline-block;padding:12px 34px;background:#FFD24A;color:#09090B;font-size:70px}
+#src{top:1420px;font-family:M5;font-size:22px;color:#A1A1AA;letter-spacing:1px}
+#r,#cc{position:absolute;top:1250px;width:300px;height:600px}#r{left:-60px}#cc{left:840px}
+</style></head><body><div id="c">
+<svg id="gl" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+<svg id="r" viewBox="0 0 320 640"></svg><svg id="cc" viewBox="0 0 320 640"></svg>
+<div id="tag" class="ctr"><span><i></i>PÓS-ELEIÇÃO · PARTE 2</span></div>
+<div id="duo"><div class="p"><canvas id="a" width="560" height="560"></canvas><div class="pc">51,79%</div><div class="nm">LULA · REELEITO</div></div>
+<div class="p"><canvas id="b" width="560" height="560"></canvas><div class="pc" style="color:#A1A1AA">48,21%</div><div class="nm">FLÁVIO</div></div></div>
+<div id="x">×</div>
+<div id="h" class="ctr">A Bolsa <b>travou.</b><br><span style="font-size:112px">E o seu apê?</span></div>
+<div id="lock"><svg width="56" height="64" viewBox="0 0 70 80"><path d="M 16 36 V 24 A 19 19 0 0 1 54 24 V 36" fill="none" stroke="#fff" stroke-width="9"/><rect x="6" y="34" width="58" height="44" rx="8" fill="#fff"/></svg>
+ <div><div class="t">CIRCUIT BREAKER NA B3</div><div class="s">1ª VEZ DESDE 2020 · DÓLAR A R$ 5,60</div></div></div>
+<div id="q" class="ctr"><span>COMPRA OU ESPERA?</span></div>
+<div id="src" class="ctr">FONTES: TSE · B3 · INFOMONEY · FIPEZAP</div>
+</div><script>
+const G=Globo(document.getElementById('gl'),{cx:540,cy:1720,r:620}); G.draw({lon:-50,lat:-28,k:1,pins:[['sp',1]],arcs:[]});
+document.getElementById('r').innerHTML=rafa('rr'); document.getElementById('cc').innerHTML=celia('ce');
+const set=(s,on)=>document.querySelectorAll(s).forEach(e=>e.setAttribute('opacity',on?1:0));
+set('#rr .m-smile',0);set('#rr .m-open',1);set('#rr .b-neutral',0);set('#rr .b-up',1);
+set('#ce .armL',0);set('#ce .armR',0);set('#ce .armsX',1);set('#ce .m-smile',0);set('#ce .m-smug',1);set('#ce .b-neutral',0);set('#ce .b-angry',1);
+const FOC={lula:[0.57,0.5,1.45],flavio:[0.52,0.6,1.45]};
+window.done=Promise.all([['a','lula'],['b','flavio']].map(([id,k])=>new Promise(r=>{const im=new Image(); im.onload=()=>{const c=document.getElementById(id),g=c.getContext('2d'),[fx,fy,z]=FOC[k];
+  const s=Math.min(im.width,im.height)/z, sx=Math.min(Math.max(fx*im.width-s/2,0),im.width-s), sy=Math.min(Math.max(fy*im.height-s/2,0),im.height-s);
+  g.drawImage(im,sx,sy,s,s,0,0,560,560); r();}; im.src='../../eleicao-2026-v13/fotos/'+k+'.jpg';})));
+</script></body></html>

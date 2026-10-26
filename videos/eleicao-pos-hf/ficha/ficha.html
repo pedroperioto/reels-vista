@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:"Oswald700";src:url("../assets/fonts/Oswald700.woff2")}
+@font-face{font-family:"InterMed";src:url("../assets/fonts/InterMed.otf")}
+body{margin:0;width:1600px;height:1000px;background:radial-gradient(900px 700px at 50% 40%,#18304F,#0B1F3A 70%);font-family:Oswald700;color:#fff}
+h1{position:absolute;left:0;width:1600px;text-align:center;top:30px;font-size:54px;letter-spacing:3px;margin:0}
+.c{position:absolute;top:130px;width:320px;height:640px}.n{position:absolute;top:800px;width:600px;text-align:center;font-size:44px}.d{position:absolute;top:870px;width:600px;text-align:center;font-family:InterMed;font-size:22px;color:#A9B6CA}
+</style><script src="../assets/personagens.js"></script></head><body><h1>PERSONAGENS · RAFA (TIME 13) E DONA CÉLIA (TIME 22)</h1>
+<svg class="c" style="left:60px" viewBox="0 0 320 640" id="a"></svg>
+<svg class="c" style="left:420px" viewBox="0 0 320 640" id="b"></svg>
+<svg class="c" style="left:860px" viewBox="0 0 320 640" id="c"></svg>
+<svg class="c" style="left:1220px" viewBox="0 0 320 640" id="d"></svg>
+<div class="n" style="left:100px">RAFA · 30 ANOS</div><div class="d" style="left:100px">inquilino · comemora · "é só a primeira noite"</div>
+<div class="n" style="left:900px">DONA CÉLIA · 50 ANOS</div><div class="d" style="left:900px">inquilina · desconfiada · "eu avisei"</div>
+<script>
+a.innerHTML=rafa('r1'); b.innerHTML=rafa('r2'); c.innerHTML=celia('c1'); d.innerHTML=celia('c2');
+const set=(id,sel,on)=>document.querySelectorAll('#'+id+' '+sel).forEach(e=>e.setAttribute('opacity',on?1:0));
+// r2: comemorando (braço erguido, boca aberta)
+document.querySelector('#r2 .armL').setAttribute('transform','rotate(150 106 252)'); set('r2','.m-smile',0); set('r2','.m-open',1); set('r2','.b-neutral',0); set('r2','.b-up',1);
+// c2: braços cruzados, desconfiada
+set('c2','.armL',0); set('c2','.armR',0); set('c2','.armsX',1); set('c2','.m-smile',0); set('c2','.m-smug',1); set('c2','.b-neutral',0); set('c2','.b-angry',1);
+</script></body></html>

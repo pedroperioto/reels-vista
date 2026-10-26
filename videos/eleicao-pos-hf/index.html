@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="pt-BR" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <script src="assets/personagens.js"></script>
+    <style>
+      @font-face { font-family: "Oswald700"; src: url("assets/fonts/Oswald700.woff2"); }
+      @font-face { font-family: "Oswald600"; src: url("assets/fonts/Oswald600.woff2"); }
+      @font-face { font-family: "InterMed"; src: url("assets/fonts/InterMed.otf"); }
+      @font-face { font-family: "InterBlack"; src: url("assets/fonts/InterBlack.otf"); }
+      /* pós-eleição · ilustração chapada · noite navy + dourado · texto entre 168 e 1330 px */
+      :root { --navy: #0B1F3A; --night: #0A1428; --gold: #E2C27F; --red: #E5484D; --green: #2E9E68; --yellow: #FFD24A; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--night); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Oswald700", sans-serif; color: #fff; }
+      .full { position: absolute; inset: 0; } .scene { position: absolute; inset: 0; } .abs { position: absolute; }
+      .ctr { left: 0; width: 1080px; text-align: center; }
+      .tag { position: absolute; top: 250px; left: 0; width: 1080px; text-align: center; }
+      .tag span { display: inline-block; padding: 6px 16px; background: #fff; color: #10151F; font-family: "Oswald600"; font-size: 32px; letter-spacing: 2px; }
+      #top { position: absolute; top: 180px; left: 0; width: 1080px; text-align: center; font-family: "Oswald600"; font-size: 28px; letter-spacing: 5px; color: rgba(255,255,255,0.8); }
+      #top i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--red); margin-right: 12px; vertical-align: 3px; }
+      .fonte { position: absolute; left: 0; width: 1080px; text-align: center; font-family: "InterMed"; font-size: 26px; color: rgba(255,255,255,0.55); }
+      /* legenda estilo referência: 1–3 palavras, condensada, palavra-chave colorida */
+      #cap { position: absolute; left: 90px; width: 900px; top: 1230px; height: 120px; }
+      .cg { position: absolute; left: 0; top: 0; width: 900px; text-align: center; font-size: 76px; line-height: 1; text-transform: uppercase; letter-spacing: 1px; opacity: 0; text-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 0 30px rgba(0,0,0,0.5); }
+      .cg b { color: var(--gold); font-weight: normal; } .cg b.r { color: #FF6B6F; }
+      /* cena 2: urna */
+      #urna { position: absolute; left: 110px; top: 400px; width: 860px; height: 700px; border-radius: 40px; background: linear-gradient(180deg, #EFEAE0, #D9D2C3); box-shadow: 0 40px 90px rgba(0,0,0,0.5); }
+      #tela { position: absolute; left: 40px; top: 40px; width: 780px; height: 420px; border-radius: 18px; background: #0E1B2E; overflow: hidden; }
+      #tela .hd { position: absolute; left: 40px; top: 30px; font-family: "Oswald600"; font-size: 34px; letter-spacing: 3px; color: #A9B6CA; }
+      .row { position: absolute; left: 40px; width: 700px; height: 120px; }
+      .row .nm { position: absolute; left: 0; top: 0; font-size: 52px; } .row .pc { position: absolute; right: 0; top: 0; font-size: 52px; }
+      .row .bar { position: absolute; left: 0; top: 74px; height: 30px; border-radius: 15px; transform-origin: 0 50%; }
+      .row .trk { position: absolute; left: 0; top: 74px; width: 700px; height: 30px; border-radius: 15px; background: rgba(255,255,255,0.08); }
+      #tela .ft { position: absolute; left: 40px; bottom: 26px; font-family: "InterMed"; font-size: 24px; color: #7F8DA6; }
+      #teclas { position: absolute; left: 40px; top: 500px; width: 780px; height: 160px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+      #teclas div { border-radius: 12px; background: #2B2B2E; box-shadow: inset 0 -6px 0 rgba(0,0,0,0.4); }
+      #teclas div.g { background: #3BA55C; } #teclas div.w { background: #F4F4F4; } #teclas div.o { background: #E8743B; }
+      /* cena 4: TV */
+      #tv { position: absolute; left: 90px; top: 360px; width: 900px; height: 520px; border-radius: 26px; background: #121418; box-shadow: 0 30px 80px rgba(0,0,0,0.55), inset 0 0 0 6px #23262C; }
+      #tvs { position: absolute; left: 24px; top: 24px; width: 852px; height: 472px; border-radius: 12px; background: radial-gradient(600px 400px at 50% 40%, #13243F, #0A1324); overflow: hidden; transform-origin: 50% 50%; }
+      .bub { position: absolute; padding: 18px 30px; border-radius: 30px; background: #fff; color: #10151F; font-size: 50px; line-height: 1.05; text-align: center; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
+      .bub:after { content: ""; position: absolute; bottom: -22px; width: 0; height: 0; border-left: 18px solid transparent; border-right: 18px solid transparent; border-top: 26px solid #fff; }
+      #bub1:after { left: 40px; } #bub2:after { right: 40px; }
+      /* cortina que vira transição */
+      .pano { background: repeating-linear-gradient(90deg, #6E4560 0px, #835574 46px, #6E4560 92px, #5C3950 110px); }
+      /* cena 5: elevador */
+      #led { position: absolute; left: 470px; top: 310px; width: 140px; height: 56px; border-radius: 10px; background: #0B0B0D; color: #FF4D3D; font-family: "Oswald700"; font-size: 40px; text-align: center; line-height: 56px; box-shadow: 0 0 0 4px #5B6475; }
+      .env { position: absolute; width: 220px; height: 140px; border-radius: 10px; background: #FAF7F0; box-shadow: 0 18px 40px rgba(0,0,0,0.45); overflow: hidden; opacity: 0; }
+      .env:before { content: ""; position: absolute; left: 0; top: 0; width: 0; height: 0; border-left: 110px solid transparent; border-right: 110px solid transparent; border-top: 70px solid #E9E2D2; }
+      .env .st { position: absolute; left: 22px; top: 70px; padding: 2px 10px; border: 4px solid var(--red); color: var(--red); font-size: 34px; transform: rotate(-6deg); }
+      .env .pc { position: absolute; right: 12px; top: 74px; padding: 2px 10px; border-radius: 8px; background: var(--red); color: #fff; font-size: 30px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1080" data-height="1920" data-motion-blur="on">
+      <div id="bg" class="full clip" data-start="0" data-duration="15" data-track-index="0" style="background: var(--night)"></div>
+
+      <!-- cenas 1 e 3: o prédio (câmera = viewBox) -->
+      <div id="sB" class="scene clip" data-start="0" data-duration="8.95" data-track-index="1">
+        <svg id="world" class="full" width="1080" height="1920" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice"></svg>
+      </div>
+
+      <!-- cena 2: a urna -->
+      <div id="s2" class="scene clip" data-start="3.6" data-duration="2.95" data-track-index="2" style="background: radial-gradient(900px 900px at 50% 45%, #18304F, #0A1428 70%)">
+        <div id="urna">
+          <div id="tela">
+            <div class="hd">PRESIDENTE · 2º TURNO</div>
+            <div class="row" style="top: 110px"><div class="nm">LULA</div><div class="pc" id="p1">0,00%</div><div class="trk"></div><div class="bar" id="bar1" style="width:700px;background:#E5484D"></div></div>
+            <div class="row" style="top: 250px"><div class="nm">FLÁVIO</div><div class="pc" id="p2">0,00%</div><div class="trk"></div><div class="bar" id="bar2" style="width:700px;background:#2E9E68"></div></div>
+            <div class="ft">99,99% das urnas apuradas · votos válidos</div>
+          </div>
+          <div id="teclas"><div></div><div></div><div></div><div class="w"></div><div class="o"></div><div class="g"></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
+        <div class="fonte" style="top: 1150px">Fonte: TSE · 25/10/2026</div>
+      </div>
+
+      <!-- cena 4: a TV da sala -->
+      <div id="s4" class="scene clip" data-start="8.6" data-duration="3.25" data-track-index="3" style="background: linear-gradient(180deg, #14243E 0%, #14243E 66%, #0D1829 66%)">
+        <div class="abs" style="left:0;top:1000px;width:1080px;height:10px;background:rgba(255,255,255,0.05)"></div>
+        <div id="tv"><div id="tvs">
+          <svg width="852" height="472" viewBox="0 0 852 472">
+            <g stroke="rgba(255,255,255,0.07)" stroke-width="2"><path d="M40 120 H812"/><path d="M40 220 H812"/><path d="M40 320 H812"/><path d="M40 420 H812"/></g>
+            <path id="usd" d="M 40 380 L 110 372 L 170 384 L 230 366 L 300 378 L 360 362 L 420 374 L 480 360 L 540 370 L 600 352 L 650 366 L 700 340 L 760 170 L 812 120" fill="none" stroke="#FF6B6F" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle id="usdDot" cx="812" cy="120" r="14" fill="#FF6B6F"/>
+          </svg>
+          <div class="abs" style="left:34px;top:22px;font-family:Oswald600;font-size:34px;letter-spacing:3px;color:#A9B6CA">DÓLAR · MERCADO FUTURO</div>
+          <div id="usdv" class="abs" style="right:34px;top:14px;font-size:64px">R$ 4,99</div>
+          <div id="usdp" class="abs" style="right:34px;top:96px;padding:4px 14px;border-radius:10px;background:#E5484D;font-size:40px;opacity:0">+~10%</div>
+          <div class="abs" style="left:34px;bottom:18px;font-family:InterMed;font-size:22px;color:#7F8DA6">reação inicial · noite de 25/10 · Bloomberg Línea / CME</div>
+        </div></div>
+        <svg id="bust1" class="abs" style="left:40px;top:860px;width:350px;height:360px" viewBox="0 40 320 330"></svg>
+        <svg id="bust2" class="abs" style="left:690px;top:860px;width:350px;height:360px" viewBox="0 40 320 330"></svg>
+        <div id="bub1" class="bub" style="left:330px;top:880px">“EU <span style="color:#2E9E68">AVISEI</span>.”</div>
+        <div id="bub2" class="bub" style="left:390px;top:1010px;font-size:44px">“É SÓ A <span style="color:#E5484D">PRIMEIRA</span><br>NOITE.”</div>
+        <div id="tvoff" class="abs" style="left:114px;top:384px;width:852px;height:472px;border-radius:12px;background:#000;opacity:0"></div>
+        <div id="tvline" class="abs" style="left:114px;top:617px;width:852px;height:6px;background:#E8F0FF;opacity:0;transform-origin:50% 50%"></div>
+      </div>
+
+      <!-- cena 5: o elevador -->
+      <div id="s5" class="scene clip" data-start="11.8" data-duration="3.2" data-track-index="4" style="background: linear-gradient(180deg, #1B2B45 0%, #22355A 100%)">
+        <svg class="full" width="1080" height="1920" viewBox="0 0 1080 1920">
+          <rect x="0" y="1190" width="1080" height="730" fill="#141F33"/>
+          <rect x="130" y="350" width="820" height="850" rx="10" fill="#7E889A"/>
+          <rect x="160" y="380" width="760" height="810" fill="#C9B489"/>
+          <rect x="160" y="380" width="760" height="810" fill="url(#lift)"/>
+          <rect x="190" y="760" width="700" height="14" rx="7" fill="#9C8761"/>
+          <g id="dentro"></g>
+          <g id="portaL"><rect x="160" y="380" width="380" height="810" fill="url(#aco)"/><path d="M 240 380 V 1190 M 330 380 V 1190" stroke="rgba(255,255,255,0.18)" stroke-width="3"/></g>
+          <g id="portaR"><rect x="540" y="380" width="380" height="810" fill="url(#aco)"/><path d="M 750 380 V 1190 M 840 380 V 1190" stroke="rgba(255,255,255,0.18)" stroke-width="3"/></g>
+          <rect x="537" y="380" width="6" height="810" fill="rgba(0,0,0,0.35)" id="fresta"/>
+          <defs>
+            <linearGradient id="aco" x1="0" x2="1"><stop offset="0" stop-color="#9CA6B6"/><stop offset="0.5" stop-color="#C3CBD6"/><stop offset="1" stop-color="#8D97A7"/></linearGradient>
+            <radialGradient id="lift" cx="0.5" cy="0.1" r="0.9"><stop offset="0" stop-color="rgba(255,240,200,0.55)"/><stop offset="1" stop-color="rgba(0,0,0,0.15)"/></radialGradient>
+          </defs>
+        </svg>
+        <div id="led">8</div>
+        <div id="env1" class="env" style="left:240px;top:820px"><div class="st">ALUGUEL</div></div>
+        <div id="env2" class="env" style="left:620px;top:820px"><div class="st">ALUGUEL</div></div>
+        <div id="pct" class="abs" style="left:440px;top:400px;padding:8px 26px;border-radius:16px;background:#E5484D;font-size:72px;opacity:0;box-shadow:0 16px 40px rgba(0,0,0,0.4)">+9%</div>
+      </div>
+
+      <!-- cortina que fecha a cena 3 e abre a cena 4 -->
+      <div id="pano" class="full pano clip" data-start="8.3" data-duration="1.0" data-track-index="5"></div>
+      <div id="flash" class="full clip" data-start="0" data-duration="15" data-track-index="6" style="background:#fff;opacity:0"></div>
+
+      <!-- etiquetas fixas, rótulos de cena e legenda -->
+      <div id="hud" class="full clip" data-start="0" data-duration="15" data-track-index="7">
+        <div id="top"><i></i>PÓS-ELEIÇÃO · DADOS REAIS</div>
+        <div id="lab" class="tag"><span id="labt">DOMINGO · 21H</span></div>
+        <div id="cap"></div>
+      </div>
+      <audio id="som" src="assets/som_previa.wav" data-start="0" data-duration="15" data-volume="1"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const $ = (s) => document.querySelector(s), $$ = (s) => document.querySelectorAll(s);
+      const show = (root, sel, on, t) => tl.to(root + ' ' + sel, { opacity: on ? 1 : 0, duration: 0.06 }, t);
+      const face = (root, t, m, b) => { ['.m-smile', '.m-open', '.m-frown', '.m-smug'].forEach((k) => show(root, k, k === m, t)); ['.b-neutral', '.b-angry', '.b-up'].forEach((k) => show(root, k, k === b, t)); };
+
+      // ---------- o mundo: céu, prédio do Tatuapé, janelas ----------
+      let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      const W = $('#world'); let s = '';
+      s += `<defs><linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#060E1F"/><stop offset="0.6" stop-color="#10234A"/><stop offset="1" stop-color="#1E3460"/></linearGradient>
+        <radialGradient id="lua" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="rgba(255,240,200,0.5)"/><stop offset="1" stop-color="rgba(255,240,200,0)"/></radialGradient>
+        <linearGradient id="quente" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD58A"/><stop offset="1" stop-color="#E9A24E"/></linearGradient>
+        <clipPath id="cj1"><rect x="380" y="880" width="150" height="170"/></clipPath><clipPath id="cj2"><rect x="570" y="880" width="150" height="170"/></clipPath></defs>
+        <rect x="-400" y="-400" width="1880" height="3200" fill="url(#ceu)"/>`;
+      for (let i = 0; i < 70; i++) s += `<circle cx="${(rnd() * 1080) | 0}" cy="${(rnd() * 700) | 0}" r="${(1 + rnd() * 2.2).toFixed(1)}" fill="#fff" opacity="${(0.3 + rnd() * 0.6).toFixed(2)}"/>`;
+      s += `<circle cx="860" cy="250" r="140" fill="url(#lua)"/><circle cx="860" cy="250" r="48" fill="#F5EDD6"/>`;
+      // skyline ao fundo
+      [[0, 1180, 140], [120, 1050, 120], [960, 1100, 140], [-40, 1300, 260], [880, 1250, 240]].forEach(([x, y, w]) => { s += `<rect x="${x}" y="${y}" width="${w}" height="${2700 - y}" fill="#0F1C33"/>`; for (let k = 0; k < 12; k++) if (rnd() > 0.55) s += `<rect x="${x + 16 + (k % 3) * (w / 3.2) | 0}" y="${y + 30 + ((k / 3) | 0) * 70}" width="18" height="26" fill="#F6C46B" opacity="0.5"/>`; });
+      // prédio principal
+      s += `<rect x="140" y="380" width="800" height="2400" fill="#22324F"/><rect x="860" y="380" width="80" height="2400" fill="#1A2740"/><rect x="128" y="360" width="824" height="30" fill="#2C3E60"/>`;
+      for (let r = 0; r < 10; r++) for (let c = 0; c < 4; c++) {
+        const x = 190 + c * 190, y = 460 + r * 210; if (r === 2 && (c === 1 || c === 2)) continue;
+        const lit = rnd() > 0.45; s += `<rect x="${x - 6}" y="${y - 6}" width="162" height="182" fill="#2C3E60"/><rect x="${x}" y="${y}" width="150" height="170" fill="${lit ? 'url(#quente)' : '#1A2742'}" opacity="${lit ? (0.55 + rnd() * 0.35).toFixed(2) : 1}"/><path d="M ${x + 75} ${y} V ${y + 170}" stroke="#2C3E60" stroke-width="5"/>`;
+      }
+      // as duas janelas dos personagens (mesmo andar, apartamentos vizinhos)
+      [[380, 'j1', 'cj1'], [570, 'j2', 'cj2']].forEach(([x, id, cp]) => {
+        s += `<rect x="${x - 8}" y="872" width="166" height="186" fill="#33496F"/><g clip-path="url(#${cp})"><rect x="${x}" y="880" width="150" height="170" fill="url(#quente)"/>
+          <rect x="${x}" y="1010" width="150" height="40" fill="rgba(0,0,0,0.12)"/><g id="${id}"></g></g>
+          <rect id="${id}g" x="${x - 8}" y="872" width="166" height="186" fill="none" stroke="#FFD58A" stroke-width="6" opacity="0"/>`;
+      });
+      s += `<g clip-path="url(#cj2)"><rect id="cort" x="570" y="880" width="150" height="170" fill="#7A4E6B"/><path d="M 600 880 V 1050 M 630 880 V 1050 M 660 880 V 1050 M 690 880 V 1050" stroke="rgba(0,0,0,0.18)" stroke-width="6"/></g>`;
+      s += `<rect x="560" y="1058" width="20" height="2" fill="none"/><g id="fogos"></g>`;
+      W.innerHTML = s;
+      // personagens nas janelas (meio corpo)
+      $('#j1').innerHTML = `<g transform="translate(380 878) scale(0.47)">${rafa('wr')}</g>`;
+      $('#j2').innerHTML = `<g transform="translate(570 878) scale(0.47)">${celia('wc')}</g>`;
+      // cortina começa recolhida (fica à direita, largura 0)
+      gsap.set('#cort', { scaleX: 0, svgOrigin: '720 965' });
+      gsap.set($$('#cort + path'), { opacity: 0 });
+      // fogos: 3 explosões de raios
+      const F = $('#fogos'); const bursts = [[430, 815, '#FFD58A'], [370, 785, '#FF6B6F'], [505, 790, '#E2C27F']];
+      bursts.forEach(([x, y, c], i) => { let g = `<g id="fx${i}">`; for (let k = 0; k < 14; k++) { const a = (k / 14) * Math.PI * 2; g += `<path d="M ${x + Math.cos(a) * 10} ${y + Math.sin(a) * 10} L ${x + Math.cos(a) * 52} ${y + Math.sin(a) * 52}" stroke="${c}" stroke-width="5" stroke-linecap="round"/>`; } g += `<circle cx="${x}" cy="${y}" r="7" fill="#fff"/></g>`; F.innerHTML += g; });
+      F.innerHTML += `<path id="rastro" d="M 455 880 L 425 815" stroke="#FFD58A" stroke-width="5" stroke-linecap="round" stroke-dasharray="80" stroke-dashoffset="80"/>`;
+      bursts.forEach(([x, y], i) => gsap.set('#fx' + i, { scale: 0, opacity: 0, svgOrigin: `${x} ${y}` }));
+
+      // ---------- legenda ----------
+      const CAP = [
+        [0.15, 'DOMINGO, <b>À NOITE</b>'], [1.05, 'MESMO PRÉDIO'], [1.75, 'NO <b>TATUAPÉ</b>'], [2.35, 'RAFA · <b class="r">TIME 13</b>'], [2.95, 'DONA CÉLIA · <b>TIME 22</b>'],
+        [3.75, 'SAI O <b>RESULTADO</b>'], [4.6, 'LULA <b class="r">51,8%</b>'], [5.4, 'FLÁVIO <b>48,2%</b>'],
+        [6.55, 'RAFA SOLTA <b>ROJÃO</b>'], [7.55, 'CÉLIA FECHA<br>A <b>CORTINA</b>'],
+        [9.0, 'O DÓLAR <b class="r">SALTA</b>'], [9.6, '<b class="r">QUASE 10%</b>'], [10.25, '“EU <b>AVISEI</b>”'], [10.95, '“É SÓ A <b>PRIMEIRA NOITE</b>”'],
+        [11.95, 'SEGUNDA, <b>8H</b>'], [12.75, 'MESMO <b>ELEVADOR</b>'], [13.75, 'O BOLETO<br>DO <b class="r">ALUGUEL</b>'], [15.2, '']];
+      const capEl = $('#cap');
+      CAP.slice(0, -1).forEach(([t, h], i) => { const el = document.createElement('div'); el.className = 'cg'; el.id = 'cg' + i; el.innerHTML = h; capEl.appendChild(el);
+        tl.fromTo(el, { opacity: 0, scale: 0.82, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.12, ease: 'back.out(2.4)' }, t);
+        tl.to(el, { opacity: 0, duration: 0.05 }, Math.min(14.95, CAP[i + 1][0] - 0.06)); });
+      // rótulos de cena
+      const LAB = [[0, 'DOMINGO · 21H'], [1.6, 'TATUAPÉ · SÃO PAULO'], [3.6, 'RESULTADO · TSE'], [6.55, 'DOMINGO · 21H40'], [8.7, 'MERCADO FUTURO'], [11.85, 'SEGUNDA · 8H']];
+      LAB.forEach(([t, txt]) => { tl.call(() => { $('#labt').textContent = txt; }, null, t); tl.fromTo('#lab', { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.18, ease: 'power3.out' }, t + 0.01); });
+      tl.call(() => { $('#labt').textContent = LAB[0][1]; }, null, 0);
+
+      // ---------- CENA 1: câmera desce do céu e entra nas duas janelas ----------
+      tl.fromTo('#world', { attr: { viewBox: '-260 -300 1600 2844' } }, { attr: { viewBox: '250 560 600 1067' }, duration: 2.6, ease: 'power2.inOut' }, 0);
+      tl.fromTo('#j1g', { opacity: 0 }, { opacity: 1, duration: 0.15, yoyo: true, repeat: 1 }, 2.35);
+      tl.fromTo('#j2g', { opacity: 0 }, { opacity: 1, duration: 0.15, yoyo: true, repeat: 1 }, 2.95);
+      tl.to('#world', { attr: { viewBox: '330 720 440 782' }, duration: 0.7, ease: 'power1.inOut' }, 2.6);
+      // transição 1→2: mergulha na janela do Rafa (a TV dele mostra o resultado)
+      tl.to('#world', { attr: { viewBox: '395 930 120 213' }, duration: 0.35, ease: 'power3.in' }, 3.3);
+      tl.to('#flash', { opacity: 0.85, duration: 0.08 }, 3.58); tl.to('#flash', { opacity: 0, duration: 0.25 }, 3.66);
+
+      // ---------- CENA 2: a urna mostra o placar ----------
+      tl.fromTo('#urna', { y: 260, scale: 0.85, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.45, ease: 'expo.out' }, 3.62);
+      tl.fromTo('#bar1', { scaleX: 0 }, { scaleX: 0.5179, duration: 0.9, ease: 'power3.out' }, 4.45);
+      tl.fromTo('#bar2', { scaleX: 0 }, { scaleX: 0.4821, duration: 0.9, ease: 'power3.out' }, 5.25);
+      const c1 = { v: 0 }, c2 = { v: 0 }; const pf = (v) => v.toFixed(2).replace('.', ',') + '%';
+      tl.fromTo(c1, { v: 0 }, { v: 51.79, duration: 0.9, ease: 'power3.out', onUpdate: () => { $('#p1').textContent = pf(c1.v); } }, 4.45);
+      tl.fromTo(c2, { v: 0 }, { v: 48.21, duration: 0.9, ease: 'power3.out', onUpdate: () => { $('#p2').textContent = pf(c2.v); } }, 5.25);
+      // transição 2→3: o placar encolhe num ponto de luz que vira o primeiro rojão
+      tl.to('#urna', { scale: 0.02, x: -260, y: -380, opacity: 0.9, duration: 0.35, ease: 'power3.in' }, 6.2);
+
+      // ---------- CENA 3: rojão de um lado, cortina do outro ----------
+      tl.set('#world', { attr: { viewBox: '330 590 440 782' } }, 6.5);
+      face('#wr', 6.5, '.m-open', '.b-up'); face('#wc', 6.5, '.m-frown', '.b-angry');
+      tl.to('#wr .armL', { rotation: 150, svgOrigin: '106 252', duration: 0.25, ease: 'back.out(2)' }, 6.55);
+      tl.to('#rastro', { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, 6.6);
+      bursts.forEach((b, i) => { const t0 = 6.6 + i * 0.32;
+        tl.to('#fx' + i, { scale: 1, opacity: 1, duration: 0.35, ease: 'expo.out' }, t0);
+        tl.to('#fx' + i, { opacity: 0, scale: 1.25, duration: 0.5, ease: 'power2.in' }, t0 + 0.4); });
+      tl.to('#rastro', { opacity: 0, duration: 0.3 }, 7.1);
+      tl.to('#world', { attr: { viewBox: '345 610 410 729' }, duration: 1.7, ease: 'none' }, 6.6);
+      tl.to('#wc .eyes', { x: -6, duration: 0.15 }, 7.2);
+      tl.to('#cort', { scaleX: 1, duration: 0.55, ease: 'power2.inOut' }, 7.65);
+      tl.to($$('#cort + path'), { opacity: 1, duration: 0.2 }, 7.9);
+      // transição 3→4: a cortina toma a tela inteira e abre na sala
+      tl.fromTo('#pano', { xPercent: 100 }, { xPercent: 0, duration: 0.35, ease: 'power3.in' }, 8.3);
+      tl.to('#pano', { xPercent: -100, duration: 0.45, ease: 'power3.out' }, 8.85);
+
+      // ---------- CENA 4: a TV e as duas reações ----------
+      $('#bust1').innerHTML = celia('tc'); $('#bust2').innerHTML = rafa('tr');
+      face('#tc', 8.6, '.m-frown', '.b-angry'); face('#tr', 8.6, '.m-smile', '.b-neutral');
+      const len = $('#usd').getTotalLength();
+      tl.fromTo('#usd', { strokeDasharray: len, strokeDashoffset: len }, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.in' }, 9.05);
+      tl.fromTo('#usdDot', { scale: 0, svgOrigin: '812 120' }, { scale: 1, duration: 0.25, ease: 'back.out(3)' }, 10.0);
+      const dv = { v: 4.99 }; tl.fromTo(dv, { v: 4.99 }, { v: 5.50, duration: 0.5, ease: 'power2.in', onUpdate: () => { $('#usdv').textContent = 'R$ ' + dv.v.toFixed(2).replace('.', ','); } }, 9.55);
+      tl.fromTo('#usdp', { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.18, ease: 'power3.in' }, 10.0);
+      tl.fromTo('#tv', { x: 0 }, { x: 8, duration: 0.05, yoyo: true, repeat: 3 }, 10.02);
+      face('#tc', 10.2, '.m-smug', '.b-angry');
+      tl.fromTo('#bub1', { opacity: 0, scale: 0.6, transformOrigin: '20% 100%' }, { opacity: 1, scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, 10.22);
+      tl.fromTo('#bust1', { y: 0 }, { y: -14, duration: 0.12, yoyo: true, repeat: 1 }, 10.22);
+      face('#tr', 10.9, '.m-smug', '.b-up');
+      tl.fromTo('#bub2', { opacity: 0, scale: 0.6, transformOrigin: '80% 100%' }, { opacity: 1, scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, 10.92);
+      tl.fromTo('#bust2', { y: 0 }, { y: -14, duration: 0.12, yoyo: true, repeat: 1 }, 10.92);
+      // transição 4→5: a TV desliga (tela colapsa numa linha)
+      tl.to('#tvs', { scaleY: 0.01, duration: 0.14, ease: 'power3.in' }, 11.5);
+      tl.to('#tvline', { opacity: 1, duration: 0.02 }, 11.6);
+      tl.to('#tvline', { scaleX: 0, duration: 0.18, ease: 'power3.in' }, 11.64);
+      tl.to('#bub1, #bub2, #bust1, #bust2', { opacity: 0, duration: 0.15 }, 11.5);
+
+      // ---------- CENA 5: o elevador e o boleto ----------
+      $('#dentro').innerHTML = `<g transform="translate(200 470) scale(1.12)">${rafa('er')}</g><g transform="translate(530 470) scale(1.12)">${celia('ec')}</g>`;
+      ['#er', '#ec'].forEach((r) => { show(r, '.armL', 0, 11.8); show(r, '.armR', 0, 11.8); show(r, '.armsX', 1, 11.8); });
+      face('#er', 11.8, '.m-frown', '.b-angry'); face('#ec', 11.8, '.m-frown', '.b-angry');
+      tl.set('#er .eyes', { x: -7 }, 11.8); tl.set('#ec .eyes', { x: 7 }, 11.8);
+      tl.fromTo('#s5 svg', { y: 0, scale: 1.04 }, { scale: 1, duration: 0.6, ease: 'expo.out' }, 11.8);
+      const andares = ['8', '7', '6', '5', '4', '3', '2', '1', 'T'];
+      andares.forEach((a, i) => tl.call(() => { $('#led').textContent = a; }, null, 11.85 + i * 0.1));
+      tl.call(() => { $('#led').textContent = '8'; }, null, 11.8);
+      tl.to('#portaL', { x: -380, duration: 0.5, ease: 'power2.inOut' }, 12.8);
+      tl.to('#portaR', { x: 380, duration: 0.5, ease: 'power2.inOut' }, 12.8);
+      tl.to('#fresta', { opacity: 0, duration: 0.1 }, 12.8);
+      tl.fromTo('#env1', { x: 700, y: 500, rotation: 40, opacity: 0 }, { x: 0, y: 0, rotation: -6, opacity: 1, duration: 0.45, ease: 'power3.out' }, 13.55);
+      tl.fromTo('#env2', { x: 400, y: 520, rotation: 50, opacity: 0 }, { x: 0, y: 0, rotation: 5, opacity: 1, duration: 0.45, ease: 'power3.out' }, 13.7);
+      face('#er', 14.0, '.m-open', '.b-up'); face('#ec', 14.0, '.m-open', '.b-up');
+      tl.to('#er .eyes, #ec .eyes', { x: 0, y: 6, duration: 0.12 }, 14.0);
+      tl.fromTo('#pct', { opacity: 0, scale: 2.2, rotation: -12 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.2, ease: 'power3.in' }, 14.15);
+      tl.fromTo('#s5 svg, #env1, #env2', { x: 0 }, { x: 6, duration: 0.04, yoyo: true, repeat: 3 }, 14.35);
+
+      window.__timelines['main'] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

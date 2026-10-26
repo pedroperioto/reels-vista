@@ -15,3 +15,4 @@ videos/*/.chk/
 videos/*/previa_hf.mp4
 videos/*/out/render.log
 videos/*/voz/som_bruto.wav
+videos/*/out/*.mp4

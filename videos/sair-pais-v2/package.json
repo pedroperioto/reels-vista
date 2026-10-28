@@ -1,0 +1,14 @@
+{
+  "name": "sair-pais-v2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.8.200 preview",
+    "check": "npx --yes hyperframes@0.8.200 check",
+    "render": "npx --yes hyperframes@0.8.200 render",
+    "publish": "npx --yes hyperframes@0.8.200 publish"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5"
+  }
+}

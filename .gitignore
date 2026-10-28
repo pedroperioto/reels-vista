@@ -20,3 +20,7 @@ videos/*/clipes_raw/
 videos/*-previa/
 videos/*/ficha/
 videos/*/clipes/
+videos/*/brutos/
+videos/*/planos/*.mp4
+videos/*/base.mp4
+videos/*/out/

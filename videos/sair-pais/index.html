@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="pt-BR" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <script src="assets/d3.min.js"></script>
+    <script src="assets/topojson-client.min.js"></script>
+    <script src="assets/mundo.js"></script>
+    <script src="assets/globo.js"></script>
+    <script src="assets/vizinhas.js"></script>
+    <style>
+      @font-face { font-family: "Oswald700"; src: url("assets/fonts/Oswald700.woff2"); }
+      @font-face { font-family: "Oswald600"; src: url("assets/fonts/Oswald600.woff2"); }
+      @font-face { font-family: "Mono500"; src: url("assets/fonts/Mono500.woff2"); }
+      @font-face { font-family: "Mono700"; src: url("assets/fonts/Mono700.woff2"); }
+      @font-face { font-family: "InterMed"; src: url("assets/fonts/InterMed.otf"); }
+      @font-face { font-family: "InterBlack"; src: url("assets/fonts/InterBlack.otf"); }
+      @font-face { font-family: "InterSemi"; src: url("assets/fonts/InterSemi.otf"); }
+      /* parte 3 · sair do Brasil · texto entre 168 e 1330 px */
+      :root { --night: #0A1428; --gold: #E2C27F; --y: #FFD24A; --red: #E5484D; --green: #2E9E68; --mute: #8A96AD; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--night); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Oswald700", sans-serif; color: #fff; }
+      .full { position: absolute; inset: 0; } .scene { position: absolute; inset: 0; overflow: hidden; } .abs { position: absolute; }
+      .ctr { left: 0; width: 1080px; text-align: center; }
+      .dark { background: radial-gradient(1100px 1000px at 50% 40%, #13264A 0%, #0A1428 62%, #060D1C 100%); }
+      .tag { position: absolute; top: 250px; left: 0; width: 1080px; text-align: center; }
+      .tag span { display: inline-block; padding: 6px 16px; background: #fff; color: #10151F; font-family: "Oswald600"; font-size: 32px; letter-spacing: 2px; }
+      #top { position: absolute; top: 180px; left: 0; width: 1080px; text-align: center; font-family: "Oswald600"; font-size: 28px; letter-spacing: 5px; color: rgba(255,255,255,0.8); opacity: 0; }
+      #top i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--red); margin-right: 12px; vertical-align: 3px; }
+      .card { position: absolute; left: 90px; top: 320px; width: 900px; text-shadow: 0 4px 24px rgba(0,0,0,0.6); }
+      .dtag { display: inline-flex; align-items: center; gap: 14px; padding: 10px 22px; border-radius: 40px; background: rgba(10,20,40,0.85); border: 2px solid rgba(255,255,255,0.18); font-family: "Mono700"; font-size: 28px; letter-spacing: 2px; }
+      .dtag i { width: 18px; height: 18px; border-radius: 50%; background: var(--y); box-shadow: 0 0 16px var(--y); }
+      .dsrc { margin-top: 16px; font-family: "Mono500"; font-size: 22px; color: var(--mute); letter-spacing: 1px; }
+      .dbig { font-family: "InterBlack"; line-height: 1; letter-spacing: -6px; }
+      .dsub { font-family: "Mono700"; font-size: 28px; color: #D6DEEC; letter-spacing: 1px; }
+      .credit { position: absolute; left: 0; width: 1080px; text-align: center; font-family: "Mono500"; font-size: 22px; color: rgba(255,255,255,0.55); letter-spacing: 2px; }
+      /* legenda: palavra atual em amarelo */
+      #cap { position: absolute; left: 90px; width: 900px; top: 1235px; height: 120px; }
+      .cg { position: absolute; left: 0; top: 0; width: 900px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 34px; row-gap: 6px; font-size: 72px; line-height: 1; text-transform: uppercase; opacity: 0; text-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 0 30px rgba(0,0,0,0.55); }
+      .cw { display: inline-block; color: rgba(255,255,255,0.5); }
+      /* filmes: moldura */
+      .vfr { background: #05080F; }
+      .vid { position: absolute; left: 0; width: 1080px; opacity: 0; }
+      /* painel de partidas */
+      .row { position: absolute; left: 70px; width: 940px; height: 96px; border-radius: 12px; background: #11151C; border: 2px solid #1F2633; display: flex; align-items: center; font-family: "Mono700"; font-size: 40px; letter-spacing: 3px; color: #FFD24A; opacity: 0; }
+      .row .v { width: 240px; padding-left: 28px; color: #8A96AD; } .row .d { flex: 1; } .row .s { width: 260px; text-align: right; padding-right: 28px; color: #2E9E68; font-size: 30px; }
+      .hrow { position: absolute; left: 70px; width: 940px; display: flex; font-family: "Mono500"; font-size: 24px; letter-spacing: 3px; color: #8A96AD; }
+      /* busca */
+      #sbar { left: 90px; top: 470px; width: 900px; height: 116px; border-radius: 58px; background: #fff; color: #202124; display: flex; align-items: center; gap: 22px; padding-left: 40px; font-family: "InterMed"; font-size: 44px; box-shadow: 0 20px 50px rgba(0,0,0,0.45); opacity: 0; }
+      #sbar .car { width: 4px; height: 52px; background: #1A73E8; }
+      /* chips do globo */
+      .chip { position: absolute; width: 430px; padding: 22px 26px; border-radius: 26px; background: rgba(10,20,40,0.88); border: 2px solid rgba(255,255,255,0.18); opacity: 0; }
+      .chip .l { font-family: "Mono700"; font-size: 24px; color: #D6DEEC; letter-spacing: 2px; } .chip .q { margin-top: 8px; font-family: "InterSemi"; font-size: 28px; color: #fff; }
+      .chip .n { margin-top: 6px; font-family: "InterBlack"; font-size: 84px; line-height: 1; color: var(--y); letter-spacing: -2px; }
+      /* perfil */
+      #perfil { left: 90px; top: 330px; width: 900px; height: 400px; border-radius: 40px; background: #fff; color: #10151F; box-shadow: 0 30px 80px rgba(0,0,0,0.5); opacity: 0; }
+      #btn { left: 60px; top: 268px; width: 780px; height: 96px; border-radius: 22px; background: #0095F6; color: #fff; font-family: "InterSemi"; font-size: 42px; display: flex; align-items: center; justify-content: center; }
+      .serie { position: absolute; left: 90px; width: 900px; height: 150px; border-radius: 28px; padding: 24px 30px; opacity: 0; }
+      .serie .p { font-family: "Mono700"; font-size: 24px; letter-spacing: 3px; } .serie .t { margin-top: 10px; font-family: "Oswald700"; font-size: 52px; line-height: 1; }
+      .serie .b { position: absolute; right: 30px; top: 26px; padding: 6px 14px; border-radius: 10px; font-family: "Mono700"; font-size: 22px; }
+      /* recibo, envelopes, boletos */
+      #recibo { left: 140px; top: 450px; width: 800px; padding: 40px 46px 34px; border-radius: 10px; background: #FBF8F1; color: #10151F; box-shadow: 0 30px 80px rgba(0,0,0,0.5); opacity: 0; }
+      .rl { display: flex; justify-content: space-between; font-family: "Mono700"; font-size: 34px; padding: 18px 0; border-bottom: 3px dashed #D9D2C2; opacity: 0; }
+      .env { position: absolute; width: 230px; height: 146px; border-radius: 10px; background: #FAF7F0; box-shadow: 0 18px 40px rgba(0,0,0,0.45); overflow: hidden; opacity: 0; }
+      .env:before { content: ""; position: absolute; left: 0; top: 0; width: 0; height: 0; border-left: 115px solid transparent; border-right: 115px solid transparent; border-top: 72px solid #E9E2D2; }
+      .env .st { position: absolute; left: 20px; top: 76px; padding: 2px 10px; border: 4px solid var(--green); color: var(--green); font-size: 32px; transform: rotate(-6deg); }
+      .bol { position: absolute; width: 300px; padding: 18px 22px; border-radius: 12px; background: #FBF8F1; color: #10151F; box-shadow: 0 18px 40px rgba(0,0,0,0.45); opacity: 0; }
+      .bol .h { font-family: "Mono700"; font-size: 30px; } .bol .b { margin-top: 10px; height: 34px; background: repeating-linear-gradient(90deg, #10151F 0 4px, transparent 4px 7px, #10151F 7px 9px, transparent 9px 14px); }
+      .stamp { position: absolute; padding: 8px 24px; border: 7px solid var(--red); border-radius: 12px; color: var(--red); font-size: 64px; letter-spacing: 2px; opacity: 0; background: rgba(251,248,241,0.92); }
+      .opt { position: absolute; left: 90px; width: 900px; height: 170px; border-radius: 30px; background: rgba(10,20,40,0.88); border: 2px solid rgba(255,255,255,0.16); display: flex; align-items: center; gap: 34px; padding-left: 40px; opacity: 0; }
+      .opt .ic { width: 96px; height: 96px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 64px; color: #10151F; }
+      .opt .t { font-size: 66px; line-height: 1; } .opt .s { font-family: "Mono700"; font-size: 26px; color: #D6DEEC; margin-top: 8px; letter-spacing: 1px; }
+      /* comentários */
+      #cbox { left: 90px; top: 360px; width: 900px; height: 560px; border-radius: 40px; background: #fff; color: #10151F; box-shadow: 0 30px 80px rgba(0,0,0,0.5); opacity: 0; overflow: hidden; }
+      .av { position: absolute; width: 74px; height: 74px; border-radius: 50%; }
+      /* final */
+      #o-name { top: 820px; font-size: 92px; } #o-creci { top: 935px; font-family: "InterMed"; font-size: 32px; color: #A9B6CA; } #o-at { top: 990px; font-family: "InterSemi"; font-size: 40px; color: var(--gold); }
+      #o-logo { left: 400px; top: 1070px; width: 280px; height: 145px; border-radius: 26px; background: #fff; display: flex; align-items: center; justify-content: center; } #o-logo img { width: 230px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="91.9" data-width="1080" data-height="1920" data-motion-blur="on">
+      <div id="bg" class="full clip" data-start="0" data-duration="91.9" data-track-index="0" style="background: var(--night)"></div>
+
+      <!-- T: Tropa de Elite (o grito) -->
+      <div id="sT" class="scene vfr clip" data-start="0" data-duration="1.3" data-track-index="1">
+        <div id="tTop" class="abs ctr" style="top:150px;font-size:76px;line-height:1.02">BRASILEIROS<br><span style="color:var(--y)">DESDE DOMINGO:</span></div>
+        <div class="credit" style="top:1395px">TROPA DE ELITE (2007)</div>
+      </div>
+
+      <!-- A: partidas + busca no Google -->
+      <div id="sA" class="scene dark clip" data-start="1.3" data-duration="7.325" data-track-index="2">
+        <div id="board" class="full">
+          <div class="abs ctr" style="top:330px;font-family:Mono700;font-size:44px;letter-spacing:10px;color:#D6DEEC">✈ PARTIDAS</div>
+          <div class="hrow" style="top:420px"><div style="width:240px;padding-left:28px">VOO</div><div style="flex:1">DESTINO</div><div style="width:260px;text-align:right;padding-right:28px">SITUAÇÃO</div></div>
+          <div class="row" style="top:460px"><div class="v">BR 101</div><div class="d">LISBOA</div><div class="s">EMBARQUE</div></div>
+          <div class="row" style="top:572px"><div class="v">BR 214</div><div class="d">MIAMI</div><div class="s">EMBARQUE</div></div>
+          <div class="row" style="top:684px"><div class="v">BR 330</div><div class="d">ASSUNÇÃO</div><div class="s">EMBARQUE</div></div>
+          <div class="row" style="top:796px"><div class="v">BR 402</div><div class="d">PORTO</div><div class="s">EMBARQUE</div></div>
+          <div class="row" style="top:908px"><div class="v">BR 515</div><div class="d">ORLANDO</div><div class="s" style="color:#FF6B6F">LOTADO</div></div>
+          <div class="row" style="top:1020px"><div class="v">BR 620</div><div class="d">TORONTO</div><div class="s">EMBARQUE</div></div>
+        </div>
+        <div id="srch" class="full" style="opacity:0">
+          <div class="card"><div class="dtag"><i></i>BUSCAS NO GOOGLE · BRASIL</div><div class="dsrc">FONTE: GOOGLE TRENDS · VIA LATIN TIMES · 27/10/2026</div></div>
+          <div id="sbar" class="abs"><svg width="44" height="44" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#5F6368" stroke-width="2.6"/><path d="M 15 15 L 22 22" stroke="#5F6368" stroke-width="2.6" stroke-linecap="round"/></svg><span id="stxt"></span><i class="car"></i></div>
+          <div id="abig" class="abs dbig" style="left:90px;top:660px;font-size:230px;color:var(--y)">+0%</div>
+          <div id="asub" class="abs dsub" style="left:96px;top:910px;opacity:0">EM 24 HORAS · DEPOIS DO 2º TURNO</div>
+        </div>
+      </div>
+
+      <!-- B: globo · 1º e 2º turno -->
+      <div id="sB" class="scene dark clip" data-start="8.625" data-duration="8.545" data-track-index="3">
+        <svg id="globo" class="full" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+        <div class="card"><div class="dtag"><i></i>BUSCAS · "MORAR FORA"</div><div class="dsrc">FONTES: TERRA (05/10) · LATIN TIMES (27/10) · GOOGLE TRENDS</div></div>
+        <div id="ch1" class="chip" style="left:90px;top:470px"><div class="l">1º TURNO · 04/10</div><div class="q">"morar fora do Brasil"</div><div class="n">+40%</div></div>
+        <div id="ch2" class="chip" style="left:560px;top:470px"><div class="l">2º TURNO · 25/10</div><div class="q">"como morar no Paraguai"</div><div class="n">+1.700%</div></div>
+        <div id="bInd" class="abs ctr" style="top:740px;font-size:46px;letter-spacing:2px;opacity:0">INDEPENDENTE DE QUEM GANHOU</div>
+        <div id="bMil" class="abs" style="left:150px;top:470px;width:780px;padding:26px;border-radius:28px;background:var(--y);color:#10151F;text-align:center;opacity:0">
+          <div style="font-family:InterBlack;font-size:96px;line-height:1;letter-spacing:-3px">5,3 MILHÕES</div>
+          <div style="font-family:Mono700;font-size:26px;margin-top:10px">DE BRASILEIROS JÁ VIVEM FORA · ITAMARATY, 2025</div></div>
+      </div>
+
+      <!-- S: o apartamento não cabe na mala -->
+      <div id="sS" class="scene dark clip" data-start="17.17" data-duration="3.57" data-track-index="4">
+        <svg class="full" width="1080" height="1920" viewBox="0 0 1080 1920">
+          <g id="mala">
+            <rect x="330" y="830" width="420" height="300" rx="34" fill="#B5492F"/><rect x="330" y="830" width="420" height="300" rx="34" fill="none" stroke="#8C3522" stroke-width="10"/>
+            <path d="M 430 830 V 1130 M 650 830 V 1130" stroke="#8C3522" stroke-width="12"/><rect x="480" y="790" width="120" height="50" rx="16" fill="none" stroke="#3B2C24" stroke-width="14"/>
+            <circle cx="380" cy="1140" r="16" fill="#222"/><circle cx="700" cy="1140" r="16" fill="#222"/>
+            <g id="tampa"><rect x="330" y="620" width="420" height="210" rx="30" fill="#C85A3E" stroke="#8C3522" stroke-width="10"/></g>
+          </g>
+          <g id="predio">
+            <rect x="400" y="300" width="280" height="560" rx="8" fill="#22324F"/><rect x="388" y="286" width="304" height="24" fill="#2C3E60"/>
+            <g id="pjan"></g>
+          </g>
+        </svg>
+        <div class="credit" style="top:1170px;opacity:0" id="upCred">UP: ALTAS AVENTURAS (2009)</div>
+      </div>
+
+      <!-- C: segue o perfil · série -->
+      <div id="sC" class="scene dark clip" data-start="20.74" data-duration="9.42" data-track-index="5">
+        <div id="perfil" class="abs">
+          <div class="abs" style="left:50px;top:46px;width:170px;height:170px;border-radius:50%;padding:6px;background:linear-gradient(45deg,#F7B733,#E1306C,#833AB4)">
+            <div style="width:158px;height:158px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;border:5px solid #fff"><img src="assets/vista.png" style="width:120px" alt=""></div></div>
+          <div class="abs" style="left:260px;top:70px;font-family:InterBlack;font-size:46px">vistabroker.perioto</div>
+          <div class="abs" style="left:260px;top:134px;font-family:InterMed;font-size:32px;color:#4B5563">Pedro Perioto · Corretor de imóveis</div>
+          <div class="abs" style="left:260px;top:180px;font-family:InterMed;font-size:28px;color:#6B7280">O que a notícia muda no seu imóvel</div>
+          <div id="btn" class="abs"><span id="btnt">Seguir</span></div>
+          <div id="tap" class="abs" style="left:420px;top:300px;width:60px;height:60px;border-radius:50%;background:rgba(16,21,31,0.35);border:4px solid rgba(255,255,255,0.9);opacity:0"></div>
+        </div>
+        <div id="cSem" class="abs ctr" style="top:770px;font-size:52px;line-height:1.1;opacity:0">TODA SEMANA:<br><span style="color:var(--gold)">O QUE A NOTÍCIA MUDA NO SEU IMÓVEL</span></div>
+        <div id="se3" class="serie" style="top:900px;background:#fff;color:#10151F"><div class="p">PARTE 3</div><div class="t">SAIR DO BRASIL?</div><div class="b" style="background:#10151F;color:var(--y)">AGORA</div></div>
+        <div id="se4" class="serie" style="top:1065px;background:rgba(10,20,40,0.9);border:3px dashed var(--y)"><div class="p" style="color:var(--y)">PARTE 4</div><div class="t">A PARCELA DO FINANCIAMENTO</div><div class="b" style="background:var(--y);color:#10151F">EM BREVE</div></div>
+      </div>
+
+      <!-- D: o prédio · Ana e Bia -->
+      <div id="sD" class="scene clip" data-start="30.16" data-duration="10.09" data-track-index="6">
+        <svg id="world" class="full" width="1080" height="1920" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice"></svg>
+        <div id="tAna" class="abs" style="left:318px;top:350px;padding:6px 18px;border-radius:12px;background:#7C5CC4;font-size:44px;opacity:0">ANA</div>
+        <div id="tBia" class="abs" style="left:668px;top:350px;padding:6px 18px;border-radius:12px;background:#2F7FB5;font-size:44px;opacity:0">BIA</div>
+        <div id="tCalc" class="abs" style="left:560px;top:1010px;padding:10px 20px;border-radius:14px;background:var(--y);color:#10151F;font-family:Mono700;font-size:34px;opacity:0">600.000 × 6,43% = ?</div>
+      </div>
+
+      <!-- E: Ana vendeu -->
+      <div id="sE" class="scene dark clip" data-start="40.25" data-duration="13.145" data-track-index="7">
+        <div class="card"><div class="dtag"><i style="background:#7C5CC4;box-shadow:0 0 16px #7C5CC4"></i>ANA · VENDEU NA PRESSA</div><div class="dsrc" id="eSrc">DÓLAR DE FECHAMENTO · 23/10 E 26/10/2026 · O POVO · CNN BRASIL</div></div>
+        <div id="eDol" class="full">
+          <div class="abs dsub" style="left:96px;top:470px;font-size:34px">APÊ DE <span style="color:var(--y)">R$ 600 MIL</span> EM DÓLAR</div>
+          <div id="eUsd" class="abs dbig" style="left:90px;top:530px;font-size:170px">US$ 120.166</div>
+          <div id="eR1" class="abs dsub" style="left:96px;top:740px;opacity:0">SEXTA 23/10 · DÓLAR <span style="color:#fff">R$ 4,99</span></div>
+          <div id="eR2" class="abs dsub" style="left:96px;top:790px;opacity:0">SEGUNDA 26/10 · DÓLAR <span style="color:#FF6B6F">R$ 5,40</span></div>
+          <div id="eSt" class="stamp" style="left:520px;top:880px;transform:rotate(-6deg)">−US$ 9 MIL</div>
+        </div>
+        <div id="recibo" class="abs">
+          <div style="font-family:Mono700;font-size:26px;color:#6B7280;letter-spacing:3px">RECIBO DA ANA</div>
+          <div class="rl" id="rl1" style="opacity:1"><span>VENDA DO APÊ</span><span>R$ 600.000</span></div>
+          <div class="rl" id="rl2"><span style="color:var(--red)">− CORRETAGEM</span><span></span></div>
+          <div class="rl" id="rl3"><span style="color:var(--red)">− IR 15% SOBRE O LUCRO</span><span></span></div>
+          <div class="rl" id="rl4" style="border-bottom:none"><span>÷ DÓLAR DE R$ 5,40</span><span>US$ ↓</span></div>
+          <div style="margin-top:12px;font-family:Mono500;font-size:20px;color:#8A8F99">IR SOBRE GANHO DE CAPITAL: LEI 13.259/2016</div>
+        </div>
+        <div id="eMenos" class="stamp" style="left:250px;top:1010px;transform:rotate(-4deg);font-size:76px">= MENOS DÓLAR</div>
+      </div>
+
+      <!-- F: Bia alugou -->
+      <div id="sF" class="scene dark clip" data-start="53.395" data-duration="15.38" data-track-index="8">
+        <div class="card"><div class="dtag"><i style="background:#2F7FB5;box-shadow:0 0 16px #2F7FB5"></i>BIA · ALUGOU</div><div class="dsrc" id="fSrc">FIPEZAP · SET/2026 · RENDIMENTO MÉDIO DO ALUGUEL EM SP</div></div>
+        <div id="fPct" class="abs dbig" style="left:90px;top:460px;font-size:220px;color:var(--y)">0,00%</div>
+        <div id="fAno" class="abs dsub" style="left:96px;top:690px;opacity:0">AO ANO, EM MÉDIA, EM SÃO PAULO</div>
+        <div id="fMes" class="abs" style="left:90px;top:760px;opacity:0"><span style="font-family:InterBlack;font-size:96px;letter-spacing:-3px">≈ R$ 3.215</span><span class="dsub"> /MÊS</span>
+          <div class="dsub" style="font-size:22px;color:var(--mute);margin-top:4px">NUM APÊ DE R$ 600 MIL · VALOR BRUTO</div></div>
+        <div id="fe1" class="env" style="left:110px;top:930px"><div class="st">ALUGUEL</div></div>
+        <div id="fe2" class="env" style="left:425px;top:930px"><div class="st">ALUGUEL</div></div>
+        <div id="fe3" class="env" style="left:740px;top:930px"><div class="st">ALUGUEL</div></div>
+        <div id="fIr" class="abs" style="left:90px;top:1100px;padding:10px 20px;border-radius:12px;background:#E5484D;font-family:Mono700;font-size:26px;opacity:0">−15% IR · QUEM MORA FORA · RECOLHIDO POR PROCURADOR</div>
+        <div id="fSobra" class="abs" style="left:90px;top:1095px;padding:12px 26px;border-radius:20px;background:var(--green);font-size:54px;line-height:1;opacity:0">SOBRA ≈ R$ 2.730 <span style="font-family:Mono700;font-size:26px">/MÊS · LÍQUIDO DO IR</span></div>
+        <div id="fVolta" class="abs ctr" style="top:440px;opacity:0"><span style="display:inline-block;padding:10px 26px;border-radius:16px;background:#fff;color:#10151F;font-size:56px">2030: ESTOU DE VOLTA</span></div>
+        <div class="credit" style="top:1172px;opacity:0" id="leaoCred">O REI LEÃO (1994)</div>
+      </div>
+
+      <!-- G: deixar fechado -->
+      <div id="sG" class="scene clip" data-start="68.775" data-duration="8.62" data-track-index="9" style="background: linear-gradient(180deg, #2A2F3A 0%, #1B1F28 100%)">
+        <svg class="full" width="1080" height="1920" viewBox="0 0 1080 1920">
+          <rect x="0" y="1180" width="1080" height="740" fill="#14171E"/>
+          <rect x="300" y="360" width="480" height="830" rx="10" fill="#5B4636"/><rect x="330" y="390" width="420" height="790" fill="#7A5C45"/>
+          <rect x="370" y="440" width="340" height="300" rx="8" fill="#6B503C"/><rect x="370" y="800" width="340" height="320" rx="8" fill="#6B503C"/>
+          <rect x="470" y="410" width="140" height="44" rx="6" fill="#C9B489"/><text x="540" y="442" text-anchor="middle" font-family="Mono700" font-size="28" fill="#10151F">APTO 72</text>
+          <circle cx="700" cy="790" r="16" fill="#C9B489"/>
+          <g id="cad" opacity="0"><path d="M 676 800 V 780 A 24 24 0 0 1 724 780 V 800" fill="none" stroke="#B9BEC8" stroke-width="10"/><rect x="664" y="796" width="72" height="62" rx="10" fill="#D9DDE4"/></g>
+          <g id="teia" opacity="0" stroke="rgba(255,255,255,0.55)" stroke-width="2.5" fill="none"><path d="M 330 390 L 470 390 M 330 390 L 330 530 M 330 390 L 440 500 M 330 390 L 400 520 M 330 390 L 460 450"/>
+            <path d="M 370 390 Q 362 410 330 420 M 410 390 Q 396 430 330 450 M 450 390 Q 430 450 330 490"/></g>
+          <g id="poeira"></g>
+        </svg>
+        <div id="gRenda" class="abs" style="left:90px;top:320px;width:900px;padding:16px 26px;border-radius:22px;background:rgba(10,20,40,0.9);display:flex;justify-content:space-between;align-items:center;opacity:0">
+          <span style="font-family:Mono700;font-size:30px;color:#D6DEEC">RENDA DO APÊ</span><span style="font-family:InterBlack;font-size:70px;color:#FF6B6F">R$ 0,00</span></div>
+        <div id="gMes" class="abs dsub" style="left:96px;top:1150px;opacity:0">MÊS 1</div>
+        <div id="gbols"></div>
+      </div>
+
+      <!-- H: resumo -->
+      <div id="sH" class="scene dark clip" data-start="77.395" data-duration="7.4" data-track-index="10">
+        <div id="o1" class="opt" style="top:420px"><div class="ic" style="background:var(--y)">✓</div><div><div class="t">VENDER COM CALMA</div><div class="s">PODE FAZER SENTIDO</div></div></div>
+        <div id="o2" class="opt" style="top:630px"><div class="ic" style="background:#FF6B6F">✕</div><div><div class="t">VENDER CORRENDO</div><div class="s">QUASE NUNCA</div></div></div>
+        <div id="hCerto" class="abs ctr" style="top:480px;font-size:84px;line-height:1.05;opacity:0">NÃO TEM<br>CERTO OU ERRADO.</div>
+        <div id="hConta" class="abs ctr" style="top:760px;opacity:0"><span style="display:inline-block;padding:16px 40px;border-radius:24px;background:var(--y);color:#10151F;font-size:128px;line-height:1">TEM A CONTA.</span></div>
+      </div>
+
+      <!-- I: comenta CONTA -->
+      <div id="sI" class="scene dark clip" data-start="84.795" data-duration="3.705" data-track-index="11">
+        <div id="cbox" class="abs">
+          <div class="abs ctr" style="width:900px;top:30px;font-family:InterSemi;font-size:32px">Comentários</div>
+          <div class="abs" style="left:0;top:90px;width:900px;height:2px;background:#E5E7EB"></div>
+          <div id="cPost" style="opacity:0"><div class="av" style="left:40px;top:130px;background:#C7D2FE"></div>
+            <div class="abs" style="left:136px;top:132px;font-family:InterSemi;font-size:28px;color:#4B5563">você · agora</div>
+            <div class="abs" style="left:136px;top:170px;font-family:InterBlack;font-size:48px">CONTA</div></div>
+          <div id="cDm" class="abs" style="left:136px;top:270px;width:700px;padding:20px 26px;border-radius:28px;background:#EEF2FF;opacity:0">
+            <div style="font-family:InterSemi;font-size:26px;color:#4B5563">vistabroker.perioto · mensagem</div>
+            <div style="font-family:InterSemi;font-size:34px;margin-top:6px">Te mandei a simulação do seu imóvel</div></div>
+          <div class="abs" style="left:0;top:440px;width:900px;height:2px;background:#E5E7EB"></div>
+          <div class="av" style="left:40px;top:463px;background:#FDE68A"></div>
+          <div class="abs" style="left:136px;top:458px;width:600px;height:84px;border-radius:42px;border:2px solid #D1D5DB;display:flex;align-items:center;padding-left:30px;font-family:InterSemi;font-size:36px"><span id="ctxt" style="color:#9CA3AF">Adicione um comentário...</span></div>
+          <div id="cSend" class="abs" style="left:752px;top:466px;width:126px;height:68px;border-radius:34px;background:#0095F6;color:#fff;font-family:InterSemi;font-size:30px;display:flex;align-items:center;justify-content:center;opacity:0.4">Enviar</div>
+        </div>
+        <div id="cBig" class="abs ctr" style="top:980px;font-size:92px;line-height:1;opacity:0">COMENTA <span style="color:var(--y)">"CONTA"</span> ▼</div>
+      </div>
+
+      <!-- O: cartão final -->
+      <div id="sO" class="scene dark clip" data-start="88.5" data-duration="3.4" data-track-index="12">
+        <div id="oT" class="abs ctr" style="top:420px;font-size:84px;line-height:1.05">SAIR OU FICAR?<br><span style="color:var(--gold)">ANTES, FAZ A CONTA.</span></div>
+        <div class="abs" style="left:240px;top:740px;width:600px;height:2px;background:rgba(255,255,255,0.15)"></div>
+        <div id="o-name" class="abs ctr">Pedro Perioto</div><div id="o-creci" class="abs ctr">Corretor de imóveis · CRECI 258729</div>
+        <div id="o-at" class="abs ctr">@vistabroker.perioto</div><div id="o-logo" class="abs"><img src="assets/vista.png" alt="Vista"></div>
+        <div class="credit" style="top:1260px">Conteúdo informativo · personagens fictícios · trechos de filmes para ilustração</div>
+      </div>
+
+      <!-- filmes (moldura escura + vídeo mudo; o som do grito está no som.wav) -->
+      <div id="fF" class="full vfr clip" data-start="37.15" data-duration="1.45" data-track-index="13" style="opacity:0"><div class="credit" style="top:1395px">FORREST GUMP (1994)</div></div>
+      <video id="vT" class="vid clip" src="assets/video/tropa.mp4" style="top:300px;height:1080px" data-start="0" data-duration="1.3" data-track-index="14" muted playsinline></video>
+      <video id="vU" class="vid clip" src="assets/video/up.mp4" style="top:560px;height:600px" data-start="19.1" data-duration="1.49" data-track-index="15" muted playsinline></video>
+      <video id="vF" class="vid clip" src="assets/video/forrest.mp4" style="top:300px;height:1080px" data-start="37.15" data-duration="1.45" data-track-index="16" muted playsinline></video>
+      <video id="vL" class="vid clip" src="assets/video/leao.mp4" style="top:560px;height:600px" data-start="65.31" data-duration="3.365" data-track-index="17" muted playsinline></video>
+
+      <div id="flash" class="full clip" data-start="0" data-duration="91.9" data-track-index="18" style="background:#fff;opacity:0"></div>
+      <div id="hud" class="full clip" data-start="0" data-duration="91.9" data-track-index="19">
+        <div id="top"><i></i>PARTE 3 · SAIR DO BRASIL?</div>
+        <div id="lab" class="tag" style="opacity:0"><span id="labt">DESDE DOMINGO</span></div>
+        <div id="cap"></div>
+      </div>
+      <audio id="som" src="assets/som.wav" data-start="0" data-duration="91.9" data-volume="1"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const M = {"desde": 1.28, "pedindo": 3.11, "busca": 4.56, "mil7": 6.78, "turno1": 9.09, "subido": 11.87, "indep": 13.38, "malas": 15.58, "apto": 17.75, "naocabe": 19.25, "segue": 21.32, "semana": 22.3, "parte4": 25.43, "parcela": 27.06, "duas": 32.28, "mesma": 35.06, "ana": 36.74, "correndo": 37.45, "bia1": 38.61, "ana2": 40.81, "disparou": 42.51, "segunda": 43.43, "nove": 45.98, "pagou": 47.75, "imposto": 49.75, "trocou": 51.25, "menos": 52.21, "bia2": 53.93, "sp": 55.33, "seis": 56.55, "tres": 58.48, "mesmo": 60.75, "quinze2": 61.5, "sobra": 63.27, "voltar": 65.41, "tala": 67.26, "terceiro": 69.7, "pior": 71.39, "fechado": 72.47, "condo": 73.98, "semrenda": 76.04, "vender": 77.9, "correndo2": 79.67, "nunca": 80.73, "certo": 82.05, "conta": 83.78, "comenta": 85.24, "simul": 86.93}, C = {"TA": 1.3, "AB": 8.625, "BS": 17.17, "SC": 20.74, "CD": 30.16, "DE": 40.25, "EF": 53.395, "FG": 68.775, "GH": 77.395, "HI": 84.795}, END = 88.5, DUR = 91.9;
+      const $ = (s) => document.querySelector(s);
+      const show = (root, sel, on, t) => tl.to(root + ' ' + sel, { opacity: on ? 1 : 0, duration: 0.06 }, t);
+      const face = (root, t, m, b) => { ['.m-smile', '.m-open', '.m-frown', '.m-smug'].forEach((k) => show(root, k, k === m, t)); ['.b-neutral', '.b-angry', '.b-up'].forEach((k) => show(root, k, k === b, t)); };
+      const pop = (sel, t, from = {}) => tl.fromTo(sel, Object.assign({ opacity: 0, y: 30, scale: 0.92 }, from), { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: 'back.out(1.8)' }, t);
+      const blurIn = (sel, t, d = 0.25) => tl.fromTo(sel, { opacity: 0, filter: 'blur(10px)', y: 16 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: d, ease: 'power3.out' }, t);
+      const slam = (sel, t, r = -6) => tl.fromTo(sel, { opacity: 0, scale: 2.2, rotation: r - 8 }, { opacity: 1, scale: 1, rotation: r, duration: 0.2, ease: 'power3.in' }, t);
+      const flash = (t, a = 0.85) => { tl.to('#flash', { opacity: a, duration: 0.07 }, t); tl.to('#flash', { opacity: 0, duration: 0.28 }, t + 0.07); };
+      const shake = (sel, t, a = 8) => tl.fromTo(sel, { x: 0 }, { x: a, duration: 0.04, yoyo: true, repeat: 5 }, t);
+      const counters = [];
+      const count = (el, from, to, t, d, fmt, ease = 'power3.out') => { const o = { v: from }; counters.push([o, el, fmt]); tl.fromTo(o, { v: from }, { v: to, duration: d, ease }, t); };
+      const br = (v, n = 2) => v.toFixed(n).replace('.', ',');
+      const milhar = (v) => Math.round(v).toLocaleString('pt-BR');
+      let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+
+      // ================= T · o grito =================
+      tl.to('#vT', { opacity: 1, duration: 0.05 }, 0);
+      tl.fromTo('#tTop', { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.18, ease: 'power3.out' }, 0);
+      tl.to('#vT', { opacity: 0, duration: 0.08 }, C.TA - 0.08);
+      flash(C.TA - 0.04, 0.5);
+
+      // ================= A · partidas → busca =================
+      tl.to('#top', { opacity: 1, duration: 0.25 }, C.TA);
+      [...document.querySelectorAll('#board .row')].forEach((r, i) => tl.fromTo(r, { opacity: 0, rotationX: -90, transformOrigin: '50% 0%' }, { opacity: 1, rotationX: 0, duration: 0.22, ease: 'back.out(2)' }, C.TA + 0.1 + i * 0.12));
+      tl.fromTo('#board .row:nth-of-type(7)', { x: 0 }, { x: 10, duration: 0.05, yoyo: true, repeat: 5 }, M.pedindo);
+      tl.to('#board', { opacity: 0, y: -40, duration: 0.25, ease: 'power3.in' }, M.busca - 0.3);
+      tl.to('#srch', { opacity: 1, duration: 0.2 }, M.busca - 0.1);
+      pop('#sbar', M.busca - 0.1);
+      const Q = 'como morar no paraguai'; const typ = { v: 0 }; counters.push([typ, '#stxt', (v) => Q.slice(0, Math.round(v))]);
+      tl.fromTo(typ, { v: 0 }, { v: Q.length, duration: Math.max(0.6, M.mil7 - M.busca - 0.2), ease: 'none' }, M.busca + 0.05);
+      count('#abig', 0, 1700, M.mil7, 1.1, (v) => '+' + milhar(v) + '%');
+      tl.fromTo('#abig', { scale: 1 }, { scale: 1.08, duration: 0.12, yoyo: true, repeat: 1, transformOrigin: '0% 50%' }, M.mil7 + 1.1);
+      blurIn('#asub', M.mil7 + 0.4);
+
+      // ================= B · globo =================
+      Object.assign(CIDADES, { lisboa: [-9.14, 38.72, 'LISBOA'], miami: [-80.19, 25.76, 'MIAMI'], assuncao: [-57.58, -25.26, 'ASSUNÇÃO'], sp: [-46.63, -23.55, 'SP'] });
+      const G = Globo($('#globo'), { cx: 540, cy: 1330, r: 560 });
+      const gs = { lon: -46.6, lat: -23.5, k: 2.4, pS: 0, pL: 0, pM: 0, pA: 0, aL: 0, aM: 0, aA: 0, br: 1 };
+      const drawG = () => G.draw({ lon: gs.lon, lat: gs.lat, k: gs.k, br: gs.br, pins: [['sp', gs.pS], ['lisboa', gs.pL], ['miami', gs.pM], ['assuncao', gs.pA]], arcs: [['sp', 'lisboa', gs.aL], ['sp', 'miami', gs.aM], ['sp', 'assuncao', gs.aA]] });
+      tl.fromTo(gs, { lon: -46.6, lat: -23.5, k: 2.4 }, { lon: -40, lat: -12, k: 1, duration: 1.1, ease: 'power3.out' }, C.AB);
+      tl.to(gs, { pS: 1, duration: 0.3 }, C.AB + 0.5);
+      pop('#ch1', M.turno1 + 0.1);
+      pop('#ch2', M.indep - 0.1); blurIn('#bInd', M.indep + 0.1);
+      tl.to('#ch1, #ch2, #bInd', { opacity: 0, y: -30, duration: 0.2 }, M.malas - 0.25);
+      pop('#bMil', M.malas);
+      tl.to(gs, { lon: -38, lat: 4, duration: 1.2, ease: 'power2.inOut' }, M.malas - 0.3);
+      [['aL', 'pL', 0], ['aM', 'pM', 0.2], ['aA', 'pA', 0.4]].forEach(([a, p, d]) => { tl.to(gs, { [a]: 1, duration: 0.9, ease: 'power2.inOut' }, M.malas + d); tl.to(gs, { [p]: 1, duration: 0.25 }, M.malas + d + 0.8); });
+      tl.to('#bMil', { opacity: 0, duration: 0.2 }, C.BS - 0.3);
+      tl.to(gs, { lon: -46.6, lat: -23.5, k: 6, duration: 0.45, ease: 'power3.in' }, C.BS - 0.45);
+      flash(C.BS - 0.04, 0.6);
+
+      // ================= S · a mala =================
+      let pj = ''; for (let r = 0; r < 6; r++) for (let c = 0; c < 3; c++) pj += `<rect x="${430 + c * 82}" y="${340 + r * 84}" width="54" height="58" fill="${(r + c) % 3 ? '#F6C46B' : '#1A2742'}" opacity="0.8"/>`;
+      $('#pjan').innerHTML = pj;
+      gsap.set('#tampa', { svgOrigin: '540 830' });
+      tl.fromTo('#tampa', { rotation: 0 }, { rotation: -25, duration: 0.3, ease: 'back.out(2)' }, C.BS + 0.05);
+      tl.fromTo('#predio', { y: -900 }, { y: 0, duration: 0.5, ease: 'power3.in' }, M.apto - 0.05);
+      tl.to('#predio', { y: -40, duration: 0.15, ease: 'power2.out' }, M.apto + 0.45); tl.to('#predio', { y: 0, duration: 0.15, ease: 'power2.in' }, M.apto + 0.6);
+      shake('#mala', M.apto + 0.45, 12); shake('#mala', M.apto + 0.75, 8);
+      tl.to('#vU', { opacity: 1, duration: 0.06 }, M.naocabe - 0.15);
+      tl.to('#upCred', { opacity: 1, duration: 0.1 }, M.naocabe - 0.15);
+
+      // ================= C · segue o perfil =================
+      tl.to('#vU', { opacity: 0, duration: 0.1 }, C.SC - 0.1);
+      pop('#perfil', C.SC, { y: 80 });
+      tl.fromTo('#tap', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.18 }, M.segue + 0.45);
+      tl.to('#tap', { opacity: 0, scale: 0.6, duration: 0.2 }, M.segue + 0.7);
+      tl.call(() => { $('#btnt').textContent = 'Seguir'; }, null, C.SC + 0.001);
+      tl.call(() => { $('#btnt').textContent = 'Seguindo ✓'; }, null, M.segue + 0.62);
+      tl.fromTo('#btn', { backgroundColor: '#0095F6', color: '#ffffff' }, { backgroundColor: '#EFEFEF', color: '#10151F', duration: 0.08, immediateRender: false }, M.segue + 0.6);
+      tl.fromTo('#btn', { scale: 1 }, { scale: 0.94, duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, M.segue + 0.58);
+      blurIn('#cSem', M.semana);
+      pop('#se3', M.parte4 - 0.3); pop('#se4', M.parte4 + 0.1);
+      tl.fromTo('#se4', { scale: 1 }, { scale: 1.04, duration: 0.18, yoyo: true, repeat: 3, immediateRender: false }, M.parcela);
+
+      // ================= D · o prédio =================
+      let s = `<defs><linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#060E1F"/><stop offset="0.6" stop-color="#10234A"/><stop offset="1" stop-color="#1E3460"/></linearGradient>
+        <radialGradient id="lua" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="rgba(255,240,200,0.5)"/><stop offset="1" stop-color="rgba(255,240,200,0)"/></radialGradient>
+        <linearGradient id="quente" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD58A"/><stop offset="1" stop-color="#E9A24E"/></linearGradient>
+        <clipPath id="cj1"><rect x="380" y="880" width="150" height="170"/></clipPath><clipPath id="cj2"><rect x="570" y="880" width="150" height="170"/></clipPath></defs>
+        <rect x="-1400" y="-2400" width="3880" height="5200" fill="url(#ceu)"/>`;
+      for (let i = 0; i < 120; i++) s += `<circle cx="${(rnd() * 2400 - 660) | 0}" cy="${(rnd() * 2600 - 2300) | 0}" r="${(1 + rnd() * 2.2).toFixed(1)}" fill="#fff" opacity="${(0.3 + rnd() * 0.6).toFixed(2)}"/>`;
+      s += `<circle cx="860" cy="250" r="140" fill="url(#lua)"/><circle cx="860" cy="250" r="48" fill="#F5EDD6"/>`;
+      [[0, 1180, 140], [120, 1050, 120], [960, 1100, 140], [-40, 1300, 260], [880, 1250, 240]].forEach(([x, y, w]) => { s += `<rect x="${x}" y="${y}" width="${w}" height="${2700 - y}" fill="#0F1C33"/>`; for (let k = 0; k < 12; k++) if (rnd() > 0.55) s += `<rect x="${x + 16 + (k % 3) * (w / 3.2) | 0}" y="${y + 30 + ((k / 3) | 0) * 70}" width="18" height="26" fill="#F6C46B" opacity="0.5"/>`; });
+      s += `<rect x="140" y="380" width="800" height="2400" fill="#22324F"/><rect x="860" y="380" width="80" height="2400" fill="#1A2740"/><rect x="128" y="360" width="824" height="30" fill="#2C3E60"/>`;
+      for (let r = 0; r < 10; r++) for (let c = 0; c < 4; c++) {
+        const x = 190 + c * 190, y = 460 + r * 210; if (r === 2 && (c === 1 || c === 2)) continue;
+        const lit = rnd() > 0.45; s += `<rect x="${x - 6}" y="${y - 6}" width="162" height="182" fill="#2C3E60"/><rect x="${x}" y="${y}" width="150" height="170" fill="${lit ? 'url(#quente)' : '#1A2742'}" opacity="${lit ? (0.55 + rnd() * 0.35).toFixed(2) : 1}"/><path d="M ${x + 75} ${y} V ${y + 170}" stroke="#2C3E60" stroke-width="5"/>`;
+      }
+      [[380, 'j1', 'cj1'], [570, 'j2', 'cj2']].forEach(([x, id, cp]) => {
+        s += `<rect x="${x - 8}" y="872" width="166" height="186" fill="#33496F"/><g clip-path="url(#${cp})"><rect x="${x}" y="880" width="150" height="170" fill="url(#quente)"/><rect x="${x}" y="1010" width="150" height="40" fill="rgba(0,0,0,0.12)"/><g id="${id}"></g></g>
+          <rect id="${id}g" x="${x - 8}" y="872" width="166" height="186" fill="none" stroke="#FFD58A" stroke-width="6" opacity="0"/>`; });
+      $('#world').innerHTML = s;
+      $('#j1').innerHTML = `<g transform="translate(380 878) scale(0.47)">${ana('wa')}</g>`;
+      $('#j2').innerHTML = `<g transform="translate(570 878) scale(0.47)">${bia('wb')}</g>`;
+      tl.fromTo('#world', { attr: { viewBox: '-260 -300 1600 2844' } }, { attr: { viewBox: '250 640 600 1067' }, duration: Math.max(1, M.mesma - 0.3 - C.CD), ease: 'power2.inOut' }, C.CD);
+      face('#wa', C.CD, '.m-smile', '.b-neutral'); face('#wb', C.CD, '.m-smile', '.b-neutral');
+      pop('#tAna', M.mesma - 0.2); pop('#tBia', M.mesma);
+      tl.fromTo('#j1g', { opacity: 0 }, { opacity: 1, duration: 0.15, yoyo: true, repeat: 1 }, M.ana);
+      face('#wa', M.ana, '.m-open', '.b-up');
+      tl.to('#fF, #vF', { opacity: 1, duration: 0.05 }, M.correndo - 0.3);
+      tl.to('#fF, #vF', { opacity: 0, duration: 0.06 }, M.correndo + 1.09);
+      tl.set('#tAna', { opacity: 0 }, M.correndo - 0.3);
+      tl.set('#world', { attr: { viewBox: '470 760 380 676' } }, M.correndo + 1.1);
+      tl.to('#world', { attr: { viewBox: '490 790 340 604' }, duration: 1.4, ease: 'none' }, M.correndo + 1.12);
+      tl.set('#tBia', { opacity: 0 }, M.correndo + 1.1);
+      tl.fromTo('#j2g', { opacity: 0 }, { opacity: 1, duration: 0.15, yoyo: true, repeat: 1 }, M.bia1);
+      face('#wb', M.bia1, '.m-smug', '.b-up');
+      tl.fromTo('#tCalc', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, M.bia1 + 0.35);
+      tl.to('#sD', { opacity: 0, duration: 0.2 }, C.DE - 0.2);
+
+      // ================= E · Ana vendeu =================
+      tl.fromTo('#sE', { x: 1080 }, { x: 0, duration: 0.35, ease: 'power3.out' }, C.DE);
+      blurIn('#eR1', M.disparou - 0.3); blurIn('#eR2', M.disparou + 0.1);
+      count('#eUsd', 120166, 111111, M.segunda, Math.max(0.8, M.nove - M.segunda), (v) => 'US$ ' + milhar(v), 'power2.inOut');
+      tl.to('#eUsd', { color: '#FF6B6F', duration: 0.3 }, M.nove - 0.2);
+      slam('#eSt', M.nove + 0.25); shake('#eDol', M.nove + 0.45, 8);
+      tl.to('#eDol', { opacity: 0, y: -60, duration: 0.25, ease: 'power3.in' }, M.pagou - 0.3);
+      pop('#recibo', M.pagou - 0.1, { y: 120 });
+      tl.fromTo('#rl2', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.2 }, M.pagou + 0.35);
+      tl.fromTo('#rl3', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.2 }, M.imposto - 0.6);
+      tl.fromTo('#rl4', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.2 }, M.trocou);
+      slam('#eMenos', M.menos, -4); shake('#recibo', M.menos + 0.2, 6);
+
+      // ================= F · Bia alugou =================
+      tl.fromTo('#sF', { x: 1080 }, { x: 0, duration: 0.35, ease: 'power3.out' }, C.EF);
+      count('#fPct', 0, 6.43, M.seis - 0.1, 0.9, (v) => br(v) + '%');
+      blurIn('#fAno', M.seis + 0.5);
+      pop('#fMes', M.tres);
+      [['#fe1', 0], ['#fe2', 0.18], ['#fe3', 0.36]].forEach(([e, d]) => tl.fromTo(e, { opacity: 0, y: 200, rotation: 20 }, { opacity: 1, y: 0, rotation: -4 + d * 10, duration: 0.4, ease: 'power3.out' }, M.mesmo + d));
+      slam('#fIr', M.quinze2, 0);
+      tl.to('#fIr', { opacity: 0, duration: 0.12 }, M.sobra - 0.1); pop('#fSobra', M.sobra);
+      tl.to('#fPct, #fAno, #fMes, #fe1, #fe2, #fe3, #fIr, #fSobra, #sF .card', { opacity: 0, duration: 0.15 }, M.voltar - 0.15);
+      tl.to('#vL', { opacity: 1, duration: 0.06 }, M.voltar - 0.1);
+      tl.to('#leaoCred', { opacity: 1, duration: 0.1 }, M.voltar - 0.1);
+      tl.fromTo('#fVolta', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: 'back.out(2)' }, M.tala + 0.3);
+      tl.to('#vL', { opacity: 0, duration: 0.1 }, C.FG - 0.1);
+
+      // ================= G · deixar fechado =================
+      tl.fromTo('#sG svg', { scale: 1.12 }, { scale: 1, duration: 0.8, ease: 'expo.out', transformOrigin: '50% 40%' }, C.FG);
+      tl.fromTo('#cad', { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.25, ease: 'back.out(2)' }, M.fechado);
+      tl.to('#teia', { opacity: 1, duration: 0.5 }, M.fechado + 0.2);
+      let pd = ''; for (let i = 0; i < 40; i++) pd += `<circle cx="${(300 + rnd() * 480) | 0}" cy="${(380 + rnd() * 800) | 0}" r="${(1.5 + rnd() * 2.5).toFixed(1)}" fill="#fff" opacity="${(0.15 + rnd() * 0.35).toFixed(2)}"/>`; $('#poeira').innerHTML = pd;
+      tl.fromTo('#poeira', { opacity: 0, y: 0 }, { opacity: 1, y: 60, duration: 6, ease: 'none' }, C.FG);
+      const BOL = [['CONDOMÍNIO', 120, 560, -8], ['IPTU', 660, 620, 7], ['CONDOMÍNIO', 160, 860, 5], ['IPTU', 640, 920, -6], ['CONDOMÍNIO', 380, 740, -3], ['CONDOMÍNIO', 400, 1020, 8]];
+      $('#gbols').innerHTML = BOL.map(([t, x, y], i) => `<div class="bol" id="gb${i}" style="left:${x}px;top:${y}px"><div class="h">${t}</div><div class="b"></div></div>`).join('');
+      const tB = M.condo, dB = Math.max(0.3, (M.semrenda - M.condo) / BOL.length);
+      BOL.forEach(([t, x, y, r], i) => tl.fromTo('#gb' + i, { opacity: 0, y: -500, rotation: r * 3 }, { opacity: 1, y: 0, rotation: r, duration: 0.35, ease: 'power3.in' }, tB + i * dB));
+      const mes = { v: 1 }; counters.push([mes, '#gMes', (v) => 'MÊS ' + Math.round(v)]); tl.fromTo(mes, { v: 1 }, { v: 12, duration: dB * BOL.length + 0.5, ease: 'none' }, tB);
+      tl.to('#gMes', { opacity: 1, duration: 0.2 }, tB);
+      pop('#gRenda', M.semrenda - 0.1); shake('#gRenda', M.semrenda + 0.3, 8);
+
+      // ================= H · resumo =================
+      pop('#o1', M.vender); pop('#o2', M.correndo2);
+      tl.to('#o1, #o2', { opacity: 0, y: -40, duration: 0.25 }, M.certo - 0.25);
+      blurIn('#hCerto', M.certo);
+      tl.fromTo('#hConta', { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'power3.in' }, M.conta);
+
+      // ================= I · comenta =================
+      pop('#cbox', C.HI, { y: 80 });
+      const CT = 'CONTA'; const ct = { v: 0 }; counters.push([ct, '#ctxt', (v) => (v < 0.5 ? 'Adicione um comentário...' : CT.slice(0, Math.round(v)))]);
+      tl.fromTo(ct, { v: 0 }, { v: 5, duration: 0.6, ease: 'none' }, M.comenta + 0.15);
+      tl.fromTo('#ctxt', { color: '#9CA3AF' }, { color: '#10151F', duration: 0.05, immediateRender: false }, M.comenta + 0.2);
+      tl.to('#cSend', { opacity: 1, duration: 0.1 }, M.comenta + 0.75);
+      tl.fromTo('#cSend', { scale: 1 }, { scale: 0.9, duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, M.comenta + 0.95);
+      tl.fromTo('#cPost', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.25 }, M.comenta + 1.1);
+      tl.to(ct, { v: 0, duration: 0.01 }, M.comenta + 1.1);
+      pop('#cDm', M.simul - 0.2);
+      pop('#cBig', M.comenta + 0.1);
+      tl.fromTo('#cBig', { scale: 1 }, { scale: 1.06, duration: 0.25, yoyo: true, repeat: 5, immediateRender: false }, M.comenta + 0.6);
+
+      // ================= O · cartão final =================
+      [['#oT', 0], ['#o-name', 0.35], ['#o-creci', 0.45], ['#o-at', 0.55], ['#o-logo', 0.7]].forEach(([s2, d]) => blurIn(s2, END + d, 0.35));
+
+      // ================= rótulos =================
+      const LAB = [[C.TA, 'AEROPORTO · PARTIDAS'], [M.busca - 0.1, 'GOOGLE · BUSCAS'], [C.AB, '1º E 2º TURNO'], [C.BS, 'E O APÊ?'], [C.SC, 'PARTE 3 DE UMA SÉRIE'],
+        [C.CD, 'O MESMO PRÉDIO'], [M.correndo - 0.3, 'A ANA:'], [M.correndo + 1.1, 'A BIA:'], [C.DE, 'CAMINHO 1 · VENDER'], [C.EF, 'CAMINHO 2 · ALUGAR'],
+        [M.voltar - 0.1, 'E SE ELA QUISER VOLTAR?'], [C.FG, 'CAMINHO 3 · DEIXAR FECHADO'], [C.GH, 'RESUMO'], [C.HI, 'SUA VEZ']];
+      LAB.forEach(([t, txt]) => { tl.call(() => { $('#labt').textContent = txt; }, null, t + 0.001); tl.fromTo('#lab', { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.18, ease: 'power3.out', immediateRender: false }, t + 0.01); });
+      tl.call(() => { $('#labt').textContent = LAB[0][1]; }, null, 0);
+      tl.to('#lab, #top', { opacity: 0, duration: 0.2 }, END - 0.1);
+
+      // ================= legenda =================
+      const CAP = [{"t0": 0.12, "w": [["PEDE", 0.15, 0.4], ["PRA", 0.4, 0.6], ["SAIR!", 0.6, 1.05]]}, {"t0": 1.28, "w": [["Desde", 1.28, 1.56], ["domingo,", 1.56, 2.0]]}, {"t0": 2.2, "w": [["tem", 2.2, 2.34], ["muito", 2.34, 2.58], ["brasileiro", 2.58, 3.04]]}, {"t0": 3.11, "w": [["pedindo", 3.11, 3.38], ["pra", 3.43, 3.54], ["sair.", 3.54, 3.87]]}, {"t0": 4.56, "w": [["A", 4.56, 4.64], ["busca", 4.64, 5.0], ["por", 5.07, 5.2]]}, {"t0": 5.33, "w": [["como", 5.33, 5.48], ["morar", 5.48, 5.84], ["no", 5.86, 5.98]]}, {"t0": 6.04, "w": [["Paraguai", 6.04, 6.44], ["subiu", 6.48, 6.78], ["1.700%.", 6.78, 8.16]]}, {"t0": 9.09, "w": [["Depois", 9.09, 9.31], ["do", 9.33, 9.41], ["1º TURNO,", 9.45, 10.05]]}, {"t0": 10.31, "w": [["a", 10.31, 10.35], ["busca", 10.35, 10.75], ["por", 10.82, 10.95]]}, {"t0": 10.97, "w": [["morar", 10.97, 11.31], ["fora", 11.33, 11.65], ["já", 11.67, 11.83]]}, {"t0": 11.87, "w": [["tinha", 11.87, 12.07], ["subido.", 12.09, 12.47]]}, {"t0": 13.38, "w": [["Independente", 13.38, 14.16], ["de", 14.16, 14.28], ["quem", 14.34, 14.46]]}, {"t0": 14.5, "w": [["ganhou...", 14.5, 14.9]]}, {"t0": 15.58, "w": [["tem", 15.58, 15.72], ["gente", 15.74, 15.92], ["fazendo", 15.92, 16.22]]}, {"t0": 16.26, "w": [["as", 16.26, 16.36], ["malas.", 16.36, 16.59]]}, {"t0": 17.75, "w": [["Mas", 17.75, 17.97], ["o", 17.97, 18.11], ["apartamento...", 18.11, 18.63]]}, {"t0": 19.25, "w": [["não", 19.25, 19.43], ["cabe", 19.53, 19.73], ["na", 19.73, 19.83]]}, {"t0": 19.83, "w": [["mala.", 19.83, 20.16]]}, {"t0": 21.32, "w": [["Segue", 21.32, 21.54], ["o", 21.58, 21.6], ["perfil:", 21.64, 21.96]]}, {"t0": 22.3, "w": [["toda", 22.3, 22.55], ["semana,", 22.57, 23.03]]}, {"t0": 23.23, "w": [["o", 23.23, 23.27], ["que", 23.33, 23.37], ["a", 23.41, 23.43]]}, {"t0": 23.43, "w": [["notícia", 23.43, 23.85], ["muda", 23.85, 24.13], ["no", 24.13, 24.23]]}, {"t0": 24.25, "w": [["seu", 24.25, 24.53], ["imóvel.", 24.53, 24.95]]}, {"t0": 25.43, "w": [["E", 25.43, 25.45], ["a", 25.51, 25.51], ["PARTE 4", 25.59, 26.26]]}, {"t0": 26.61, "w": [["é", 26.61, 26.69], ["sobre", 26.69, 26.91], ["a", 26.97, 26.99]]}, {"t0": 27.06, "w": [["parcela", 27.06, 27.37], ["do", 27.37, 27.51], ["financiamento.", 27.53, 28.04]]}, {"t0": 32.28, "w": [["Duas", 32.28, 32.54], ["vizinhas", 32.54, 33.02], ["do", 33.21, 33.3]]}, {"t0": 33.32, "w": [["mesmo", 33.32, 33.64], ["prédio", 33.72, 34.04], ["decidiram", 34.04, 34.6]]}, {"t0": 34.6, "w": [["ir", 34.6, 34.64], ["embora", 34.64, 35.06], ["na", 35.06, 35.2]]}, {"t0": 35.22, "w": [["mesma", 35.22, 35.54], ["semana.", 35.56, 35.96]]}, {"t0": 36.74, "w": [["A", 36.74, 36.86], ["Ana", 36.86, 37.1], ["vendeu", 37.12, 37.38]]}, {"t0": 37.45, "w": [["correndo.", 37.45, 37.88]]}, {"t0": 38.61, "w": [["A", 38.61, 38.7], ["Bia", 38.7, 38.96], ["fez", 38.98, 39.3]]}, {"t0": 39.3, "w": [["a", 39.3, 39.38], ["conta.", 39.4, 39.69]]}, {"t0": 40.81, "w": [["A", 40.81, 40.85], ["Ana", 40.85, 41.07], ["vendeu", 41.09, 41.45]]}, {"t0": 41.45, "w": [["na", 41.45, 41.57], ["semana", 41.59, 41.99], ["em", 41.99, 42.07]]}, {"t0": 42.12, "w": [["que", 42.12, 42.15], ["o", 42.21, 42.23], ["dólar", 42.23, 42.49]]}, {"t0": 42.51, "w": [["disparou.", 42.51, 42.91]]}, {"t0": 43.43, "w": [["Só", 43.43, 43.52], ["na", 43.52, 43.64], ["segunda,", 43.66, 44.08]]}, {"t0": 44.1, "w": [["um", 44.1, 44.14], ["apê", 44.24, 44.44], ["de", 44.44, 44.56]]}, {"t0": 44.58, "w": [["R$ 600 MIL", 44.58, 45.55], ["perdeu", 45.62, 45.96], ["US$ 9 MIL.", 45.98, 47.1]]}, {"t0": 47.75, "w": [["Ela", 47.75, 47.79], ["pagou", 47.79, 48.11], ["corretagem,", 48.16, 48.79]]}, {"t0": 49.14, "w": [["15%", 49.14, 49.75], ["de", 49.75, 49.81], ["imposto", 49.81, 50.21]]}, {"t0": 50.21, "w": [["sobre", 50.21, 50.45], ["o", 50.47, 50.51], ["lucro...", 50.53, 50.81]]}, {"t0": 51.25, "w": [["e", 51.25, 51.33], ["trocou", 51.42, 51.65], ["tudo", 51.76, 51.93]]}, {"t0": 52.0, "w": [["por", 52.0, 52.19], ["menos", 52.21, 52.53], ["dólar.", 52.58, 52.86]]}, {"t0": 53.93, "w": [["A", 53.93, 54.03], ["Bia", 54.03, 54.29], ["alugou.", 54.29, 54.63]]}, {"t0": 55.33, "w": [["Em", 55.33, 55.39], ["São", 55.41, 55.57], ["Paulo,", 55.63, 55.89]]}, {"t0": 55.97, "w": [["o", 55.97, 56.01], ["aluguel", 56.01, 56.25], ["rende", 56.27, 56.45]]}, {"t0": 56.55, "w": [["quase", 56.55, 56.87], ["6,5%", 56.87, 57.83], ["ao", 57.85, 57.89]]}, {"t0": 57.89, "w": [["ano.", 57.89, 58.15]]}, {"t0": 58.48, "w": [["Uns", 58.48, 58.67], ["R$ 3.200", 58.73, 59.72], ["por", 59.78, 59.87]]}, {"t0": 59.87, "w": [["mês.", 59.87, 60.09]]}, {"t0": 60.75, "w": [["Mesmo", 60.75, 60.99], ["pagando", 61.04, 61.35], ["os", 61.35, 61.46]]}, {"t0": 61.5, "w": [["15%", 61.5, 62.15], ["de", 62.15, 62.23], ["quem", 62.28, 62.35]]}, {"t0": 62.35, "w": [["mora", 62.35, 62.59], ["fora,", 62.61, 62.98]]}, {"t0": 63.27, "w": [["sobra", 63.27, 63.57], ["renda", 63.59, 63.91], ["todo", 64.1, 64.27]]}, {"t0": 64.27, "w": [["mês.", 64.27, 64.57]]}, {"t0": 65.41, "w": [["E", 65.41, 65.48], ["se", 65.48, 65.64], ["a", 65.68, 65.74]]}, {"t0": 65.74, "w": [["Bia", 65.74, 65.94], ["quiser", 65.99, 66.14], ["voltar?", 66.14, 66.52]]}, {"t0": 67.26, "w": [["O", 67.26, 67.33], ["apê", 67.33, 67.53], ["tá", 67.61, 67.65]]}, {"t0": 67.65, "w": [["lá.", 67.65, 67.85]]}, {"t0": 69.7, "w": [["Tem", 69.7, 69.78], ["um", 69.82, 69.94], ["terceiro", 70.0, 70.38]]}, {"t0": 70.43, "w": [["caminho,", 70.43, 70.76]]}, {"t0": 71.39, "w": [["o", 71.39, 71.49], ["pior:", 71.55, 71.87]]}, {"t0": 72.47, "w": [["deixar", 72.47, 72.88], ["fechado.", 72.88, 73.37]]}, {"t0": 73.98, "w": [["Condomínio", 73.98, 74.66], ["e", 74.73, 74.75], ["IPTU", 74.75, 75.03]]}, {"t0": 75.23, "w": [["todo", 75.23, 75.47], ["mês...", 75.49, 75.85]]}, {"t0": 76.04, "w": [["sem", 76.04, 76.23], ["renda", 76.25, 76.49], ["nenhuma.", 76.49, 76.89]]}, {"t0": 77.9, "w": [["Vender", 77.9, 78.25], ["pode", 78.34, 78.46], ["fazer", 78.46, 78.7]]}, {"t0": 78.72, "w": [["sentido.", 78.72, 79.17]]}, {"t0": 79.67, "w": [["Vender", 79.67, 79.93], ["correndo,", 79.98, 80.41]]}, {"t0": 80.73, "w": [["quase", 80.73, 81.03], ["nunca.", 81.03, 81.35]]}, {"t0": 82.05, "w": [["Não", 82.05, 82.19], ["tem", 82.23, 82.35], ["certo", 82.37, 82.77]]}, {"t0": 82.81, "w": [["ou", 82.81, 82.89], ["errado.", 82.93, 83.23]]}, {"t0": 83.78, "w": [["Tem", 83.78, 83.82], ["a", 83.9, 83.96], ["conta.", 84.05, 84.35]]}, {"t0": 85.24, "w": [["Comenta", 85.24, 85.61], ["conta,", 85.76, 86.13]]}, {"t0": 86.49, "w": [["que", 86.49, 86.53], ["eu", 86.53, 86.59], ["te", 86.63, 86.69]]}, {"t0": 86.71, "w": [["mando", 86.71, 86.87], ["a", 86.91, 86.91], ["simulação", 86.93, 87.43]]}, {"t0": 87.43, "w": [["do", 87.43, 87.49], ["seu", 87.49, 87.63], ["imóvel.", 87.63, 88.0]]}]; const capEl = $('#cap');
+      CAP.forEach((g, gi) => { const el = document.createElement('div'); el.className = 'cg'; el.id = 'cg' + gi; capEl.appendChild(el);
+        g.w.forEach(([w], j) => { const sp = document.createElement('span'); sp.className = 'cw'; sp.id = `cw${gi}_${j}`; sp.textContent = w; el.appendChild(sp); });
+        const t1 = gi + 1 < CAP.length ? CAP[gi + 1].t0 : g.w[g.w.length - 1][2] + 0.6;
+        tl.fromTo(el, { opacity: 0, scale: 0.85, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.1, ease: 'back.out(2.4)' }, Math.max(0, g.t0 - 0.05));
+        tl.to(el, { opacity: 0, duration: 0.04 }, Math.min(t1 - 0.08, g.w[g.w.length - 1][2] + 0.5));
+        g.w.forEach(([w, a, b], j) => { tl.to(`#cw${gi}_${j}`, { color: '#FFD24A', scale: 1.12, duration: 0.05 }, a - 0.02); tl.to(`#cw${gi}_${j}`, { color: '#FFFFFF', scale: 1, duration: 0.12 }, b); }); });
+      tl.to('#cap', { opacity: 0, duration: 0.15 }, END - 0.1);
+
+      tl.eventCallback('onUpdate', () => { drawG(); counters.forEach(([o, el, fmt]) => { $(el).textContent = fmt(o.v); }); });
+      drawG();
+      window.__timelines['main'] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

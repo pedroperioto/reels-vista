@@ -19,7 +19,7 @@ SRC = {
  'notas': ('102dc9c1-pexels-media-6326861.mp4', 'n30', None, False), 'assina': ('a6fa0f08-8471105-hd_1920_1080_25fps.mp4', 'n30', None, False),
  'calcdin': ('a004ff03-pexels-media-6266261.mp4', 'n30', None, False), 'chaves': ('2a177f3a-7817154-hd_1080_1920_25fps.mp4', 'n30', None, False),
  'calcmulher': ('86f57e35-7710747-uhd_2160_4096_25fps.mp4', 'n30', None, False), 'envelopes': ('9815255a-6335709-uhd_2160_3840_24fps.mp4', 'n30', None, False),
- 'macaneta': ('601d9206-11409779-hd_1080_1920_30fps.mp4', 'fps', None, False), 'tranca': ('e7f890cd-pexels-media-7646797.mp4', 'n30', None, False),
+ 'macaneta': ('601d9206-11409779-hd_1080_1920_30fps.mp4', 'fps', None, False), 'tranca': ('e7f890cd-pexels-media-7646797.mp4', 'mb', None, False),
  'caixas': ('4ebee7e4-4553290-uhd_2160_4096_25fps.mp4', 'n30', None, False),
 }
 # (início, fonte, segundo de entrada, modo, movimento, ajustes)  · modo: full (tela cheia) | band (faixa 16:9 sobre fundo desfocado) | sq (quadrado)
@@ -50,8 +50,7 @@ SHOTS = [
  (M['tres'] - 0.1, 'envelopes', 0.5, 'full', 'punch', {'dark': 0.3}),  # "Uns 3.200 por mês. Mesmo pagando os 15%…"
  (M['sobra'] - 0.1, 'lobo', 123.1, 'band', 'punch', {}),           # "…sobra renda todo mês."  Lobo (escritório comemorando)
  (M['voltar'] - 0.1, 'leao', 21.0, 'band', 'in', {'leao': True}),  # "E se a Bia quiser voltar? O apê tá lá."  O Rei Leão
- (T['FG'], 'macaneta', 0.2, 'full', 'in', {'dark': 0.15}),         # "Tem um terceiro caminho, o pior:"
- (M['fechado'] - 0.1, 'tranca', 0.3, 'full', 'punch', {}),         # "deixar fechado."
+ (T['FG'], 'tranca', 0.0, 'full', 'in', {'dark': 0.1}),           # "Tem um terceiro caminho, o pior: deixar fechado."  chave trancando a porta
  (M['condo'] - 0.1, 'harry', 102.65, 'band', 'punch', {}),         # "Condomínio e IPTU todo mês…"  Harry Potter (cartas)
  (M['semrenda'] - 0.1, 'caixas', 1.0, 'full', 'in', {'dark': 0.2}),   # "…sem renda nenhuma."
  (T['GH'], 'assina', 12.0, 'full', 'in', {'dark': 0.3}),           # "Vender pode fazer sentido."
@@ -75,7 +74,7 @@ def shot(i):
     pre = []
     if crop: pre.append(crop)
     if dec: pre.append('mpdecimate=hi=64*6:lo=64*3:frac=0.2')
-    pre.append({'n30': f'setpts=N/({FPS}*TB)', 'fps': f'fps={FPS}', 'x4': f"select='not(mod(n\\,4))',setpts=N/({FPS}*TB)"}[fm])
+    pre.append({'n30': f'setpts=N/({FPS}*TB)', 'fps': f'fps={FPS}', 'x4': f"select='not(mod(n\\,4))',setpts=N/({FPS}*TB)", 'mb': f'minterpolate=fps={FPS}:mi_mode=blend'}[fm])
     Z = zexpr(mov, dur); adj = GRADE
     if opt.get('dark'): adj += f",eq=brightness=-{opt['dark'] * 0.35:.3f}:saturation={1 - opt['dark'] * 0.4:.2f}"
     if opt.get('bright'): adj += f",eq=brightness={opt['bright']}:gamma={1.3 if opt.get('cont') else 1.25}" + (',eq=contrast=1.25:saturation=1.2' if opt.get('cont') else '')

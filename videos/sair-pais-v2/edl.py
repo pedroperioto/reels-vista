@@ -76,7 +76,7 @@ def zexpr(kind, dur):
 def shot(i):
     t0 = SHOTS[i][0]; t1 = SHOTS[i + 1][0] if i + 1 < len(SHOTS) else T['DUR']
     _, key, sin, mode, mov, opt = SHOTS[i]
-    n = round(t1 * FPS) - round(t0 * FPS); dur = n / FPS; out = P / f'{i:02d}.mp4'
+    h, e = ext(i); n = round(t1 * FPS) - round(t0 * FPS) + h + e; dur = n / FPS; out = P / f'{i:02d}.mp4'
     if mode == 'black':
         subprocess.run(['ffmpeg', '-v', 'error', '-y', '-f', 'lavfi', '-i', f'color=c=0x05070C:s=1080x1920:r={FPS}', '-frames:v', str(n), '-c:v', 'libx264', '-crf', '16', '-pix_fmt', 'yuv420p', str(out)], check=True); return
     f, fm, crop, dec = SRC[key]

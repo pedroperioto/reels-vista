@@ -84,7 +84,11 @@ ir = rg.standard_normal(int(2.2 * SR)) * np.exp(-np.arange(int(2.2 * SR)) / SR /
 wet = fftconvolve(pad * 0.6 + bel + drm * 0.15, ir)[:N]
 mix = bas * sc * 0.9 + pad * sc * 0.8 + bel * 0.7 + drm + wet * 0.35
 # corte seco na virada e fade no fim
-i0, i1 = int(CUT0 * SR), int(CUT1 * SR); mix[i0:i1] = 0; mix[i0 - 480:i0] *= np.linspace(1, 0, 480)
+i0, i1 = int(CUT0 * SR), int(CUT1 * SR)
+# "fita parando": nos 0,5 s antes do corte a música desacelera até zerar (tape stop de verdade)
+L = int(0.5 * SR); j = np.arange(L); pos = (i0 - L) + j - j ** 2 / (2 * L); src = mix.copy()
+mix[i0 - L:i0] = np.interp(pos, np.arange(len(src)), src) * np.linspace(1, 0.2, L)
+mix[i0:i1] = 0; mix[i0 - 480:i0] *= np.linspace(1, 0, 480)
 mix[:int(T['TA'] * SR)] = 0
 fo0 = int((T['END'] + 0.5) * SR); fo1 = int(DUR * SR); mix[fo0:fo1] *= np.linspace(1, 0, fo1 - fo0) ** 1.5; mix[fo1:] = 0
 # abre espaço para a voz: corta subgrave inútil e afunda um pouco os médios onde a fala vive

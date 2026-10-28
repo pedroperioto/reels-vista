@@ -56,7 +56,7 @@ if not (HERE / 'src' / 'template.html').exists():
     json.dump({'T': T, 'M': M}, open(HERE / 'voz' / 'tempos.json', 'w'), indent=1); print({**T}); print(M); raise SystemExit
 tpl = open(HERE / 'src' / 'template.html').read()
 for k, v in T.items(): tpl = tpl.replace('@@' + k + '@@', str(v))
-tpl = tpl.replace('@@SH@@', open(HERE / 'voz' / 'planos.json').read()).replace('@@M@@', json.dumps(M)).replace('@@CAP@@', json.dumps(CAP, ensure_ascii=False)).replace('@@CUTS@@', json.dumps(C))
+tpl = tpl.replace('@@TR@@', open(HERE / 'voz' / 'transicoes.json').read()).replace('@@SH@@', open(HERE / 'voz' / 'planos.json').read()).replace('@@M@@', json.dumps(M)).replace('@@CAP@@', json.dumps(CAP, ensure_ascii=False)).replace('@@CUTS@@', json.dumps(C))
 def dd(m):
     a, b = m.group(1), m.group(2)
     va = 0 if a == '0' else (T[a] if a in T else M[a]); vb = T[b] if b in T else M[b]

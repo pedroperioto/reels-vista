@@ -36,9 +36,52 @@ SH = json.load(open(HERE / 'voz' / 'planos.json'))
 def cheer(s=1.4):
     d = tt(s); n = bp(rg.standard_normal(len(d)), 500, 3500); am = 0.6 + 0.4 * np.sin(2 * np.pi * 7 * d + rg.uniform(0, 6))
     return n * am * np.sin(np.pi * d / s) ** 1.5 * 0.7
-for k, (t, key, mode) in enumerate(SH[1:], 1):                       # whoosh em todo corte
-    P(t - 0.12, WS[k % len(WS)], 0.32 if mode != 'band' else 0.42)
-for t in (M['mil7'] - 0.08, T['BS'], M['naocabe'] - 0.05, T['CD'] + 0.35, T['DE'], T['EF'], T['FG'], T['GH'], T['HI']): P(t, impact(), 0.22)
+# ---------- desenho de som das transições (cada tipo tem a sua assinatura) ----------
+from scipy.io import wavfile as _wf
+_sr, RC = _wf.read(str(HERE.parent.parent / 'lib' / 'sfx' / 'reverse_cymbals.wav')); RC = RC.astype(np.float64); RC = (RC if RC.ndim == 1 else RC.mean(1)); RC /= np.max(np.abs(RC))
+if _sr != SR:
+    import scipy.signal as _ss; RC = _ss.resample_poly(RC, SR, _sr)
+def whoosh(s=0.32, f0=5200, f1=500):   # whip: ruído com filtro varrendo de agudo para grave + leve doppler
+    d = tt(s); n = rg.standard_normal(len(d)); out = np.zeros(len(d)); seg = 256
+    fc = np.geomspace(f0, f1, len(d) // seg + 1)
+    for k in range(len(fc) - 1):
+        a, b = k * seg, min(len(d), (k + 1) * seg); out[a:b] = bp(n[max(0, a - 512):b], fc[k] * 0.6, min(fc[k] * 1.6, 20000))[-(b - a):]
+    env = np.sin(np.pi * np.clip(d / s, 0, 1)) ** 1.6; return out * env / (np.max(np.abs(out)) + 1e-9)
+def airy(s=0.7):     # leak: sopro suave que cresce e some
+    d = tt(s); n = lp(hp(rg.standard_normal(len(d)), 300), 4500); env = np.sin(np.pi * d / s) ** 2; return n * env / (np.max(np.abs(n)) + 1e-9) * 0.7
+def shimmer(s=1.2):  # brilho agudo (acorde de sinos)
+    d = tt(s); x = sum(np.sin(2 * np.pi * f * d) for f in (1568, 2093, 2637, 3136)) / 4; return x * np.exp(-d / 0.45) * np.minimum(1, d / 0.03)
+def boom(s=1.2):     # sub grave de impacto
+    d = tt(s); y = np.sin(2 * np.pi * np.cumsum(38 + 60 * np.exp(-d / 0.06)) / SR) * np.exp(-d / 0.45); return np.tanh(y * 1.6)
+def shutter():       # obturador de câmera
+    x = np.zeros(int(0.12 * SR)); a = hp(rg.standard_normal(int(0.012 * SR)), 2000); x[:len(a)] += a; b = hp(rg.standard_normal(int(0.02 * SR)), 1500) * 0.7; i = int(0.06 * SR); x[i:i + len(b)] += b; return x
+def stutter(n=5, g=0.045):   # glitch digital: rajadas cortadas e reduzidas
+    x = np.zeros(int(SR * (n * g * 1.6 + 0.05)))
+    for k in range(n):
+        d = tt(g * (0.5 + 0.5 * (k % 2))); f = [880, 1320, 660, 1760, 990][k % 5]; y = np.sign(np.sin(2 * np.pi * f * d)) * 0.5 + bp(rg.standard_normal(len(d)), 2000, 8000) * 0.5
+        y = np.round(y * 6) / 6; i = int(k * g * 1.5 * SR); x[i:i + len(y)] += y * (1 - k / n * 0.4)
+    return x
+def tapestop(s=0.55):  # "fita parando": a música desacelera até parar
+    d = tt(s); f = 220 * (1 - d / s) ** 2 + 20; y = (np.sign(np.sin(2 * np.pi * np.cumsum(f) / SR)) * 0.5 + np.sin(2 * np.pi * np.cumsum(f * 0.5) / SR)); return lp(y, 1800) * (1 - d / s) * 0.6
+def thump(): d = tt(0.25); return np.sin(2 * np.pi * np.cumsum(60 + 120 * np.exp(-d / 0.02)) / SR) * np.exp(-d / 0.08)
+TRJ = json.load(open(HERE / 'voz' / 'transicoes.json'))
+for k, (t, ty, du) in enumerate(TRJ):
+    if ty in ('whipL', 'whipU'):
+        P(t - 0.2, whoosh(0.34, 5200 if ty == 'whipL' else 3800, 500), 0.55); P(t - 0.14, WS[k % len(WS)], 0.3)
+    elif ty == 'zoom':
+        P(t - 0.42, rise(0.42), 0.3); P(t, impact(), 0.32); P(t, boom(0.8), 0.45)
+    elif ty == 'flash':
+        P(t - 0.03, shutter(), 0.6); P(t, impact(), 0.35); P(t, boom(1.0), 0.5)
+    elif ty == 'glitch':
+        P(t - 0.08, stutter(), 0.32); P(t, click(), 0.4)
+    elif ty == 'leak':
+        P(t - 0.35, airy(0.8), 0.5); P(t + 0.05, shimmer(1.4), 0.18)
+    elif ty == 'black':
+        P(t - len(RC) / SR, RC, 0.45); P(t, boom(1.4), 0.6)
+    elif ty == 'cut':
+        P(t, thump(), 0.5)
+for t in (T['DE'], T['EF']): P(t - len(RC) / SR, RC, 0.4)          # prato reverso antes de cada capítulo
+P(M['apto'] - 0.45, tapestop(0.5), 0.18)                              # a música "para" no "Mas o apartamento…"
 P(M['pedindo'], dingdong(), 0.3)
 for k in range(22): P(M['busca'] + 0.1 + k * max(0.6, M['mil7'] - M['busca'] - 0.35) / 22, KEYS[k % len(KEYS)], 0.35)
 P(M['mil7'] - 0.6, rise(0.6), 0.3)

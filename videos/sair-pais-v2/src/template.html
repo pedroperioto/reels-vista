@@ -92,7 +92,6 @@
             <div class="glass" style="flex:1;padding:26px 28px" id="ib"><div class="kick" style="font-size:22px">2º TURNO</div><div class="big" style="font-size:96px;letter-spacing:-4px;margin-top:8px;color:var(--amber)">+1.700%</div><div class="mono" style="font-size:18px;margin-top:8px">"MORAR NO PARAGUAI"</div></div></div>
           <div class="abs ctr serif sh" style="top:860px;font-size:80px" id="indt"><i>independente de quem ganhou</i></div></div>
         <!-- e o apê? -->
-        <div id="gApe" class="g"><div class="abs ctr serif sh" style="top:560px;font-size:150px" id="apet">E o <i style="color:var(--amber)">apê?</i></div></div>
         <!-- segue -->
         <div id="gSeg" class="g">
           <div id="perfil" class="abs glass" style="left:90px;top:420px;width:900px;height:390px">
@@ -190,7 +189,7 @@
 
         <div id="cap"></div>
         <!-- barras de cinema e assinatura da série -->
-        <div class="bar" style="top:0;height:118px"></div><div class="bar" style="top:1802px;height:118px"></div>
+        <div id="barT" class="bar" style="top:0;height:118px;transform-origin:50% 0%"></div><div id="barB" class="bar" style="top:1802px;height:118px;transform-origin:50% 100%"></div>
         <div id="topl" class="abs ctr" style="top:58px;font-family:Mono700;font-size:24px;letter-spacing:8px;color:rgba(244,239,230,0.85)">PARTE 3 · SAIR DO BRASIL?</div>
         <div id="topr" class="abs" style="left:0;top:1842px;width:1080px;text-align:center;font-family:Mono500;font-size:22px;letter-spacing:6px;color:rgba(244,239,230,0.6)">@VISTABROKER.PERIOTO</div>
       </div>
@@ -219,8 +218,9 @@
       // ---------- créditos dos filmes (aparecem com o plano) ----------
       SH.forEach(([t, k], i) => { const id = { esq: '#crEsq', up: '#crUp', forrest: '#crFor', naz: '#crNaz', lobo: '#crLob', leao: '#crLea', harry: '#crHar' }[k]; if (id && t > 0.5) { const e = document.querySelector(id).cloneNode(true); e.id = id.slice(1) + i; $('#lay').insertBefore(e, $('#cap')); seg('#' + e.id, t + 0.15, nx(t)); } });
       // ---------- transições: flash/luz em cortes escolhidos ----------
-      [M.mil7 - 0.08, C.BS, M.naocabe - 0.05, C.CD + 0.35, C.DE, C.EF, C.FG, C.GH, C.HI].forEach((t, i) => (i % 2 ? leak(t, i % 4 ? -300 : 300, i % 4 ? 300 : -300) : flash(t, 0.55)));
-      [M.correndo - 0.3, M.disparou - 0.15, M.voltar - 0.1, M.condo - 0.1, M.correndo2 - 0.1].forEach((t) => flash(t, 0.4));
+      // transições: luz quente nos 'leak' e capítulos; flash curto nos zooms (o resto vem da montagem: whip, glitch, fade)
+      const TR = @@TR@@;
+      TR.forEach(([t, ty], i) => { if (ty === 'leak' || ty === 'black') leak(t, i % 2 ? -300 : 300, i % 2 ? 300 : -300); if (ty === 'zoom') flash(t, 0.3); });
 
       // 0 · Tropa
       tl.set('#g0', { opacity: 1 }, 0); tl.fromTo('#g0 .serif', { scale: 1.15, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25, ease: 'expo.out', immediateRender: false }, 0.02); tl.to('#g0', { opacity: 0, duration: 0.08 }, C.TA - 0.08);
@@ -236,7 +236,9 @@
       seg('#gMi', stN('corredor', 1), st('aviao')); rise('#gMi .big', stN('corredor', 1) + 0.05); rise('#gMi .serif', stN('corredor', 1) + 0.25);
       seg('#gInd', st('aviao'), nx(st('aviao'))); pop('#ia', st('aviao') + 0.05); pop('#ib', st('aviao') + 0.2); rise('#indt', M.indep + 0.1);
       // e o apê?
-      seg('#gApe', C.BS + 0.05, M.naocabe - 0.05); rise('#apet', M.apto + 0.05, 0.6);
+      // "Mas o apartamento…": as barras de cinema fecham devagar (respiro dramático) e abrem no "não cabe"
+      tl.to('#barT', { scaleY: 1.9, duration: M.naocabe - C.BS - 0.2, ease: 'power2.inOut' }, C.BS + 0.1); tl.to('#barB', { scaleY: 1.9, duration: M.naocabe - C.BS - 0.2, ease: 'power2.inOut' }, C.BS + 0.1);
+      tl.to('#barT, #barB', { scaleY: 1, duration: 0.25, ease: 'expo.out' }, M.naocabe - 0.08);
       // segue
       seg('#gSeg', st('cidade'), C.CD + 0.35); pop('#perfil', st('cidade') + 0.05, { y: 100 });
       tl.fromTo('#tap', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.18, immediateRender: false }, M.segue + 0.45); tl.to('#tap', { opacity: 0, scale: 0.6, duration: 0.2 }, M.segue + 0.7);

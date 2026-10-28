@@ -92,7 +92,6 @@
             <div class="glass" style="flex:1;padding:26px 28px" id="ib"><div class="kick" style="font-size:22px">2º TURNO</div><div class="big" style="font-size:96px;letter-spacing:-4px;margin-top:8px;color:var(--amber)">+1.700%</div><div class="mono" style="font-size:18px;margin-top:8px">"MORAR NO PARAGUAI"</div></div></div>
           <div class="abs ctr serif sh" style="top:860px;font-size:80px" id="indt"><i>independente de quem ganhou</i></div></div>
         <!-- e o apê? -->
-        <div id="gApe" class="g"><div class="abs ctr serif sh" style="top:560px;font-size:150px" id="apet">E o <i style="color:var(--amber)">apê?</i></div></div>
         <!-- segue -->
         <div id="gSeg" class="g">
           <div id="perfil" class="abs glass" style="left:90px;top:420px;width:900px;height:390px">
@@ -190,7 +189,7 @@
 
         <div id="cap"></div>
         <!-- barras de cinema e assinatura da série -->
-        <div class="bar" style="top:0;height:118px"></div><div class="bar" style="top:1802px;height:118px"></div>
+        <div id="barT" class="bar" style="top:0;height:118px;transform-origin:50% 0%"></div><div id="barB" class="bar" style="top:1802px;height:118px;transform-origin:50% 100%"></div>
         <div id="topl" class="abs ctr" style="top:58px;font-family:Mono700;font-size:24px;letter-spacing:8px;color:rgba(244,239,230,0.85)">PARTE 3 · SAIR DO BRASIL?</div>
         <div id="topr" class="abs" style="left:0;top:1842px;width:1080px;text-align:center;font-family:Mono500;font-size:22px;letter-spacing:6px;color:rgba(244,239,230,0.6)">@VISTABROKER.PERIOTO</div>
       </div>
@@ -199,7 +198,7 @@
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      const M = {"desde": 1.28, "pedindo": 3.11, "busca": 4.56, "mil7": 6.78, "turno1": 9.09, "subido": 11.87, "indep": 13.38, "malas": 15.58, "apto": 17.275, "naocabe": 18.775, "segue": 20.253, "semana": 21.233, "parte4": 24.363, "parcela": 25.993, "duas": 28.572, "mesma": 31.352, "ana": 33.032, "correndo": 33.742, "bia1": 34.902, "ana2": 36.579, "disparou": 38.279, "segunda": 39.199, "nove": 41.749, "pagou": 43.519, "imposto": 45.519, "trocou": 47.019, "menos": 47.979, "bia2": 49.275, "sp": 50.675, "seis": 51.895, "tres": 53.825, "mesmo": 56.095, "quinze2": 56.845, "sobra": 58.615, "voltar": 60.755, "tala": 62.605, "terceiro": 63.747, "pior": 65.437, "fechado": 66.517, "condo": 68.027, "semrenda": 70.087, "vender": 71.519, "correndo2": 73.289, "nunca": 74.349, "certo": 75.669, "conta": 77.399, "comenta": 78.859, "simul": 80.549}, C = {"TA": 1.3, "AB": 8.625, "BS": 16.932, "SC": 19.969, "CD": 27.773, "DE": 36.281, "EF": 48.952, "FG": 63.471, "GH": 71.228, "HI": 78.414}, END = 82.219, DUR = 85.22, SH = [[0.0, "tropa", "sq"], [1.3, "esq", "band"], [3.06, "painel", "full"], [4.46, "celular", "full"], [6.7, "celular", "full"], [8.625, "corredor", "full"], [11.77, "corredor", "full"], [13.280000000000001, "aviao", "full"], [15.43, "esq", "band"], [16.932, "torres", "full"], [18.724999999999998, "up", "band"], [20.15, "cidade", "full"], [28.123, "predio", "full"], [33.391999999999996, "forrest", "sq"], [34.852000000000004, "naz", "band"], [36.281, "dolar", "full"], [38.129000000000005, "lobo", "band"], [39.149, "notas", "full"], [43.419, "assina", "full"], [46.919, "calcdin", "full"], [48.952, "chaves", "full"], [50.574999999999996, "calcmulher", "full"], [53.725, "envelopes", "full"], [58.515, "lobo", "band"], [60.655, "leao", "band"], [63.471, "macaneta", "full"], [66.417, "tranca", "full"], [67.927, "harry", "band"], [69.98700000000001, "caixas", "full"], [71.228, "assina", "full"], [73.18900000000001, "forrest", "sq"], [75.569, "calcdin", "full"], [78.414, "cidade", "full"], [82.219, null, "black"]];
+      const M = {"desde": 1.28, "pedindo": 3.11, "busca": 4.56, "mil7": 6.78, "turno1": 9.09, "subido": 11.87, "indep": 13.38, "malas": 15.58, "apto": 17.275, "naocabe": 18.775, "segue": 20.253, "semana": 21.233, "parte4": 24.363, "parcela": 25.993, "duas": 28.572, "mesma": 31.352, "ana": 33.032, "correndo": 33.742, "bia1": 34.902, "ana2": 36.579, "disparou": 38.279, "segunda": 39.199, "nove": 41.749, "pagou": 43.519, "imposto": 45.519, "trocou": 47.019, "menos": 47.979, "bia2": 49.275, "sp": 50.675, "seis": 51.895, "tres": 53.825, "mesmo": 56.095, "quinze2": 56.845, "sobra": 58.615, "voltar": 60.755, "tala": 62.605, "terceiro": 63.747, "pior": 65.437, "fechado": 66.517, "condo": 68.027, "semrenda": 70.087, "vender": 71.519, "correndo2": 73.289, "nunca": 74.349, "certo": 75.669, "conta": 77.399, "comenta": 78.859, "simul": 80.549}, C = {"TA": 1.3, "AB": 8.625, "BS": 16.932, "SC": 19.969, "CD": 27.773, "DE": 36.281, "EF": 48.952, "FG": 63.471, "GH": 71.228, "HI": 78.414}, END = 82.219, DUR = 85.22, SH = [[0.0, "tropa", "sq"], [1.3, "esq", "band"], [3.06, "painel", "full"], [4.46, "celular", "full"], [6.7, "celular", "full"], [8.625, "corredor", "full"], [11.77, "corredor", "full"], [13.28, "aviao", "full"], [15.43, "esq", "band"], [16.932, "torres", "full"], [18.725, "up", "band"], [20.15, "cidade", "full"], [28.123, "predio", "full"], [33.392, "forrest", "sq"], [34.852, "naz", "band"], [36.281, "dolar", "full"], [38.129, "lobo", "band"], [39.149, "notas", "full"], [43.419, "assina", "full"], [46.919, "calcdin", "full"], [48.952, "chaves", "full"], [50.575, "calcmulher", "full"], [53.725, "envelopes", "full"], [58.515, "lobo", "band"], [60.655, "leao", "band"], [63.471, "tranca", "full"], [67.927, "harry", "band"], [69.987, "caixas", "full"], [71.228, "assina", "full"], [73.189, "forrest", "sq"], [75.569, "calcdin", "full"], [78.414, "cidade", "full"], [82.219, null, "black"]];
       const $ = (s) => document.querySelector(s);
       const st = (k) => SH.find((s) => s[1] === k)[0];           // início do 1º plano de uma fonte
       const stN = (k, n) => SH.filter((s) => s[1] === k)[n][0];  // início do n-ésimo plano de uma fonte
@@ -219,8 +218,9 @@
       // ---------- créditos dos filmes (aparecem com o plano) ----------
       SH.forEach(([t, k], i) => { const id = { esq: '#crEsq', up: '#crUp', forrest: '#crFor', naz: '#crNaz', lobo: '#crLob', leao: '#crLea', harry: '#crHar' }[k]; if (id && t > 0.5) { const e = document.querySelector(id).cloneNode(true); e.id = id.slice(1) + i; $('#lay').insertBefore(e, $('#cap')); seg('#' + e.id, t + 0.15, nx(t)); } });
       // ---------- transições: flash/luz em cortes escolhidos ----------
-      [M.mil7 - 0.08, C.BS, M.naocabe - 0.05, C.CD + 0.35, C.DE, C.EF, C.FG, C.GH, C.HI].forEach((t, i) => (i % 2 ? leak(t, i % 4 ? -300 : 300, i % 4 ? 300 : -300) : flash(t, 0.55)));
-      [M.correndo - 0.3, M.disparou - 0.15, M.voltar - 0.1, M.condo - 0.1, M.correndo2 - 0.1].forEach((t) => flash(t, 0.4));
+      // transições: luz quente nos 'leak' e capítulos; flash curto nos zooms (o resto vem da montagem: whip, glitch, fade)
+      const TR = [[1.3, "flash", 0.2], [3.06, "whipL", 0.2], [4.46, "zoom", 0.26666666666666666], [6.7, "glitch", 0.2], [8.625, "whipU", 0.2], [11.77, "cut", 0.06666666666666667], [13.28, "whipL", 0.2], [15.43, "whipL", 0.2], [16.932, "leak", 0.3333333333333333], [18.725, "zoom", 0.26666666666666666], [20.15, "whipU", 0.2], [28.123, "leak", 0.3333333333333333], [33.392, "whipL", 0.2], [34.852, "glitch", 0.2], [36.281, "flash", 0.2], [38.129, "whipL", 0.2], [39.149, "zoom", 0.26666666666666666], [43.419, "whipU", 0.2], [46.919, "cut", 0.06666666666666667], [48.952, "flash", 0.2], [50.575, "leak", 0.3333333333333333], [53.725, "whipL", 0.2], [58.515, "whipL", 0.2], [60.655, "leak", 0.3333333333333333], [63.471, "black", 0.3333333333333333], [67.927, "whipU", 0.2], [69.987, "glitch", 0.2], [71.228, "flash", 0.2], [73.189, "whipL", 0.2], [75.569, "zoom", 0.26666666666666666], [78.414, "whipU", 0.2], [82.219, "black", 0.3333333333333333]];
+      TR.forEach(([t, ty], i) => { if (ty === 'leak' || ty === 'black') leak(t, i % 2 ? -300 : 300, i % 2 ? 300 : -300); if (ty === 'zoom') flash(t, 0.3); });
 
       // 0 · Tropa
       tl.set('#g0', { opacity: 1 }, 0); tl.fromTo('#g0 .serif', { scale: 1.15, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25, ease: 'expo.out', immediateRender: false }, 0.02); tl.to('#g0', { opacity: 0, duration: 0.08 }, C.TA - 0.08);
@@ -236,7 +236,9 @@
       seg('#gMi', stN('corredor', 1), st('aviao')); rise('#gMi .big', stN('corredor', 1) + 0.05); rise('#gMi .serif', stN('corredor', 1) + 0.25);
       seg('#gInd', st('aviao'), nx(st('aviao'))); pop('#ia', st('aviao') + 0.05); pop('#ib', st('aviao') + 0.2); rise('#indt', M.indep + 0.1);
       // e o apê?
-      seg('#gApe', C.BS + 0.05, M.naocabe - 0.05); rise('#apet', M.apto + 0.05, 0.6);
+      // "Mas o apartamento…": as barras de cinema fecham devagar (respiro dramático) e abrem no "não cabe"
+      tl.to('#barT', { scaleY: 1.9, duration: M.naocabe - C.BS - 0.2, ease: 'power2.inOut' }, C.BS + 0.1); tl.to('#barB', { scaleY: 1.9, duration: M.naocabe - C.BS - 0.2, ease: 'power2.inOut' }, C.BS + 0.1);
+      tl.to('#barT, #barB', { scaleY: 1, duration: 0.25, ease: 'expo.out' }, M.naocabe - 0.08);
       // segue
       seg('#gSeg', st('cidade'), C.CD + 0.35); pop('#perfil', st('cidade') + 0.05, { y: 100 });
       tl.fromTo('#tap', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.18, immediateRender: false }, M.segue + 0.45); tl.to('#tap', { opacity: 0, scale: 0.6, duration: 0.2 }, M.segue + 0.7);

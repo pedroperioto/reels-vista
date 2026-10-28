@@ -59,6 +59,15 @@ SHOTS = [
  (T['HI'], 'cidade', 60.0, 'full', 'in', {'dark': 0.6}),           # "Comenta CONTA…" (fundo para a animação)
  (T['END'], None, 0, 'black', '', {}),                             # cartão final (fundo)
 ]
+# transição que ENTRA em cada plano (índice 1..N-1): tipo, duração em quadros
+TRANS = ['flash', 'whipL', 'zoom', 'glitch', 'whipU', 'cut', 'whipL', 'whipL', 'leak', 'zoom', 'whipU', 'leak', 'whipL', 'glitch', 'flash',
+         'whipL', 'zoom', 'whipU', 'cut', 'flash', 'leak', 'whipL', 'whipL', 'leak', 'black', 'whipU', 'glitch', 'flash', 'whipL', 'zoom', 'whipU', 'black']
+XF = {'whipL': ('slideleft', 6), 'whipU': ('slideup', 6), 'zoom': ('zoomin', 8), 'flash': ('fadewhite', 6), 'glitch': ('pixelize', 6),
+      'leak': ('fade', 10), 'black': ('fadeblack', 10), 'cut': ('fade', 2)}
+assert len(TRANS) == len(SHOTS) - 1, (len(TRANS), len(SHOTS))
+def ext(i):   # quadros extras no começo e no fim do plano i (metade de cada transição)
+    h = XF[TRANS[i - 1]][1] // 2 if i > 0 else 0; e = XF[TRANS[i]][1] // 2 if i < len(SHOTS) - 1 else 0
+    return h, e
 GRADE = 'eq=contrast=1.07:saturation=0.9:gamma=0.97,colorbalance=rs=-0.05:gs=-0.01:bs=0.05:rh=0.05:gh=0.01:bh=-0.05'
 def zexpr(kind, dur):
     kb = f'(1+0.06*min(t/{dur:.3f},1))' if kind != 'out' else f'(1.06-0.06*min(t/{dur:.3f},1))'
@@ -79,14 +88,14 @@ def shot(i):
     if opt.get('dark'): adj += f",eq=brightness=-{opt['dark'] * 0.35:.3f}:saturation={1 - opt['dark'] * 0.4:.2f}"
     if opt.get('bright'): adj += f",eq=brightness={opt['bright']}:gamma={1.3 if opt.get('cont') else 1.25}" + (',eq=contrast=1.25:saturation=1.2' if opt.get('cont') else '')
     if mode == 'full':
-        g = f"[0:v]{','.join(pre)},scale=1242:2208:force_original_aspect_ratio=increase,crop=1242:2208,{adj},scale=w='trunc(1242*{Z}/1.145/2)*2+2':h='trunc(2208*{Z}/1.145/2)*2+2':eval=frame,crop=1080:1920,setsar=1[v]"
+        g = f"[0:v]{','.join(pre)},scale=1242:2208:force_original_aspect_ratio=increase,crop=1242:2208,{adj},scale=w='trunc(1242*{Z}/1.145/2)*2+2':h='trunc(2208*{Z}/1.145/2)*2+2':eval=frame,crop=1080:1920,setsar=1,tpad=stop_mode=clone:stop_duration=2[v]"
     else:
         W, H, Y = (1080, 1080, 340) if mode == 'sq' else (1080, 608, 560)
         g = (f"[0:v]{','.join(pre)},split[a][b];"
              f"[a]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,gblur=sigma=38,eq=brightness=-0.2:saturation=0.75,{GRADE}[bg];"
              f"[b]scale={round(W * 1.15)}:{round(H * 1.15)}:force_original_aspect_ratio=increase,crop={round(W * 1.15)}:{round(H * 1.15)},{adj},"
              f"scale=w='trunc({round(W * 1.15)}*{Z}/1.145/2)*2+2':h='trunc({round(H * 1.15)}*{Z}/1.145/2)*2+2':eval=frame,crop={W}:{H}[fg];"
-             f"[bg][fg]overlay=0:{Y},setsar=1[v]")
+             f"[bg][fg]overlay=0:{Y},setsar=1,tpad=stop_mode=clone:stop_duration=2[v]")
     if opt.get('leao'):   # Rei Leão: Simba andando (21,0 s) + Pedra do Rei (33,6 s) — vem de dois trechos
         n1 = round(1.3 * FPS)
         a = str(P / f'{i:02d}a.mp4'); b = str(P / f'{i:02d}b.mp4')
@@ -97,11 +106,24 @@ def shot(i):
     subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', str(sin), '-i', str(B / f), '-filter_complex', g, '-map', '[v]', '-frames:v', str(n), '-an', '-c:v', 'libx264', '-crf', '16', '-preset', 'fast', '-pix_fmt', 'yuv420p', '-r', str(FPS), str(out)], check=True)
     got = int(subprocess.run(['ffprobe', '-v', 'error', '-count_frames', '-select_streams', 'v', '-show_entries', 'stream=nb_read_frames', '-of', 'csv=p=0', str(out)], capture_output=True, text=True).stdout.strip() or 0)
     if got < n: print(f'  ! plano {i} ({key}) só tem {got}/{n} quadros — fonte curta')
+def montar():
+    ins, fc = [], []
+    for i in range(len(SHOTS)):
+        ins += ['-i', str(P / f'{i:02d}.mp4')]; fc.append(f'[{i}:v]settb=AVTB,fps={FPS},format=yuv420p[s{i}]')
+    prev = 's0'
+    for i in range(1, len(SHOTS)):
+        name, D = XF[TRANS[i - 1]]; c = round(SHOTS[i][0] * FPS)
+        off = (c - D // 2) / FPS; o = f'x{i}'
+        fc.append(f'[{prev}][s{i}]xfade=transition={name}:duration={D / FPS:.4f}:offset={off:.4f}[{o}]'); prev = o
+    fc[-1] = fc[-1][:fc[-1].rfind('[')] + '[v]'
+    subprocess.run(['ffmpeg', '-v', 'error', '-y'] + ins + ['-filter_complex', ';'.join(fc), '-map', '[v]', '-c:v', 'libx264', '-crf', '16', '-preset', 'fast', '-pix_fmt', 'yuv420p', '-r', str(FPS), str(HERE / 'base.mp4')], check=True)
+    json.dump([[round(s[0], 3), s[1], s[3]] for s in SHOTS], open(HERE / 'voz' / 'planos.json', 'w'))
+    json.dump([[round(SHOTS[i][0], 3), TRANS[i - 1], XF[TRANS[i - 1]][1] / FPS] for i in range(1, len(SHOTS))], open(HERE / 'voz' / 'transicoes.json', 'w'))
+    print('base.mp4 ok (com transições)')
+
 if __name__ == '__main__':
+    if sys.argv[1:] == ['montar']: montar(); sys.exit()
     idx = [int(a) for a in sys.argv[1:]] or range(len(SHOTS))
     for i in idx: shot(i); print('plano', i, SHOTS[i][1], 'ok', flush=True)
     if not sys.argv[1:]:
-        lst = HERE / 'planos' / 'lista.txt'; lst.write_text(''.join(f"file '{i:02d}.mp4'\n" for i in range(len(SHOTS))))
-        subprocess.run(['ffmpeg', '-v', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', str(lst), '-c', 'copy', str(HERE / 'base.mp4')], check=True)
-        json.dump([[s[0], s[1], s[3]] for s in SHOTS], open(HERE / 'voz' / 'planos.json', 'w'))
-        print('base.mp4 ok')
+        montar()

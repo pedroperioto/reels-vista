@@ -1,0 +1,40 @@
+<!doctype html><html><head><meta charset="utf-8">
+<script src="../assets/d3.min.js"></script><script src="../assets/topojson-client.min.js"></script><script src="../assets/mundo.js"></script><script src="../assets/globo.js"></script><script src="../assets/vizinhas.js"></script>
+<style>
+@font-face{font-family:Oswald700;src:url(../assets/fonts/Oswald700.woff2)}@font-face{font-family:M7;src:url(../assets/fonts/Mono700.woff2)}@font-face{font-family:M5;src:url(../assets/fonts/Mono500.woff2)}
+@font-face{font-family:IB;src:url(../assets/fonts/InterBlack.otf)}@font-face{font-family:IM;src:url(../assets/fonts/InterMed.otf)}
+*{margin:0;padding:0;box-sizing:border-box}html,body{width:1080px;height:1920px;overflow:hidden;background:#09090B}
+#c{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:Oswald700;color:#fff;background:radial-gradient(900px 800px at 50% 30%,#1E1E22,#09090B 70%)}
+#gl{position:absolute;left:0;top:0;width:1080px;height:1920px;filter:grayscale(1) brightness(1.15) contrast(1.1);opacity:.75}
+.ctr{position:absolute;left:0;width:1080px;text-align:center}
+#tag{top:300px}#tag span{display:inline-flex;align-items:center;gap:14px;padding:10px 24px;border-radius:40px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.6);font-family:M7;font-size:28px;letter-spacing:3px}#tag i{width:16px;height:16px;border-radius:50%;background:#FFD24A;box-shadow:0 0 14px #FFD24A}
+#bar{position:absolute;left:150px;top:400px;width:780px;height:96px;border-radius:48px;background:#fff;color:#202124;display:flex;align-items:center;gap:20px;padding-left:36px;font-family:IM;font-size:40px;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+#big{top:510px;font-family:IB;font-size:250px;line-height:1;letter-spacing:-8px;color:#FFD24A;text-shadow:0 12px 40px rgba(0,0,0,.7)}
+#bs{top:770px;font-family:M7;font-size:26px;letter-spacing:4px;color:#A1A1AA}
+#h{top:835px;font-size:128px;line-height:.98;text-transform:uppercase;letter-spacing:1px;text-shadow:0 10px 40px rgba(0,0,0,.8)}#h b{color:#FFD24A;font-weight:normal}
+#mala{position:absolute;left:140px;top:1150px;width:800px;padding:16px 26px;border-radius:18px;background:#E5484D;display:flex;align-items:center;gap:22px;transform:rotate(-3deg);box-shadow:0 20px 50px rgba(0,0,0,.6)}
+#mala .t{font-size:50px;line-height:1}#mala .s{font-family:M7;font-size:22px;margin-top:6px;letter-spacing:2px}
+#q{top:1320px}#q span{display:inline-block;padding:12px 34px;background:#FFD24A;color:#09090B;font-size:70px}
+#src{top:1450px;font-family:M5;font-size:22px;color:#A1A1AA;letter-spacing:1px}
+#a,#b{position:absolute;top:1250px;width:300px;height:600px}#a{left:-60px}#b{left:840px}
+</style></head><body><div id="c">
+<svg id="gl" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+<svg id="a" viewBox="0 0 320 640"></svg><svg id="b" viewBox="0 0 320 640"></svg>
+<div id="tag" class="ctr"><span><i></i>PÓS-ELEIÇÃO · PARTE 3</span></div>
+<div id="bar"><svg width="40" height="40" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#5F6368" stroke-width="2.6"/><path d="M 15 15 L 22 22" stroke="#5F6368" stroke-width="2.6" stroke-linecap="round"/></svg>como morar no paraguai</div>
+<div id="big" class="ctr">+1.700%</div>
+<div id="bs" class="ctr">BUSCAS EM 24H · DEPOIS DO 2º TURNO</div>
+<div id="h" class="ctr">Sair do Brasil?<br><span style="font-size:116px">E o seu <b>apê?</b></span></div>
+<div id="mala"><svg width="64" height="64" viewBox="0 0 64 64"><rect x="6" y="18" width="52" height="40" rx="8" fill="#fff"/><rect x="22" y="6" width="20" height="14" rx="4" fill="none" stroke="#fff" stroke-width="5"/><path d="M 20 18 V 58 M 44 18 V 58" stroke="#E5484D" stroke-width="5"/></svg>
+ <div><div class="t">O APÊ NÃO CABE NA MALA</div><div class="s">VENDER · ALUGAR · DEIXAR FECHADO</div></div></div>
+<div id="q" class="ctr"><span>VENDE OU ALUGA?</span></div>
+<div id="src" class="ctr">FONTES: GOOGLE TRENDS · ITAMARATY · FIPEZAP · RECEITA</div>
+</div><script>
+Object.assign(CIDADES,{lisboa:[-9.14,38.72,'LISBOA'],miami:[-80.19,25.76,'MIAMI'],assuncao:[-57.58,-25.26,''],sp:[-46.63,-23.55,'SÃO PAULO']});
+const G=Globo(document.getElementById('gl'),{cx:540,cy:1760,r:620}); G.draw({lon:-44,lat:-18,k:1,pins:[['sp',1]],arcs:[['sp','lisboa',1],['sp','miami',1],['sp','assuncao',1]]});
+document.getElementById('a').innerHTML=ana('aa'); document.getElementById('b').innerHTML=bia('bb');
+const set=(s,on)=>document.querySelectorAll(s).forEach(e=>e.setAttribute('opacity',on?1:0));
+set('#aa .m-smile',0);set('#aa .m-open',1);set('#aa .b-neutral',0);set('#aa .b-up',1);
+set('#bb .armL',0);set('#bb .armR',0);set('#bb .armsX',1);set('#bb .m-smile',0);set('#bb .m-smug',1);set('#bb .b-neutral',0);set('#bb .b-up',1);
+window.done=Promise.resolve();
+</script></body></html>

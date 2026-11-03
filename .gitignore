@@ -26,3 +26,6 @@ videos/*/base.mp4
 videos/*/out/
 videos/sp-fonttest/
 videos/*/planos/*.log
+videos/permuta/brutos/
+videos/permuta/ficha/
+videos/permuta/voz/*.wav

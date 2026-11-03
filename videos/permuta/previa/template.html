@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "InstrSerifVB"; src: url("assets/fonts/Instr.ttf") format("truetype"); }
+      @font-face { font-family: "Oswald700"; src: url("assets/fonts/Oswald700.woff2"); }
+      @font-face { font-family: "Oswald600"; src: url("assets/fonts/Oswald600.woff2"); }
+      @font-face { font-family: "Mono500"; src: url("assets/fonts/Mono500.woff2"); }
+      @font-face { font-family: "Mono700"; src: url("assets/fonts/Mono700.woff2"); }
+      @font-face { font-family: "InterBlack"; src: url("assets/fonts/InterBlack.otf"); }
+      :root { --paper: #F4EFE6; --amber: #F2B33D; --red: #FF5A4F; --ink: #0B0D12; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: transparent; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Oswald700", sans-serif; color: var(--paper); }
+      .full { position: absolute; inset: 0; } .abs { position: absolute; } .g { position: absolute; inset: 0; opacity: 0; }
+      .ctr { left: 0; width: 1080px; text-align: center; }
+      .sh { text-shadow: 0 6px 30px rgba(0,0,0,0.8), 0 2px 6px rgba(0,0,0,0.6); }
+      .serif { font-family: "InstrSerifVB", Georgia; font-weight: normal; letter-spacing: -1px; line-height: 0.95; }
+      .kick { font-family: "Mono700"; font-size: 28px; letter-spacing: 7px; color: var(--amber); }
+      .credit { position: absolute; left: 0; width: 1080px; text-align: center; font-family: "Mono500"; font-size: 22px; letter-spacing: 5px; color: rgba(244,239,230,0.7); }
+      .big { font-family: "InterBlack"; letter-spacing: -6px; line-height: 0.9; }
+      .bar { position: absolute; left: 0; width: 1080px; height: 300px; background: #000; }
+      .stamp { position: absolute; padding: 10px 30px; border: 8px solid var(--red); border-radius: 16px; color: var(--red); font-family: "Oswald700"; font-size: 84px; letter-spacing: 2px; background: rgba(251,248,241,0.95); }
+      .chip { display: inline-block; padding: 10px 26px; border-radius: 999px; font-family: "Oswald600"; font-size: 38px; letter-spacing: 3px; background: rgba(14,18,26,0.6); border: 1.5px solid rgba(255,255,255,0.25); }
+      #cap { position: absolute; left: 60px; width: 960px; top: 1452px; height: 140px; }
+      .cg { position: absolute; left: 0; top: 0; width: 960px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 18px; row-gap: 8px; font-family: "Oswald700"; font-size: 64px; line-height: 1; text-transform: uppercase; opacity: 0; }
+      .cw { display: inline-block; padding: 4px 10px 6px; border-radius: 10px; color: var(--paper); text-shadow: 0 4px 18px rgba(0,0,0,0.85); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="@@DUR@@" data-width="1080" data-height="1920">
+      <div id="lay" class="full clip" data-start="0" data-duration="@@DUR@@" data-track-index="0">
+        <div id="flash" class="full" style="background:#fff;opacity:0"></div>
+        <!-- barras de cinema na cena do filme -->
+        <div id="bT" class="bar" style="top:0"></div><div id="bB" class="bar" style="bottom:0"></div>
+
+        <!-- gancho: a pergunta fica na tela do 1º quadro até as chaves -->
+        <div id="gQ" class="g" style="opacity:1">
+          <div id="q1" class="abs ctr serif sh" style="top:130px;font-size:104px">Trocar seu apê</div>
+          <div id="q2" class="abs ctr serif sh" style="top:236px;font-size:104px;color:var(--amber)"><i>por um maior</i></div>
+          <div id="q3" class="abs ctr sh" style="top:368px;font-family:Oswald700;font-size:58px;letter-spacing:4px">SEM VENDER O SEU?</div>
+        </div>
+        <div id="crGF" class="g" style="opacity:1"><div class="credit" style="top:1300px">O PODEROSO CHEFÃO (1972)</div></div>
+
+        <!-- permuta -->
+        <div id="gP" class="g">
+          <div class="abs ctr kick" style="top:700px">A SAÍDA TEM NOME</div>
+          <div id="pw" class="abs ctr big sh" style="top:760px;font-size:200px;color:var(--amber)">PERMUTA</div>
+          <div id="pd" class="abs ctr serif sh" style="top:990px;font-size:64px"><i>o seu apê entra no pagamento</i></div>
+        </div>
+
+        <!-- juros -->
+        <div id="gJ" class="g">
+          <div class="abs ctr kick" style="top:560px">DEPOIS DA ELEIÇÃO</div>
+          <div id="jt" class="abs ctr serif sh" style="top:620px;font-size:92px">Juro da casa própria</div>
+          <div id="stp" class="stamp" style="left:190px;top:780px;transform:rotate(-4deg)">ATÉ 15% AO ANO</div>
+          <div id="jb" class="abs ctr" style="top:960px;font-family:Mono700;font-size:30px;letter-spacing:2px;color:var(--paper)">BRADESCO 15% · ITAÚ 12,95% · SANTANDER 12,49% <span style="opacity:.7">(+TR)</span></div>
+          <div class="credit" style="top:1015px;font-size:20px">FONTE: EXAME, 27/10/2026 · NC NEWS, 30/10/2026</div>
+        </div>
+
+        <!-- zona leste -->
+        <div id="gZ" class="g"><div class="abs ctr" style="top:820px"><span id="zc" class="chip">📍 ZONA LESTE · SÃO PAULO</span></div></div>
+
+        <!-- promessa -->
+        <div id="gF" class="g">
+          <div id="ft" class="abs ctr serif sh" style="top:760px;font-size:110px">Como funciona</div>
+          <svg id="arr" class="abs" style="left:390px;top:900px" width="300" height="120" viewBox="0 0 300 120"><path id="arrp" d="M 20 60 L 260 60 M 210 18 L 262 60 L 210 102" fill="none" stroke="#F2B33D" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <div id="handle" class="abs" style="left:56px;top:1820px;font-family:Mono500;font-size:22px;letter-spacing:3px;color:rgba(244,239,230,0.55)">@VISTABROKER.PERIOTO</div>
+        <div id="cap"></div>
+      </div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const M = @@M@@; const OFF = @@OFF@@; const DUR = @@DUR@@;
+      const $ = (s) => document.querySelector(s);
+      const seg = (s, a, b) => { tl.set(s, { opacity: 1 }, a); tl.set(s, { opacity: 0 }, b); };
+      const rise = (s, t, d = 0.45) => tl.fromTo(s, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: d, ease: 'power3.out', immediateRender: false }, t);
+      const slam = (s, t, rot = 0) => tl.fromTo(s, { opacity: 0, scale: 1.9, rotation: rot * 2 }, { opacity: 1, scale: 1, rotation: rot, duration: 0.22, ease: 'power4.in', immediateRender: false }, t);
+      const flash = (t, a = 0.55) => tl.fromTo('#flash', { opacity: a }, { opacity: 0, duration: 0.25, immediateRender: false }, t);
+
+      // gancho
+      tl.set('#q1,#q2,#q3', { opacity: 0 }, 0);
+      tl.fromTo('#q1', { opacity: 0, y: -30, filter: 'blur(10px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.35, ease: 'power3.out', immediateRender: false }, 0.03);
+      tl.fromTo('#q2', { opacity: 0, y: -30, filter: 'blur(10px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.35, ease: 'power3.out', immediateRender: false }, 0.25);
+      tl.fromTo('#q3', { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'power4.in', immediateRender: false }, 0.6);
+      tl.to('#bT', { y: -300, duration: 0.5, ease: 'power3.inOut' }, OFF - 0.15); tl.to('#bB', { y: 300, duration: 0.5, ease: 'power3.inOut' }, OFF - 0.15);
+      tl.set('#crGF', { opacity: 0 }, OFF); flash(OFF, 0.35);
+      tl.to('#gQ', { opacity: 0, duration: 0.2 }, M.da - 0.15);
+      // permuta
+      seg('#gP', M.da - 0.05, M.juro - 0.12); rise('#gP .kick', M.da);
+      slam('#pw', M.perm - 0.05); flash(M.perm + 0.15, 0.4); rise('#pd', M.perm + 0.35, 0.35);
+      tl.fromTo('#pw', { letterSpacing: '-6px' }, { letterSpacing: '4px', duration: 1.2, ease: 'power1.out', immediateRender: false }, M.perm + 0.2);
+      // juros
+      seg('#gJ', M.juro - 0.12, M.ela - 0.1); rise('#gJ .kick', M.juro - 0.1); rise('#jt', M.juro);
+      slam('#stp', M.quinze - 0.05, -4); flash(M.quinze + 0.15, 0.3); tl.fromTo('#gJ', { x: 0 }, { x: 10, duration: 0.05, yoyo: true, repeat: 5, immediateRender: false }, M.quinze + 0.17);
+      rise('#jb', M.quinze + 0.3, 0.3); rise('#gJ .credit', M.quinze + 0.4, 0.3);
+      // zona leste
+      seg('#gZ', M.zona - 0.25, M.fica - 0.15); tl.fromTo('#zc', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)', immediateRender: false }, M.zona - 0.2);
+      // promessa
+      seg('#gF', M.fica - 0.1, DUR); rise('#ft', M.fica);
+      tl.fromTo('#arrp', { strokeDasharray: 600, strokeDashoffset: 600 }, { strokeDashoffset: 0, duration: 0.45, ease: 'power2.out', immediateRender: false }, M.func - 0.2);
+      tl.fromTo('#arr', { x: 0 }, { x: 30, duration: 0.35, yoyo: true, repeat: 3, ease: 'sine.inOut', immediateRender: false }, M.func + 0.3);
+
+      // legenda
+      const CAP = @@CAP@@; const capEl = $('#cap');
+      CAP.forEach((g, gi) => { const el = document.createElement('div'); el.className = 'cg'; el.id = 'cg' + gi; capEl.appendChild(el);
+        g.w.forEach(([w], j) => { const sp = document.createElement('span'); sp.className = 'cw'; sp.id = `cw${gi}_${j}`; sp.textContent = w; el.appendChild(sp); });
+        const t1 = gi + 1 < CAP.length ? CAP[gi + 1].t0 : g.w[g.w.length - 1][2] + 0.6;
+        tl.fromTo(el, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.1, ease: 'power3.out', immediateRender: false }, Math.max(0, g.t0 - 0.05));
+        tl.to(el, { opacity: 0, duration: 0.04 }, Math.min(t1 - 0.08, g.w[g.w.length - 1][2] + 0.5));
+        g.w.forEach(([w, a, b], j) => { tl.to(`#cw${gi}_${j}`, { backgroundColor: 'rgba(242,179,61,1)', color: '#0B0D12', textShadow: '0 0 0 rgba(0,0,0,0)', duration: 0.04 }, a - 0.02); tl.to(`#cw${gi}_${j}`, { backgroundColor: 'rgba(242,179,61,0)', color: '#F4EFE6', textShadow: '0 4px 18px rgba(0,0,0,0.85)', duration: 0.1 }, b); }); });
+      tl.set({}, {}, DUR);
+      window.__timelines['main'] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

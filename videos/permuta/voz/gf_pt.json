@@ -1,0 +1,414 @@
+[
+    {
+        "type": "segment",
+        "text": "Vou fazer uma oferta que ele não pode recusar.\n",
+        "startTime": 3.14,
+        "endTime": 11.01,
+        "timeline": [
+            {
+                "type": "sentence",
+                "text": "Vou fazer uma oferta que ele não pode recusar.\n",
+                "startTime": 3.14,
+                "endTime": 11.01,
+                "timeline": [
+                    {
+                        "type": "word",
+                        "text": "Vou",
+                        "startTime": 3.14,
+                        "endTime": 4.92,
+                        "timeline": [
+                            {
+                                "type": "token",
+                                "text": "vow",
+                                "startTime": 3.14,
+                                "endTime": 4.92,
+                                "timeline": [
+                                    {
+                                        "type": "phone",
+                                        "text": "v",
+                                        "startTime": 3.14,
+                                        "endTime": 4.92
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "o",
+                                        "startTime": 4.92,
+                                        "endTime": 4.92
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "w",
+                                        "startTime": 4.92,
+                                        "endTime": 4.92
+                                    }
+                                ]
+                            }
+                        ],
+                        "startOffsetUtf16": 0,
+                        "endOffsetUtf16": 3,
+                        "startOffsetUtf32": 0,
+                        "endOffsetUtf32": 3
+                    },
+                    {
+                        "type": "word",
+                        "text": "fazer",
+                        "startTime": 4.93,
+                        "endTime": 5.62,
+                        "timeline": [
+                            {
+                                "type": "token",
+                                "text": "fazˌeɾ",
+                                "startTime": 4.93,
+                                "endTime": 5.62,
+                                "timeline": [
+                                    {
+                                        "type": "phone",
+                                        "text": "f",
+                                        "startTime": 4.93,
+                                        "endTime": 5.17
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "a",
+                                        "startTime": 5.17,
+                                        "endTime": 5.28
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "z",
+                                        "startTime": 5.28,
+                                        "endTime": 5.44
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "ˌe",
+                                        "startTime": 5.44,
+                                        "endTime": 5.56
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "ɾ",
+                                        "startTime": 5.56,
+                                        "endTime": 5.62
+                                    }
+                                ]
+                            }
+                        ],
+                        "startOffsetUtf16": 4,
+                        "endOffsetUtf16": 9,
+                        "startOffsetUtf32": 4,
+                        "endOffsetUtf32": 9
+                    },
+                    {
+                        "type": "word",
+                        "text": "uma",
+                        "startTime": 5.62,
+                        "endTime": 7.09,
+                        "timeline": [
+                            {
+                                "type": "token",
+                                "text": "ˌumæ",
+                                "startTime": 5.62,
+                                "endTime": 7.09,
+                                "timeline": [
+                                    {
+                                        "type": "phone",
+                                        "text": "ˌu",
+                                        "startTime": 5.62,
+                                        "endTime": 6.99
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "m",
+                                        "startTime": 6.99,
+                                        "endTime": 7.05
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "æ",
+                                        "startTime": 7.05,
+                                        "endTime": 7.09
+                                    }
+                                ]
+                            }
+                        ],
+                        "startOffsetUtf16": 10,
+                        "endOffsetUtf16": 13,
+                        "startOffsetUtf32": 10,
+                        "endOffsetUtf32": 13
+                    },
+                    {
+                        "type": "word",
+                        "text": "oferta",
+                        "startTime": 7.09,
+                        "endTime": 8.18,
+                        "timeline": [
+                            {
+                                "type": "token",
+                                "text": "ˌofˈɛɾətæ",
+                                "startTime": 7.09,
+                                "endTime": 8.18,
+                                "timeline": [
+                                    {
+                                        "type": "phone",
+                                        "text": "ˌo",
+                                        "startTime": 7.09,
+                                        "endTime": 7.21
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "f",
+                                        "startTime": 7.21,
+                                        "endTime": 7.37
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "ˈɛ",
+                                        "startTime": 7.37,
+                                        "endTime": 7.52
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "ɾ",
+                                        "startTime": 7.52,
+                                        "endTime": 7.57
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "ə",
+                                        "startTime": 7.57,
+                                        "endTime": 8.18
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "t",
+                                        "startTime": 8.18,
+                                        "endTime": 8.18
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "æ",
+                                        "startTime": 8.18,
+                                        "endTime": 8.18
+                                    }
+                                ]
+                            }
+                        ],
+                        "startOffsetUtf16": 14,
+                        "endOffsetUtf16": 20,
+                        "startOffsetUtf32": 14,
+                        "endOffsetUtf32": 20
+                    },
+                    {
+                        "type": "word",
+                        "text": "que",
+                        "startTime": 8.93,
+                        "endTime": 9.03,
+                        "timeline": [
+                            {
+                                "type": "token",
+                                "text": "ky",
+                                "startTime": 8.93,
+                                "endTime": 9.03,
+                                "timeline": [
+                                    {
+                                        "type": "phone",
+                                        "text": "k",
+                                        "startTime": 8.93,
+                                        "endTime": 8.99
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "y",
+                                        "startTime": 8.99,
+                                        "endTime": 9.03
+                                    }
+                                ]
+                            }
+                        ],
+                        "startOffsetUtf16": 21,
+                        "endOffsetUtf16": 24,
+                        "startOffsetUtf32": 21,
+                        "endOffsetUtf32": 24
+                    },
+                    {
+                        "type": "word",
+                        "text": "ele",
+                        "startTime": 9.05,
+                        "endTime": 9.15,
+                        "timeline": [
+                            {
+                                "type": "token",
+                                "text": "ˌely",
+                                "startTime": 9.05,
+                                "endTime": 9.15,
+                                "timeline": [
+                                    {
+                                        "type": "phone",
+                                        "text": "ˌe",
+                                        "startTime": 9.05,
+                                        "endTime": 9.07
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "l",
+                                        "startTime": 9.07,
+                                        "endTime": 9.12
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "y",
+                                        "startTime": 9.12,
+                                        "endTime": 9.15
+                                    }
+                                ]
+                            }
+                        ],
+                        "startOffsetUtf16": 25,
+                        "endOffsetUtf16": 28,
+                        "startOffsetUtf32": 25,
+                        "endOffsetUtf32": 28
+                    },
+                    {
+                        "type": "word",
+                        "text": "não",
+                        "startTime": 9.16,
+                        "endTime": 9.34,
+                        "timeline": [
+                            {
+                                "type": "token",
+                                "text": "nˌɐ̃ʊ",
+                                "startTime": 9.16,
+                                "endTime": 9.34,
+                                "timeline": [
+                                    {
+                                        "type": "phone",
+                                        "text": "n",
+                                        "startTime": 9.16,
+                                        "endTime": 9.22
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "ˌɐ̃ʊ",
+                                        "startTime": 9.22,
+                                        "endTime": 9.34
+                                    }
+                                ]
+                            }
+                        ],
+                        "startOffsetUtf16": 29,
+                        "endOffsetUtf16": 32,
+                        "startOffsetUtf32": 29,
+                        "endOffsetUtf32": 32
+                    },
+                    {
+                        "type": "word",
+                        "text": "pode",
+                        "startTime": 9.54,
+                        "endTime": 9.8,
+                        "timeline": [
+                            {
+                                "type": "token",
+                                "text": "pˌɔdʒy",
+                                "startTime": 9.54,
+                                "endTime": 9.8,
+                                "timeline": [
+                                    {
+                                        "type": "phone",
+                                        "text": "p",
+                                        "startTime": 9.54,
+                                        "endTime": 9.58
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "ˌɔ",
+                                        "startTime": 9.58,
+                                        "endTime": 9.69
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "dʒ",
+                                        "startTime": 9.69,
+                                        "endTime": 9.76
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "y",
+                                        "startTime": 9.76,
+                                        "endTime": 9.8
+                                    }
+                                ]
+                            }
+                        ],
+                        "startOffsetUtf16": 33,
+                        "endOffsetUtf16": 37,
+                        "startOffsetUtf32": 33,
+                        "endOffsetUtf32": 37
+                    },
+                    {
+                        "type": "word",
+                        "text": "recusar",
+                        "startTime": 9.84,
+                        "endTime": 11.01,
+                        "timeline": [
+                            {
+                                "type": "token",
+                                "text": "xˌekuzˈar",
+                                "startTime": 9.84,
+                                "endTime": 11.01,
+                                "timeline": [
+                                    {
+                                        "type": "phone",
+                                        "text": "x",
+                                        "startTime": 9.84,
+                                        "endTime": 9.93
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "ˌe",
+                                        "startTime": 9.93,
+                                        "endTime": 10.31
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "k",
+                                        "startTime": 10.31,
+                                        "endTime": 10.39
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "u",
+                                        "startTime": 10.39,
+                                        "endTime": 10.61
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "z",
+                                        "startTime": 10.61,
+                                        "endTime": 10.73
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "ˈa",
+                                        "startTime": 10.73,
+                                        "endTime": 10.96
+                                    },
+                                    {
+                                        "type": "phone",
+                                        "text": "r",
+                                        "startTime": 10.96,
+                                        "endTime": 11.01
+                                    }
+                                ]
+                            }
+                        ],
+                        "startOffsetUtf16": 38,
+                        "endOffsetUtf16": 45,
+                        "startOffsetUtf32": 38,
+                        "endOffsetUtf32": 45
+                    }
+                ]
+            }
+        ]
+    }
+]

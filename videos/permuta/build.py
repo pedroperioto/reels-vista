@@ -61,7 +61,7 @@ CAP = [{'t0': 0.38, 'w': [['VOU', 0.42, 0.73], ['FAZER', 0.74, 1.15], ['UMA', 1.
 CAP += [{'t0': S(g[0][0]), 'w': [[u[2], S(u[0]), En(u[1])] for u in g]} for g in groups]
 g0 = T['GAND0']
 CAP += [{'t0': g0, 'w': [['VOCÊ', g0 + 0.03, g0 + 0.36], ['NÃO', g0 + 0.37, g0 + 0.58], ['VAI', g0 + 0.59, g0 + 1.1]]},
-        {'t0': g0 + 1.8, 'w': [['PASSAR!', g0 + 1.85, g0 + 4.55]]}]   # o grito vai até 4,55 s no recorte
+        {'t0': g0 + 1.8, 'w': [['PASSAR!', g0 + 1.85, g0 + 4.35]]}]   # o grito vai até 4,55 s no recorte
 CAP = [g for g in CAP if not any(a <= g['t0'] < b for a, b in HIDE)]
 CAP.sort(key=lambda g: g['t0'])
 for gg in CAP: gg['l'] = 1 if light(gg['t0']) else 0

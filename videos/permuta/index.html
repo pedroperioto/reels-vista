@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="pt-BR" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "InstrSerifVB"; src: url("assets/fonts/Instr.ttf") format("truetype"); }
+      @font-face { font-family: "Oswald700"; src: url("assets/fonts/Oswald700.woff2"); }
+      @font-face { font-family: "Oswald600"; src: url("assets/fonts/Oswald600.woff2"); }
+      @font-face { font-family: "Mono500"; src: url("assets/fonts/Mono500.woff2"); }
+      @font-face { font-family: "Mono700"; src: url("assets/fonts/Mono700.woff2"); }
+      @font-face { font-family: "InterBlack"; src: url("assets/fonts/InterBlack.otf"); }
+      @font-face { font-family: "InterSemi"; src: url("assets/fonts/InterSemi.otf"); }
+      @font-face { font-family: "InterMed"; src: url("assets/fonts/InterMed.otf"); }
+      /* permuta · cinema escuro no problema, estilo Apple claro na solução */
+      :root { --paper: #F4EFE6; --amber: #F2B33D; --red: #FF5A4F; --ink: #1D1D1F; --gray: #6E6E73; --blue: #0071E3; --green: #34C759; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: transparent; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Oswald700", sans-serif; color: var(--paper); }
+      .full { position: absolute; inset: 0; } .abs { position: absolute; } .g { position: absolute; inset: 0; opacity: 0; }
+      .ctr { left: 0; width: 1080px; text-align: center; }
+      .sh { text-shadow: 0 6px 30px rgba(0,0,0,0.8), 0 2px 6px rgba(0,0,0,0.6); }
+      .serif { font-family: "InstrSerifVB", Georgia; font-weight: normal; letter-spacing: -1px; line-height: 0.95; }
+      .kick { font-family: "Mono700"; font-size: 28px; letter-spacing: 7px; color: var(--amber); }
+      .credit { position: absolute; left: 0; width: 1080px; text-align: center; font-family: "Mono500"; font-size: 22px; letter-spacing: 5px; color: rgba(244,239,230,0.72); }
+      .big { font-family: "InterBlack"; letter-spacing: -6px; line-height: 0.9; }
+      .bar { position: absolute; left: 0; width: 1080px; height: 300px; background: #000; }
+      .stamp { position: relative; display: inline-block; padding: 10px 30px; border: 8px solid var(--red); border-radius: 16px; color: var(--red); font-family: "Oswald700"; font-size: 84px; letter-spacing: 2px; background: rgba(251,248,241,0.95); }
+      .chip { display: inline-block; padding: 10px 26px; border-radius: 999px; font-family: "Oswald600"; font-size: 36px; letter-spacing: 3px; background: rgba(14,18,26,0.6); border: 1.5px solid rgba(255,255,255,0.25); color: var(--paper); }
+      .tag { display: inline-block; padding: 6px 18px; border-radius: 10px; font-family: "Oswald700"; font-size: 40px; color: #fff; background: var(--red); }
+      .glass { background: rgba(14,18,26,0.55); border: 1.5px solid rgba(255,255,255,0.18); backdrop-filter: blur(18px); border-radius: 34px; box-shadow: 0 30px 80px rgba(0,0,0,0.45); }
+      /* estilo Apple */
+      .ap { font-family: "InterSemi"; color: var(--ink); }
+      .apT { font-family: "InterBlack"; color: var(--ink); letter-spacing: -3px; line-height: 1.0; }
+      .apS { font-family: "InterMed"; color: var(--gray); }
+      .card { position: absolute; background: #fff; border-radius: 40px; box-shadow: 0 2px 6px rgba(0,0,0,0.04), 0 24px 60px rgba(0,0,0,0.10); }
+      .pill { display: inline-block; padding: 10px 24px; border-radius: 999px; background: #E8E8ED; font-family: "InterSemi"; font-size: 30px; color: var(--ink); }
+      .row { display: flex; align-items: center; gap: 28px; padding: 26px 40px; border-bottom: 1.5px solid #E5E5EA; font-family: "InterSemi"; font-size: 46px; color: var(--ink); opacity: 0; }
+      .ck { width: 64px; height: 64px; border-radius: 32px; background: var(--green); display: flex; align-items: center; justify-content: center; }
+      /* legenda */
+      #cap { position: absolute; left: 60px; width: 960px; top: 1452px; height: 140px; }
+      .cg { position: absolute; left: 0; top: 0; width: 960px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 18px; row-gap: 8px; font-family: "Oswald700"; font-size: 64px; line-height: 1; text-transform: uppercase; opacity: 0; }
+      .cw { display: inline-block; padding: 4px 10px 6px; border-radius: 10px; color: var(--paper); text-shadow: 0 4px 18px rgba(0,0,0,0.85); }
+      .cg.l .cw { color: var(--ink); text-shadow: none; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="83.05" data-width="1080" data-height="1920">
+      <div id="lay" class="full clip" data-start="0" data-duration="83.05" data-track-index="0">
+        <div id="flash" class="full" style="background:#fff;opacity:0"></div>
+        <div id="bT" class="bar" style="top:0"></div><div id="bB" class="bar" style="bottom:0"></div>
+
+        <!-- gancho -->
+        <div id="gQ" class="g" style="opacity:1">
+          <div id="q1" class="abs ctr serif sh" style="top:130px;font-size:104px">Trocar seu apê</div>
+          <div id="q2" class="abs ctr serif sh" style="top:236px;font-size:104px;color:var(--amber)"><i>por um maior</i></div>
+          <div id="q3" class="abs ctr sh" style="top:368px;font-size:58px;letter-spacing:4px">SEM VENDER O SEU?</div>
+        </div>
+        <div id="crGF" class="g" style="opacity:1"><div class="credit" style="top:1300px">O PODEROSO CHEFÃO (1972)</div></div>
+        <div id="crFr" class="g"><div class="credit" style="top:1340px">FRIENDS · TEMPORADA 4 (1998)</div></div>
+
+        <!-- permuta -->
+        <div id="gP" class="g">
+          <div class="abs ctr kick" style="top:700px">A SAÍDA TEM NOME</div>
+          <div id="pw" class="abs ctr big sh" style="top:760px;font-size:200px;color:var(--amber)">PERMUTA</div>
+          <div id="pd" class="abs ctr serif sh" style="top:990px;font-size:64px"><i>o seu apê entra no pagamento</i></div>
+        </div>
+        <!-- juros 15% -->
+        <div id="gJ" class="g"><div class="full" style="background:linear-gradient(180deg,rgba(0,0,0,0) 22%,rgba(0,0,0,0.62) 30%,rgba(0,0,0,0.62) 58%,rgba(0,0,0,0) 66%)"></div>
+          <div class="abs ctr kick" style="top:560px">DEPOIS DA ELEIÇÃO</div>
+          <div id="jt" class="abs ctr serif sh" style="top:620px;font-size:92px">Juro da casa própria</div>
+          <div class="abs ctr" style="top:780px"><div id="stp" class="stamp" style="transform:rotate(-4deg)">ATÉ 15% AO ANO</div></div>
+          <div id="jb" class="abs ctr" style="top:960px;font-family:Mono700;font-size:30px;letter-spacing:2px">BRADESCO 15% · ITAÚ 12,95% · SANTANDER 12,49% <span style="opacity:.7">(+TR)</span></div>
+          <div id="jf" class="credit" style="top:1015px;font-size:20px">FONTE: EXAME, 27/10/2026 · NC NEWS, 30/10/2026</div>
+        </div>
+        <!-- zona leste + promessa -->
+        <div id="gZ" class="g"><div class="abs ctr" style="top:640px"><span id="zc" class="chip">📍 ZONA LESTE · SÃO PAULO</span></div></div>
+        <div id="gF" class="g">
+          <div id="ft" class="abs ctr serif sh" style="top:780px;font-size:110px">Como funciona</div>
+          <svg id="arr" class="abs" style="left:390px;top:920px" width="300" height="120" viewBox="0 0 300 120"><path id="arrp" d="M 20 60 L 260 60 M 210 18 L 262 60 L 210 102" fill="none" stroke="#F2B33D" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <!-- vender pra comprar -->
+        <div id="gV" class="g">
+          <div class="abs ctr kick" style="top:640px">SEM PERMUTA</div>
+          <div class="abs" style="left:0;top:720px;width:1080px;display:flex;justify-content:center;align-items:center;gap:30px">
+            <span id="v1" class="big sh" style="font-size:118px;letter-spacing:-3px;opacity:0">VENDER</span>
+            <svg id="v2" width="120" height="80" viewBox="0 0 120 80" style="opacity:0"><path d="M 8 40 L 100 40 M 72 12 L 104 40 L 72 68" fill="none" stroke="#F2B33D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span id="v3" class="big sh" style="font-size:118px;letter-spacing:-3px;color:var(--amber);opacity:0">COMPRAR</span>
+          </div>
+          <div id="v4" class="abs ctr serif sh" style="top:900px;font-size:64px;opacity:0"><i>nessa ordem</i></div>
+        </div>
+        <!-- matrix -->
+        <div id="gM" class="g">
+          <div id="m1" class="abs" style="left:560px;top:430px;opacity:0"><span class="tag" style="background:#2F6BFF">VENDER PRIMEIRO?</span><div class="serif sh" style="font-size:52px;margin-top:10px;margin-left:6px"><i>fica sem casa</i></div></div>
+          <div id="m2" class="abs" style="left:70px;top:430px;opacity:0"><span class="tag">COMPRAR PRIMEIRO?</span><div class="serif sh" style="font-size:52px;margin-top:10px;margin-left:6px"><i>paga dois</i></div></div>
+          <div class="credit" style="top:1340px">MATRIX (1999)</div>
+        </div>
+        <!-- homem-aranha -->
+        <div id="gS" class="g">
+          <div class="abs" style="left:0;top:560px;width:1080px;display:flex;justify-content:center;align-items:center;gap:18px">
+            <span id="s1" class="tag" style="background:#3A3F4B;opacity:0">VOCÊ</span><span id="s1a" class="kick" style="font-size:40px;opacity:0">→</span>
+            <span id="s2" class="tag" style="background:#3A3F4B;opacity:0">COMPRADOR</span><span id="s2a" class="kick" style="font-size:40px;opacity:0">→</span>
+            <span id="s3" class="tag" style="opacity:0">BANCO</span>
+          </div>
+          <div class="credit" style="top:1250px">HOMEM-ARANHA: SEM VOLTA PARA CASA (2021)</div>
+        </div>
+        <!-- bancos -->
+        <div id="gB" class="g">
+          <div class="abs ctr kick" style="top:470px">DEPOIS DA ELEIÇÃO · JURO DA CASA PRÓPRIA</div>
+          <div class="glass abs" style="left:90px;top:540px;width:900px;padding:20px 0">
+            <div id="b1" class="abs" style="position:relative;display:flex;justify-content:space-between;align-items:center;padding:30px 50px;opacity:0"><span style="font-size:58px">BRADESCO</span><span style="font-family:Mono700;font-size:44px"><span style="opacity:.55">11,99%</span> → <span style="color:var(--red)">15%</span></span></div>
+            <div id="b2" class="abs" style="position:relative;display:flex;justify-content:space-between;align-items:center;padding:30px 50px;border-top:1.5px solid rgba(255,255,255,.15);opacity:0"><span style="font-size:58px">ITAÚ</span><span style="font-family:Mono700;font-size:44px"><span style="opacity:.55">desde</span> <span style="color:var(--red)">12,95%</span></span></div>
+            <div id="b3" class="abs" style="position:relative;display:flex;justify-content:space-between;align-items:center;padding:30px 50px;border-top:1.5px solid rgba(255,255,255,.15);opacity:0"><span style="font-size:58px">SANTANDER</span><span style="font-family:Mono700;font-size:44px"><span style="opacity:.55">11,69%</span> → <span style="color:var(--red)">12,49%</span></span></div>
+          </div>
+          <div id="bup" class="abs ctr" style="top:1020px;opacity:0"><span class="tag">▲ SUBIRAM</span></div>
+          <div id="bf" class="credit" style="top:1110px;font-size:20px;opacity:0">TAXAS MÍNIMAS AO ANO + TR · FONTE: EXAME, 27/10 · NC NEWS, 30/10/2026</div>
+        </div>
+        <!-- conta -->
+        <div id="gC" class="g">
+          <div id="c1" class="abs ctr" style="top:470px;opacity:0"><div class="kick">FINANCIANDO</div><div class="big sh" style="font-size:150px;margin-top:10px">R$ 400 MIL</div></div>
+          <div id="c2" class="glass abs" style="left:90px;top:760px;width:900px;padding:34px 50px;opacity:0">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:46px">1ª PARCELA</span><span id="c2n" style="font-family:InterBlack;font-size:96px;color:var(--amber)">R$ 0</span></div>
+            <div id="c3" style="display:flex;justify-content:space-between;align-items:baseline;margin-top:22px;padding-top:22px;border-top:1.5px solid rgba(255,255,255,.15);opacity:0"><span style="font-size:46px">RENDA MÍNIMA</span><span id="c3n" style="font-family:InterBlack;font-size:96px;color:var(--red)">R$ 0</span></div>
+          </div>
+          <div id="c4" class="credit" style="top:1150px;font-size:20px;opacity:0">SAC · 360 MESES · 15% AO ANO, SEM TR E SEGUROS · PARCELA ATÉ 30% DA RENDA</div>
+        </div>
+        <!-- gandalf -->
+        <div id="gG" class="g"><div class="abs ctr" style="top:330px"><span class="tag" style="font-size:54px">O BANCO</span></div><div class="credit" style="top:1340px">O SENHOR DOS ANÉIS (2001)</div></div>
+        <!-- divertida mente -->
+        <div id="gI" class="g">
+          <div id="i1" class="abs ctr" style="top:300px;opacity:0"><div class="kick">RESULTADO</div><div class="serif sh" style="font-size:84px;margin-top:14px">o seu demora pra vender</div></div>
+          <div class="abs ctr" style="top:1210px"><div id="i2" class="stamp" style="font-size:72px;transform:rotate(-3deg);opacity:0">MUDANÇA TRAVADA</div></div>
+          <div class="credit" style="top:1370px">DIVERTIDA MENTE (2015)</div>
+        </div>
+        <!-- matilda -->
+        <div id="gT" class="g">
+          <div id="t1" class="abs ctr serif sh" style="top:330px;font-size:100px;opacity:0">Agora pensa em <i style="color:var(--amber)">carro</i></div>
+          <div class="abs ctr" style="top:1230px"><span id="t2" class="tag" style="font-size:52px;background:var(--amber);color:#111;opacity:0">SEU CARRO = ENTRADA</span></div>
+          <div class="credit" style="top:1340px">MATILDA (1996)</div>
+        </div>
+
+        <!-- estilo Apple: exemplo -->
+        <div id="gA" class="g">
+          <div id="a0" class="abs ctr" style="top:240px;opacity:0"><div class="apT" style="font-size:120px">Permuta.</div><div class="apS" style="font-size:44px;margin-top:16px">Seu apê entra no pagamento.</div></div>
+          <div id="cA" class="card" style="left:70px;top:560px;width:450px;height:330px;opacity:0;padding:44px">
+            <div class="apS" style="font-size:34px">Seu apê</div><div id="nA" class="apT" style="font-size:92px;margin-top:26px">R$ 0</div><div class="pill" style="margin-top:24px">vale hoje</div></div>
+          <div id="cB" class="card" style="left:560px;top:560px;width:450px;height:330px;opacity:0;padding:44px">
+            <div class="apS" style="font-size:34px">Apê novo</div><div id="nB" class="apT" style="font-size:92px;margin-top:26px">R$ 0</div><div class="pill" style="margin-top:24px">o que você quer</div></div>
+          <div id="cbar" class="card" style="left:70px;top:950px;width:940px;height:300px;opacity:0;padding:44px">
+            <div class="apS" style="font-size:34px">Como você paga os R$ 800 mil</div>
+            <div style="position:relative;margin-top:34px;height:72px;border-radius:36px;background:#E8E8ED;overflow:hidden">
+              <div id="bA" style="position:absolute;left:0;top:0;height:72px;width:0;background:var(--ink);border-radius:36px 0 0 36px"></div>
+              <div id="bB2" style="position:absolute;left:50%;top:0;height:72px;width:0;background:var(--blue)"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:22px">
+              <span id="lA" class="ap" style="font-size:34px;opacity:0">● Seu apê · R$ 400 mil</span><span id="lB" class="ap" style="font-size:34px;color:var(--blue);opacity:0">● Diferença · R$ 400 mil</span></div>
+          </div>
+          <div id="a3" class="abs ctr" style="top:1290px;opacity:0"><span class="pill">financiamento</span> &nbsp;<span class="pill">FGTS</span> &nbsp;<span class="pill">recurso próprio</span></div>
+        </div>
+        <!-- estilo Apple: 50% -->
+        <div id="gH" class="g">
+          <div id="h0" class="abs ctr" style="top:300px;opacity:0"><div class="apS" style="font-size:40px">Dica de quem negocia todo dia</div><div class="apT" style="font-size:96px;margin-top:20px">Até a metade.</div></div>
+          <div id="hc" class="card" style="left:70px;top:620px;width:940px;height:520px;opacity:0;padding:50px">
+            <div class="apS" style="font-size:34px">Seu imóvel em relação ao novo</div>
+            <div style="position:relative;margin-top:110px;height:30px;border-radius:15px;background:linear-gradient(90deg,#34C759 0%,#34C759 50%,#FF9F0A 50%,#FF9F0A 75%,#FF3B30 100%);opacity:.9"></div>
+            <div style="display:flex;justify-content:space-between;margin-top:18px" class="apS"><span style="font-size:30px">0%</span><span style="font-size:30px">50%</span><span style="font-size:30px">100%</span></div>
+            <div id="hm" class="abs" style="left:50px;top:200px;width:0;height:0">
+              <div style="position:absolute;left:-18px;top:-26px;width:36px;height:36px;border-radius:18px;background:#fff;border:6px solid var(--ink);box-shadow:0 6px 16px rgba(0,0,0,.2)"></div></div>
+            <div id="hl" class="ap" style="position:absolute;left:50px;top:360px;width:840px;font-size:44px;opacity:0"><span style="color:var(--green)">●</span> Até 50% do valor: <b style="font-family:InterBlack">mais chance de fechar</b></div>
+          </div>
+        </div>
+        <!-- friends: de volta -->
+        <div id="gK" class="g"><div class="abs ctr" style="top:300px"><span id="k1" class="tag" style="font-size:60px;background:var(--amber);color:#111;opacity:0">MAS SEMPRE VALE TENTAR</span></div>
+          <div class="credit" style="top:1340px">FRIENDS · TEMPORADA 4 (1998)</div></div>
+        <!-- estilo Apple: checklist -->
+        <div id="gL" class="g">
+          <div id="l0" class="abs ctr" style="top:300px;opacity:0"><div class="apT" style="font-size:92px">Não é só trocar<br>a chave.</div></div>
+          <div class="card" id="lc" style="left:120px;top:640px;width:840px;opacity:0;padding:20px 0">
+            <div id="r1" class="row"><div class="ck"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Avaliação dos dois imóveis</div>
+            <div id="r2" class="row"><div class="ck"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Documentação em dia</div>
+            <div id="r3" class="row" style="border-bottom:none"><div class="ck"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Contrato bem amarrado</div>
+          </div>
+        </div>
+        <!-- cartão do Pedro -->
+        <div id="gE" class="g"><div class="full" style="background:linear-gradient(180deg,rgba(0,0,0,0.0) 20%,rgba(0,0,0,0.55) 35%,rgba(0,0,0,0.55) 70%,rgba(0,0,0,0) 80%)"></div>
+          <div id="e0" class="glass abs" style="left:90px;top:560px;width:900px;padding:46px 50px;opacity:0">
+            <div class="kick">CORRETOR DE IMÓVEIS · ZONA LESTE</div>
+            <div class="serif" style="font-size:96px;margin-top:16px">Pedro Perioto</div>
+            <div style="font-family:Mono500;font-size:28px;letter-spacing:3px;margin-top:10px;color:rgba(244,239,230,.75)">CRECI 258729 · VISTA BROKER</div>
+            <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:34px">
+              <span id="e1" class="chip" style="opacity:0">COMPRA</span><span id="e2" class="chip" style="opacity:0">VENDA</span><span id="e3" class="chip" style="opacity:0;background:var(--amber);color:#111">PERMUTA</span>
+              <span id="e4" class="chip" style="opacity:0">LOCAÇÃO</span><span id="e5" class="chip" style="opacity:0">RESIDENCIAL E COMERCIAL</span><span id="e6" class="chip" style="opacity:0">PRA MORAR OU INVESTIR</span></div>
+          </div>
+        </div>
+        <!-- direct -->
+        <div id="gD" class="g">
+          <div id="dm" class="abs" style="left:90px;top:300px;width:900px;height:1020px;border-radius:44px;background:#000;border:1.5px solid rgba(255,255,255,.14);box-shadow:0 40px 100px rgba(0,0,0,.6);overflow:hidden">
+            <div style="display:flex;align-items:center;gap:20px;padding:34px 40px;border-bottom:1.5px solid rgba(255,255,255,.12)">
+              <div style="width:76px;height:76px;border-radius:38px;background:linear-gradient(135deg,#F2B33D,#FF5A4F)"></div>
+              <div><div style="font-family:InterSemi;font-size:36px">vistabroker.perioto</div><div style="font-family:InterMed;font-size:26px;color:#8E8E93">Pedro · Corretor de imóveis</div></div></div>
+            <div id="dbub" class="abs" style="right:40px;top:520px;padding:22px 34px;border-radius:36px;background:linear-gradient(135deg,#7B3FE4,#3C5CF5);font-family:InterSemi;font-size:44px;opacity:0">TROCA</div>
+            <div id="drep" class="abs" style="left:40px;top:640px;max-width:640px;padding:22px 30px;border-radius:32px;background:#262626;font-family:InterMed;font-size:36px;line-height:1.3;opacity:0">Oi! Me conta do seu imóvel que eu vejo se ele entra numa permuta 🔑</div>
+            <div class="abs" style="left:30px;bottom:30px;width:840px;height:96px;border-radius:48px;border:1.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:space-between;padding:0 36px">
+              <span id="dtx" style="font-family:InterMed;font-size:36px;color:#8E8E93">Mensagem...</span><span id="dsend" style="font-family:InterSemi;font-size:34px;color:#3797F0;opacity:0">Enviar</span></div>
+          </div>
+          <div id="dsh" class="abs ctr" style="top:1360px;opacity:0"><span class="chip" style="background:rgba(255,255,255,.12)">➤ ENVIE PRA QUEM QUER MUDAR DE APÊ</span></div>
+        </div>
+        <div id="crPv" class="g"><div class="credit" style="top:1340px">FRIENDS · TEMPORADA 5 (1999)</div></div>
+        <!-- final -->
+        <div id="gEnd" class="g">
+          <div class="abs ctr serif" style="top:600px;font-size:96px;opacity:0">Antes de decidir,<br><i style="color:var(--amber)">entenda o mercado.</i></div>
+          <div class="abs ctr" style="top:900px;opacity:0"><span id="fbtn" style="display:inline-block;padding:22px 70px;border-radius:24px;background:#0095F6;font-family:InterSemi;font-size:44px;color:#fff">Seguir</span></div>
+          <div class="abs ctr" style="top:1030px;font-family:Mono700;font-size:34px;letter-spacing:4px;opacity:0">@VISTABROKER.PERIOTO</div>
+          <div class="abs ctr" style="top:1090px;font-family:Mono500;font-size:24px;letter-spacing:4px;color:rgba(244,239,230,.6);opacity:0">CRECI 258729 · VISTA BROKER</div>
+        </div>
+
+        <div id="handle" class="abs" style="left:56px;top:1820px;font-family:Mono500;font-size:22px;letter-spacing:3px;color:rgba(244,239,230,0.55)">@VISTABROKER.PERIOTO</div>
+        <div id="cap"></div>
+      </div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const M = {"troc": 4.02, "da": 7.36, "perm": 8.2, "juro": 9.99, "quinze": 11.54, "zona": 14.37, "fica": 15.53, "semp": 17.74, "vender": 18.74, "comprar": 19.23, "vende1": 20.11, "ou": 21.62, "quem": 23.72, "banco": 25.3, "depois": 26.17, "brad": 27.15, "itau": 27.77, "sant": 28.15, "subiram": 28.74, "financ": 30.98, "cinco": 33.48, "comprador": 35.22, "quase": 36.37, "result": 40.75, "demora": 41.92, "trava": 43.99, "agora": 45.03, "carro": 45.9, "entrada": 47.09, "aperm": 48.04, "oseu": 50.35, "q400": 51.03, "novo": 51.93, "q800": 52.46, "entra": 53.35, "resolve": 54.83, "ela": 56.57, "metade": 59.0, "mas": 60.42, "chave": 63.09, "aval": 64.22, "doc": 64.9, "contr": 65.46, "eu": 66.51, "compra2": 66.94, "venda": 67.36, "perm2": 67.64, "loc": 68.2, "resid": 69.03, "come": 69.78, "me": 71.16, "kw": 71.85, "direct": 72.4, "emanda": 75.81, "amigo": 76.2}, T = {"GAND0": 37.7, "GAND1": 40.5, "VEND": 77.55, "PIV0": 78.15, "PIV1": 80.25, "END": 83.05, "OFF1": 3.8}, C = [0.0, 3.8, 7.25, 9.55, 12.55, 17.4, 20.0, 23.35, 25.95, 30.8, 37.7, 40.5, 43.1, 44.9, 46.6, 47.95, 60.3, 62.45, 66.25, 70.95, 78.15, 80.25, 83.05], DUR = 83.05;
+      const $ = (s) => document.querySelector(s);
+      const seg = (s, a, b) => { tl.set(s, { opacity: 1 }, a); tl.set(s, { opacity: 0 }, b); };
+      const rise = (s, t, d = 0.45) => tl.fromTo(s, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: d, ease: 'power3.out', immediateRender: false }, t);
+      const pop = (s, t) => tl.fromTo(s, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2)', immediateRender: false }, t);
+      const slam = (s, t, rot = 0) => tl.fromTo(s, { opacity: 0, scale: 1.9, rotation: rot * 2 }, { opacity: 1, scale: 1, rotation: rot, duration: 0.22, ease: 'power4.in', immediateRender: false }, t);
+      const flash = (t, a = 0.45) => tl.fromTo('#flash', { opacity: a }, { opacity: 0, duration: 0.25, immediateRender: false }, t);
+      const counters = [];
+      const count = (sel, t, to, d, fmt) => { const o = { v: 0 }; counters.push([o, sel, fmt]); tl.fromTo(o, { v: 0 }, { v: to, duration: d, ease: 'power2.out', immediateRender: false }, t); };
+      const brl = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR');
+      const mil = (v) => 'R$ ' + Math.round(v) + ' mil';
+      // cortes com flash leve
+      C.slice(1, -1).forEach((c) => flash(c, 0.18));
+
+      // gancho
+      tl.set('#q1,#q2,#q3', { opacity: 0 }, 0);
+      tl.fromTo('#q1', { opacity: 0, y: -30, filter: 'blur(10px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.35, ease: 'power3.out', immediateRender: false }, 0.03);
+      tl.fromTo('#q2', { opacity: 0, y: -30, filter: 'blur(10px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.35, ease: 'power3.out', immediateRender: false }, 0.25);
+      tl.fromTo('#q3', { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'power4.in', immediateRender: false }, 0.6);
+      tl.to('#bT', { y: -300, duration: 0.5, ease: 'power3.inOut' }, T.OFF1 - 0.15); tl.to('#bB', { y: 300, duration: 0.5, ease: 'power3.inOut' }, T.OFF1 - 0.15);
+      tl.set('#crGF', { opacity: 0 }, T.OFF1); seg('#crFr', T.OFF1, C[2]);
+      tl.to('#gQ', { opacity: 0, duration: 0.2 }, C[2] - 0.2);
+      // permuta
+      seg('#gP', C[2], C[3]); rise('#gP .kick', M.da - 0.05);
+      slam('#pw', M.perm - 0.05); flash(M.perm + 0.15, 0.4); rise('#pd', M.perm + 0.35, 0.35);
+      tl.fromTo('#pw', { letterSpacing: '-6px' }, { letterSpacing: '4px', duration: 1.2, ease: 'power1.out', immediateRender: false }, M.perm + 0.2);
+      // juros
+      seg('#gJ', C[3], C[4]); rise('#gJ .kick', C[3]); rise('#jt', M.juro);
+      slam('#stp', M.quinze - 0.05, -4); flash(M.quinze + 0.15, 0.3); tl.fromTo('#gJ', { x: 0 }, { x: 10, duration: 0.05, yoyo: true, repeat: 5, immediateRender: false }, M.quinze + 0.17);
+      rise('#jb', M.quinze + 0.3, 0.3); rise('#jf', M.quinze + 0.4, 0.3);
+      // zona leste + promessa
+      seg('#gZ', M.zona - 0.25, C[5]); pop('#zc', M.zona - 0.2);
+      seg('#gF', M.fica - 0.1, C[5]); rise('#ft', M.fica);
+      tl.fromTo('#arrp', { strokeDasharray: 600, strokeDashoffset: 600 }, { strokeDashoffset: 0, duration: 0.45, ease: 'power2.out', immediateRender: false }, M.fica + 0.6);
+      tl.fromTo('#arr', { x: 0 }, { x: 30, duration: 0.35, yoyo: true, repeat: 3, ease: 'sine.inOut', immediateRender: false }, M.fica + 1.0);
+      // vender pra comprar
+      seg('#gV', C[5], C[6]); rise('#gV .kick', M.semp); pop('#v1', M.vender); pop('#v2', M.vender + 0.35); pop('#v3', M.comprar); rise('#v4', M.comprar + 0.35);
+      // matrix
+      seg('#gM', C[6], C[7]); rise('#m1', M.vende1); rise('#m2', M.ou);
+      // homem-aranha
+      seg('#gS', C[7], C[8]); pop('#s1', M.quem); pop('#s1a', M.quem + 0.25); pop('#s2', M.quem + 0.45); pop('#s2a', M.banco - 0.3); slam('#s3', M.banco - 0.05);
+      // bancos
+      seg('#gB', C[8], C[9]); rise('#gB .kick', M.depois); rise('#gB .glass', M.depois, 0.4); rise('#b1', M.brad); rise('#b2', M.itau); rise('#b3', M.sant); slam('#bup', M.subiram);
+      rise('#bf', M.subiram + 0.3, 0.3);
+      // conta
+      seg('#gC', C[9], T.GAND0); rise('#c1', M.financ); rise('#c2', M.cinco - 0.6);
+      count('#c2n', M.cinco - 0.3, 5797, 1.2, brl); rise('#c3', M.comprador); count('#c3n', M.quase - 0.2, 19324, 1.2, brl); rise('#c4', M.quase + 0.5);
+      // gandalf
+      seg('#gG', T.GAND0, T.GAND1); slam('#gG .tag', T.GAND0 + 0.3, -3);
+      // divertida mente
+      seg('#gI', T.GAND1, C[13]); rise('#i1', M.result); slam('#i2', M.trava - 0.05, -3); flash(M.trava, 0.2);
+      // matilda
+      seg('#gT', C[13], C[15]); rise('#t1', M.agora); slam('#t2', M.entrada - 0.1);
+      // Apple: exemplo
+      seg('#gA', C[15], M.ela - 0.15); rise('#a0', M.aperm - 0.1);
+      tl.to('#a0', { y: -60, scale: 0.8, duration: 0.5, ease: 'power3.inOut' }, M.oseu - 0.3);
+      rise('#cA', M.oseu - 0.1); count('#nA', M.q400 - 0.1, 400, 0.6, mil);
+      rise('#cB', M.novo - 0.1); count('#nB', M.q800 - 0.15, 800, 0.6, mil);
+      rise('#cbar', M.entra - 0.2);
+      tl.fromTo('#cA', { x: 0, y: 0, scale: 1 }, { x: 120, y: 420, scale: 0.6, opacity: 0, duration: 0.6, ease: 'power3.in', immediateRender: false }, M.entra + 0.1);
+      tl.fromTo('#bA', { width: 0 }, { width: '50%', duration: 0.6, ease: 'power3.out', immediateRender: false }, M.entra + 0.55); rise('#lA', M.entra + 0.7, 0.3);
+      tl.fromTo('#bB2', { width: 0 }, { width: '50%', duration: 0.6, ease: 'power3.out', immediateRender: false }, M.resolve); rise('#lB', M.resolve + 0.2, 0.3); rise('#a3', M.resolve + 0.45, 0.35);
+      // Apple: 50%
+      seg('#gH', M.ela - 0.15, C[16]); rise('#h0', M.ela - 0.1); rise('#hc', M.ela + 0.3);
+      tl.fromTo('#hm', { x: 0 }, { x: 420, duration: 1.0, ease: 'power3.inOut', immediateRender: false }, M.metade - 0.6); rise('#hl', M.metade + 0.3, 0.35);
+      // friends: de volta
+      seg('#gK', C[16], C[17]); slam('#k1', M.mas - 0.05, -2);
+      // Apple: checklist
+      seg('#gL', C[17], C[18]); rise('#l0', M.chave - 0.4); rise('#lc', M.chave);
+      rise('#r1', M.aval - 0.05, 0.3); rise('#r2', M.doc - 0.05, 0.3); rise('#r3', M.contr - 0.05, 0.3);
+      ['#r1 .ck', '#r2 .ck', '#r3 .ck'].forEach((s, i) => tl.fromTo(s, { scale: 0 }, { scale: 1, duration: 0.3, ease: 'back.out(3)', immediateRender: false }, [M.aval, M.doc, M.contr][i] + 0.1));
+      // cartão
+      seg('#gE', C[18], C[19]); rise('#e0', M.eu - 0.2);
+      [['#e1', M.compra2], ['#e2', M.venda], ['#e3', M.perm2], ['#e4', M.loc], ['#e5', M.resid], ['#e6', M.come + 0.3]].forEach(([s, t]) => pop(s, t - 0.05));
+      // direct
+      seg('#gD', C[19], T.PIV0); rise('#dm', C[19], 0.4);
+      const KW = 'TROCA'; const ko = { v: 0 }; counters.push([ko, '#dtx', (v) => (v < 0.5 ? 'Mensagem...' : KW.slice(0, Math.round(v)))]);
+      tl.fromTo(ko, { v: 0 }, { v: KW.length, duration: 0.5, ease: 'none', immediateRender: false }, M.kw - 0.1);
+      tl.to('#dtx', { color: '#FFFFFF', duration: 0.05 }, M.kw); tl.to('#dsend', { opacity: 1, duration: 0.1 }, M.kw + 0.4);
+      tl.to(ko, { v: 0, duration: 0.01 }, M.direct + 0.45); tl.set('#dtx', { color: '#8E8E93' }, M.direct + 0.45); tl.set('#dsend', { opacity: 0 }, M.direct + 0.45);
+      tl.fromTo('#dbub', { opacity: 0, y: 60, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: 'back.out(2)', immediateRender: false }, M.direct + 0.45);
+      rise('#drep', M.direct + 1.2, 0.35); pop('#dsh', M.emanda);
+      // pivot + final
+      seg('#crPv', T.PIV0, T.PIV1);
+      tl.set('#gEnd', { opacity: 1 }, T.PIV1); ['#gEnd > div:nth-child(1)', '#gEnd > div:nth-child(2)', '#gEnd > div:nth-child(3)', '#gEnd > div:nth-child(4)'].forEach((s, i) => rise(s, T.PIV1 + 0.1 + i * 0.15, 0.4));
+      tl.to('#fbtn', { backgroundColor: '#363636', duration: 0.1 }, T.PIV1 + 1.4);
+      const fb = { v: 0 }; counters.push([fb, '#fbtn', (v) => (v < 0.5 ? 'Seguir' : 'Seguindo')]); tl.to(fb, { v: 1, duration: 0.01 }, T.PIV1 + 1.4);
+      tl.fromTo('#fbtn', { scale: 1 }, { scale: 0.92, duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, T.PIV1 + 1.32);
+      tl.to('#handle', { opacity: 0, duration: 0.2 }, T.PIV1);
+
+      // legenda
+      const CAP = [{"t0": 0.25, "w": [["VOU", 0.3, 0.6], ["FAZER", 0.6, 0.9], ["UMA", 0.9, 1.1], ["OFERTA", 1.1, 1.7]], "l": 0}, {"t0": 1.85, "w": [["QUE", 1.9, 2.1], ["ELE", 2.1, 2.35], ["NÃO", 2.35, 2.6], ["PODE", 2.6, 2.85], ["RECUSAR", 2.85, 3.6]], "l": 0}, {"t0": 4.02, "w": [["Trocar", 4.02, 4.49], ["o", 4.49, 4.49], ["seu", 4.51, 4.69]], "l": 0}, {"t0": 4.69, "w": [["apê", 4.69, 4.95], ["por", 4.95, 5.05], ["um", 5.05, 5.19]], "l": 0}, {"t0": 5.19, "w": [["maior,", 5.19, 5.61]], "l": 0}, {"t0": 5.86, "w": [["sem", 5.86, 6.17], ["vender", 6.19, 6.43], ["o", 6.43, 6.47]], "l": 0}, {"t0": 6.49, "w": [["seu", 6.49, 6.65], ["antes.", 6.65, 7.01]], "l": 0}, {"t0": 7.36, "w": [["Dá.", 7.36, 7.57]], "l": 0}, {"t0": 8.2, "w": [["Chama", 8.2, 8.48], ["permuta.", 8.64, 9.16]], "l": 0}, {"t0": 9.64, "w": [["E", 9.64, 9.73], ["com", 9.77, 9.91], ["o", 9.99, 10.03]], "l": 0}, {"t0": 10.05, "w": [["juro", 10.05, 10.27], ["da", 10.27, 10.39], ["casa", 10.44, 10.63]], "l": 0}, {"t0": 10.73, "w": [["própria", 10.73, 10.99], ["chegando", 11.01, 11.29], ["a", 11.31, 11.35]], "l": 0}, {"t0": 11.54, "w": [["15%", 11.54, 12.31], ["ela", 12.65, 12.77], ["virou", 12.79, 12.95]], "l": 0}, {"t0": 12.99, "w": [["a", 12.99, 13.01], ["saída", 13.01, 13.37], ["de", 13.37, 13.53]], "l": 0}, {"t0": 13.53, "w": [["muita", 13.53, 13.97], ["gente", 13.99, 14.23], ["na", 14.25, 14.37]], "l": 0}, {"t0": 14.37, "w": [["Zona", 14.37, 14.61], ["Leste.", 14.61, 14.88]], "l": 0}, {"t0": 15.53, "w": [["Fica", 15.53, 15.83], ["que", 15.89, 15.89], ["eu", 15.93, 15.97]], "l": 0}, {"t0": 16.01, "w": [["te", 16.01, 16.07], ["mostro", 16.09, 16.43], ["como", 16.47, 16.57]], "l": 0}, {"t0": 16.57, "w": [["funciona.", 16.57, 17.01]], "l": 0}, {"t0": 17.74, "w": [["Sem", 17.74, 17.92], ["permuta,", 17.97, 18.4]], "l": 0}, {"t0": 18.64, "w": [["é", 18.64, 18.72], ["vender", 18.74, 19.18], ["pra", 19.23, 19.3]], "l": 0}, {"t0": 19.36, "w": [["comprar.", 19.36, 19.65]], "l": 0}, {"t0": 20.11, "w": [["Vende", 20.11, 20.29], ["primeiro", 20.34, 20.59], ["e", 20.65, 20.67]], "l": 0}, {"t0": 20.67, "w": [["fica", 20.67, 20.89], ["sem", 20.91, 21.01], ["casa?", 21.07, 21.34]], "l": 0}, {"t0": 21.62, "w": [["Ou", 21.62, 21.75], ["compra", 21.81, 21.99], ["primeiro", 22.07, 22.35]], "l": 0}, {"t0": 22.41, "w": [["e", 22.41, 22.45], ["paga", 22.5, 22.67], ["dois?", 22.67, 22.95]], "l": 0}, {"t0": 23.58, "w": [["E", 23.58, 23.64], ["quem", 23.72, 23.84], ["compra", 23.9, 24.12]], "l": 0}, {"t0": 24.12, "w": [["o", 24.12, 24.18], ["seu", 24.2, 24.48], ["também", 24.6, 25.0]], "l": 0}, {"t0": 25.02, "w": [["depende", 25.02, 25.3], ["do", 25.3, 25.44], ["banco.", 25.44, 25.66]], "l": 0}, {"t0": 26.17, "w": [["Depois", 26.17, 26.45], ["da", 26.49, 26.53], ["eleição,", 26.53, 27.05]], "l": 0}, {"t0": 27.15, "w": [["Bradesco,", 27.15, 27.67]], "l": 0}, {"t0": 27.77, "w": [["Itaú", 27.77, 28.07], ["e", 28.07, 28.13], ["Santander", 28.15, 28.65]], "l": 0}, {"t0": 28.74, "w": [["subiram", 28.74, 29.53], ["o", 29.53, 29.63], ["juro", 29.63, 29.85]], "l": 0}, {"t0": 29.85, "w": [["da", 29.85, 29.93], ["casa", 29.99, 30.17], ["própria.", 30.25, 30.53]], "l": 0}, {"t0": 30.98, "w": [["Financiando", 30.98, 31.46], ["R$ 400 MIL,", 31.46, 32.28]], "l": 0}, {"t0": 32.65, "w": [["a", 32.65, 32.68], ["parcela", 32.75, 33.06], ["passa", 33.13, 33.34]], "l": 0}, {"t0": 33.34, "w": [["de", 33.34, 33.46], ["R$ 5.800.", 33.48, 34.78]], "l": 0}, {"t0": 35.22, "w": [["O", 35.22, 35.29], ["comprador", 35.39, 35.68], ["precisa", 35.73, 36.01]], "l": 0}, {"t0": 36.01, "w": [["ganhar", 36.01, 36.32], ["QUASE R$ 20 MIL", 36.37, 37.05], ["por", 37.1, 37.15]], "l": 0}, {"t0": 37.17, "w": [["mês.", 37.17, 37.43]], "l": 0}, {"t0": 37.85, "w": [["VOCÊ", 37.900000000000006, 38.400000000000006], ["NÃO", 38.400000000000006, 38.800000000000004], ["VAI", 38.800000000000004, 39.1], ["PASSAR!", 39.1, 40.0]], "l": 0}, {"t0": 40.75, "w": [["Resultado:", 40.75, 41.27]], "l": 0}, {"t0": 41.68, "w": [["o", 41.68, 41.74], ["seu", 41.74, 41.92], ["demora", 41.92, 42.18]], "l": 0}, {"t0": 42.25, "w": [["pra", 42.25, 42.32], ["vender.", 42.34, 42.6]], "l": 0}, {"t0": 43.27, "w": [["E", 43.27, 43.33], ["a", 43.39, 43.45], ["sua", 43.47, 43.65]], "l": 0}, {"t0": 43.67, "w": [["mudança", 43.67, 43.93], ["trava.", 43.99, 44.21]], "l": 0}, {"t0": 45.03, "w": [["Agora", 45.03, 45.37], ["pensa", 45.48, 45.73], ["em", 45.73, 45.77]], "l": 0}, {"t0": 45.9, "w": [["carro:", 45.9, 46.2]], "l": 0}, {"t0": 46.62, "w": [["você", 46.62, 46.75], ["dá", 46.75, 46.85], ["o", 46.85, 46.89]], "l": 0}, {"t0": 46.91, "w": [["seu", 46.91, 47.09], ["de", 47.09, 47.19], ["entrada.", 47.19, 47.58]], "l": 0}, {"t0": 48.04, "w": [["A", 48.04, 48.1], ["permuta", 48.19, 48.6], ["é", 48.6, 48.62]], "l": 1}, {"t0": 48.62, "w": [["isso,", 48.62, 48.92]], "l": 1}, {"t0": 49.15, "w": [["com", 49.15, 49.18], ["apartamento.", 49.26, 49.83]], "l": 1}, {"t0": 50.35, "w": [["O", 50.35, 50.42], ["seu", 50.42, 50.54], ["apê", 50.54, 50.76]], "l": 1}, {"t0": 50.78, "w": [["vale", 50.78, 50.98], ["R$ 400 MIL,", 51.03, 51.66]], "l": 1}, {"t0": 51.93, "w": [["o", 51.93, 52.0], ["novo", 52.0, 52.14], ["custa", 52.2, 52.46]], "l": 1}, {"t0": 52.46, "w": [["R$ 800.", 52.46, 52.96]], "l": 1}, {"t0": 53.35, "w": [["O", 53.35, 53.37], ["seu", 53.39, 53.61], ["entra", 53.61, 53.87]], "l": 1}, {"t0": 53.87, "w": [["no", 53.87, 53.97], ["pagamento,", 54.04, 54.49]], "l": 1}, {"t0": 54.75, "w": [["e", 54.75, 54.81], ["você", 54.83, 55.19], ["resolve", 55.21, 55.55]], "l": 1}, {"t0": 55.55, "w": [["a", 55.55, 55.55], ["diferença.", 55.55, 55.97]], "l": 1}, {"t0": 56.57, "w": [["Ela", 56.57, 56.68], ["costuma", 56.72, 57.1], ["dar", 57.1, 57.18]], "l": 1}, {"t0": 57.2, "w": [["mais", 57.2, 57.44], ["certo", 57.44, 57.69], ["quando", 57.74, 57.94]], "l": 1}, {"t0": 57.94, "w": [["o", 57.94, 57.96], ["seu", 57.98, 58.12], ["imóvel", 58.12, 58.5]], "l": 1}, {"t0": 58.52, "w": [["vale", 58.52, 58.76], ["até", 58.8, 59.0], ["metade", 59.0, 59.5]], "l": 1}, {"t0": 59.5, "w": [["do", 59.5, 59.64], ["novo.", 59.64, 59.91]], "l": 1}, {"t0": 60.42, "w": [["Mas", 60.42, 60.66], ["sempre", 60.68, 60.86], ["vale", 60.88, 61.08]], "l": 0}, {"t0": 61.15, "w": [["tentar.", 61.15, 61.43]], "l": 0}, {"t0": 62.61, "w": [["Mas", 62.61, 62.83], ["não", 62.83, 62.91], ["é", 62.91, 62.95]], "l": 1}, {"t0": 62.95, "w": [["só", 62.95, 63.07], ["trocar", 63.09, 63.31], ["a", 63.31, 63.41]], "l": 1}, {"t0": 63.43, "w": [["chave.", 63.43, 63.73]], "l": 1}, {"t0": 64.14, "w": [["Tem", 64.14, 64.18], ["avaliação,", 64.22, 64.84]], "l": 1}, {"t0": 64.9, "w": [["documento", 64.9, 65.42], ["e", 65.46, 65.46], ["contrato.", 65.46, 65.9]], "l": 1}, {"t0": 66.51, "w": [["Eu", 66.51, 66.58], ["faço", 66.58, 66.84], ["compra,", 66.94, 67.22]], "l": 0}, {"t0": 67.36, "w": [["venda,", 67.36, 67.56]], "l": 0}, {"t0": 67.64, "w": [["permuta", 67.64, 68.03], ["e", 68.14, 68.18], ["locação,", 68.2, 68.72]], "l": 0}, {"t0": 69.03, "w": [["residencial", 69.03, 69.64], ["e", 69.71, 69.74], ["comercial.", 69.78, 70.32]], "l": 0}, {"t0": 71.16, "w": [["Me", 71.16, 71.27], ["manda", 71.29, 71.59], ["TROCA", 71.85, 72.22]], "l": 0}, {"t0": 72.4, "w": [["no", 72.4, 72.43], ["direct", 72.43, 72.93], ["que", 73.13, 73.13]], "l": 0}, {"t0": 73.19, "w": [["eu", 73.19, 73.29], ["vejo", 73.29, 73.53], ["se", 73.53, 73.69]], "l": 0}, {"t0": 73.73, "w": [["o", 73.73, 73.79], ["seu", 73.79, 73.99], ["imóvel", 73.99, 74.43]], "l": 0}, {"t0": 74.43, "w": [["entra", 74.43, 74.69], ["numa", 74.69, 74.89], ["permuta.", 74.96, 75.34]], "l": 0}, {"t0": 75.81, "w": [["E", 75.81, 75.88], ["manda", 75.88, 76.1], ["pra", 76.16, 76.2]], "l": 0}, {"t0": 76.2, "w": [["aquele", 76.2, 76.36], ["amigo", 76.4, 76.7], ["que", 76.77, 76.82]], "l": 0}, {"t0": 76.89, "w": [["quer", 76.89, 76.98], ["mudar", 77.0, 77.28], ["de", 77.32, 77.36]], "l": 0}, {"t0": 77.38, "w": [["apê.", 77.38, 77.55]], "l": 0}, {"t0": 78.2, "w": [["PIVOT!", 78.25, 78.85000000000001], ["PIVOT!", 79.25, 79.95]], "l": 0}]; const capEl = $('#cap');
+      CAP.forEach((g, gi) => { const el = document.createElement('div'); el.className = 'cg' + (g.l ? ' l' : ''); el.id = 'cg' + gi; capEl.appendChild(el);
+        g.w.forEach(([w], j) => { const sp = document.createElement('span'); sp.className = 'cw'; sp.id = `cw${gi}_${j}`; sp.textContent = w; el.appendChild(sp); });
+        const t1 = gi + 1 < CAP.length ? CAP[gi + 1].t0 : g.w[g.w.length - 1][2] + 0.6;
+        const base = g.l ? '#1D1D1F' : '#F4EFE6', shd = g.l ? '0 0 0 rgba(0,0,0,0)' : '0 4px 18px rgba(0,0,0,0.85)';
+        tl.fromTo(el, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.1, ease: 'power3.out', immediateRender: false }, Math.max(0, g.t0 - 0.05));
+        tl.to(el, { opacity: 0, duration: 0.04 }, Math.min(t1 - 0.08, g.w[g.w.length - 1][2] + 0.5));
+        g.w.forEach(([w, a, b], j) => { tl.to(`#cw${gi}_${j}`, { backgroundColor: 'rgba(242,179,61,1)', color: '#0B0D12', textShadow: '0 0 0 rgba(0,0,0,0)', duration: 0.04 }, a - 0.02); tl.to(`#cw${gi}_${j}`, { backgroundColor: 'rgba(242,179,61,0)', color: base, textShadow: shd, duration: 0.1 }, b); }); });
+      tl.eventCallback('onUpdate', () => { counters.forEach(([o, sel, fmt]) => { $(sel).textContent = fmt(o.v); }); });
+      tl.set({}, {}, DUR);
+      window.__timelines['main'] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

@@ -5,7 +5,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 from playwright.async_api import async_playwright
 H = Path(__file__).parent
-NOMES = ['capa_a', 'capa_b']
+NOMES = ['capa_a', 'capa_b', 'capa_c']
 async def render():
     async with async_playwright() as p:
         b = await p.chromium.launch(); pg = await b.new_page(viewport={'width': 1080, 'height': 1920})
@@ -16,7 +16,7 @@ async def render():
 asyncio.run(render())
 crop = lambda f: Image.open(H / f'{f}.jpg').crop((0, 240, 1080, 1680))     # o que o grid mostra
 # lado a lado
-S = Image.new('RGB', (1100, 720), 'white')
+S = Image.new('RGB', (560 * len(NOMES) - 20, 720), 'white')
 for i, n in enumerate(NOMES): S.paste(crop(n).resize((540, 720)), (i * 560, 0))
 S.save(H / 'previa_lado_a_lado.jpg', quality=88)
 # no perfil: fileira fixada + a nova capa no 1º lugar, empurrando as outras

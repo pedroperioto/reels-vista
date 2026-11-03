@@ -4,7 +4,7 @@
 import json, subprocess
 from pathlib import Path
 H = Path(__file__).parent; B = H / 'brutos'
-OFF1, GAND, SPLIT = 2.7, 3.15, 33.9           # "irrecusável" termina em 2,55 s; Gandalf entra depois de "quase vinte mil por mês"
+OFF1, GAND, SPLIT = 2.7, 4.9, 33.9            # "irrecusável" termina em 2,55 s; Gandalf (até o fim do grito, antes do clarão em 5,1 s) entra depois de "quase vinte mil por mês"
 def G(t): return round(t + OFF1 + (GAND if t >= SPLIT else 0), 3)
 W = json.load(open(H / 'voz' / 'palavras.json'))
 VEND = G(W[-1][2])                            # fim da narração

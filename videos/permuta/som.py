@@ -1,4 +1,5 @@
-# som.py — áudio completo: falas dos filmes + narração (com espaço para o Gandalf) + efeitos. Sem música (entra pelo app).
+# som.py — áudio completo (v2): falas dos filmes + narração (com espaço para o Gandalf) + efeitos. Sem música (entra pelo app).
+# v2: sem o som de fita no "trava" (só uma batida seca), sem PIVOT, whoosh só nas trocas de cena, clique de cadeado e compartilhar.
 import json, numpy as np, subprocess, scipy.io.wavfile as wf, scipy.signal as ss
 from pathlib import Path
 H = Path(__file__).parent; SR = 48000
@@ -30,36 +31,48 @@ def tick(g=0.3):
     t = np.arange(int(0.06 * SR)) / SR; return (np.sin(2 * np.pi * 1800 * t) * np.exp(-t * 90) * g).astype(np.float32)
 def pop(g=0.35):
     t = np.arange(int(0.12 * SR)) / SR; f = 900 + 900 * t / 0.12; return (np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 35) * g).astype(np.float32)
-def down(d=0.9, g=0.45):  # "trava": tom caindo, como fita parando
-    t = np.arange(int(d * SR)) / SR; f = 420 * (1 - t / d) ** 2 + 40
-    return (np.sign(np.sin(2 * np.pi * np.cumsum(f) / SR)) * 0.4 * np.exp(-t * 1.5) * g).astype(np.float32)
+def lock(g=0.5):  # clique metálico do cadeado: duas batidas curtas e brilhantes
+    t = np.arange(int(0.14 * SR)) / SR; b, a = ss.butter(2, [2500 / (SR / 2), 9000 / (SR / 2)], 'band')
+    n = ss.lfilter(b, a, rng.standard_normal(len(t))).astype(np.float32); n /= np.abs(n).max() + 1e-9
+    k1 = n * np.exp(-t * 120); k2 = np.roll(n * np.exp(-t * 90), int(0.045 * SR)); k2[: int(0.045 * SR)] = 0
+    return ((k1 * 0.6 + k2) * g + np.sin(2 * np.pi * 420 * t) * np.exp(-t * 40) * 0.25 * g).astype(np.float32)
+def chime(g=0.3):  # brilho leve do "vale tentar"
+    t = np.arange(int(0.9 * SR)) / SR
+    return ((np.sin(2 * np.pi * 1318.5 * t) + 0.6 * np.sin(2 * np.pi * 1975.5 * np.maximum(t - 0.08, 0)) * (t > 0.08)) * np.exp(-t * 5) * g).astype(np.float32)
 # falas dos filmes
-put(fade(norm(load(H / 'brutos' / 'n_chefao.mp4', 6.6, OFF1)), 0.01, 0.2), 0, 0.8)
-put(fade(norm(load(H / 'brutos' / 'n_v72.mp4', 2.5, GAND)), 0.01, 0.25), T['GAND0'], 0.85)
-put(fade(norm(load(H / 'brutos' / 'n_v102.mp4', 7.9, T['PIV1'] - T['PIV0'])), 0.01, 0.2), T['PIV0'], 0.85)
+put(fade(norm(load(H / 'brutos' / 'x_chefao.mp4', 0, C[1] + 0.05)), 0.01, 0.25), 0, 0.8)
+put(fade(norm(load(H / 'brutos' / 'x_gandalf.mp4', 0, GAND)), 0.01, 0.25), T['GAND0'], 0.72)
 # narração em duas partes (abre espaço para o Gandalf)
 v = norm(load(H / 'voz' / 'bruto.wav'), 0.95); cut = int(SPLIT * SR)
 put(fade(v[:cut].copy(), 0.005, 0.05), OFF1); put(fade(v[cut:].copy(), 0.05, 0.05), SPLIT + OFF1 + GAND)
+# whoosh só onde muda de cena (não nos cortes dentro da mesma cena)
+SAME = {5, 8, 14, 15}
+for i, c in enumerate(C[1:-1], start=1):
+    if i not in SAME: put(whoosh(0.4, 400, 4000, 0.2), c - 0.2)
+put(whoosh(0.45, 300, 3500, 0.22), T['END0'] - 0.2)
 # efeitos
-put(boom(1.4, 0.5), 0.0)
-for c in C[1:-1]: put(whoosh(0.4, 400, 4000, 0.22), c - 0.2)
+put(boom(1.4, 0.45), 0.0)
 chaves = fade(load(H / 'sfx' / 'chaves.mp3', 0.3, 1.2)); caixa = fade(load(H / 'sfx' / 'caixa.mp3', 0, 1.6)); buz = fade(load(H / 'sfx' / 'buzina.mp3'))
 dig = fade(load(H / 'sfx' / 'digitacao.mp3', 0.5, 0.7))
-put(boom(1.6, 0.8), M['perm'] - 0.02); put(thump(0.55), M['perm'] - 0.02)
-put(thump(0.85), M['quinze'] - 0.03); put(boom(1.0, 0.45), M['quinze'] - 0.03)
+put(boom(1.6, 0.75), M['perm'] - 0.02); put(thump(0.5), M['perm'] - 0.02)          # PERMUTA: um impacto só
+put(thump(0.8), M['quinze'] - 0.03); put(boom(1.0, 0.4), M['quinze'] - 0.03)      # 15%: um impacto só
 for k in ('vender', 'comprar'): put(pop(0.3), M[k])
-put(thump(0.6), M['banco'] - 0.05)
+put(pop(0.25), M['quem'] + 0.1); put(pop(0.25), M['depende'] - 0.15)
+put(lock(0.55), M['banco'] + 0.24)
 for k in ('brad', 'itau', 'sant'): put(tick(0.35), M[k])
-put(thump(0.7), M['subiram'])
+put(thump(0.65), M['subiram'])
 put(norm(caixa, 0.7), M['cinco'] + 0.4, 0.5)
-put(down(0.9, 0.35), M['trava'] - 0.05); put(thump(0.6), M['trava'] - 0.05)
-put(norm(buz, 0.6), M['carro'] - 0.05, 0.45)
+put(thump(0.85), M['trava'] - 0.02)                                                 # trava: batida seca, sem fita
+put(norm(buz, 0.6), M['carro'] - 0.05, 0.4)
+put(pop(0.35), M['entrada'] - 0.05)
 put(chaves, M['entra'] + 0.1, 0.35)
+put(chime(0.28), M['vale'] + 0.05)
 for k in ('aval', 'doc', 'contr'): put(pop(0.35), M[k] + 0.1)
 put(chaves, M['chave'] - 0.1, 0.3)
 for k in ('compra2', 'venda', 'perm2', 'loc', 'resid'): put(tick(0.25), M[k])
 put(norm(dig, 0.5), M['kw'] - 0.1, 0.5); put(pop(0.4), M['direct'] + 0.45)
-put(pop(0.4), T['PIV1'] + 1.35)
+put(whoosh(0.35, 600, 3000, 0.16), M['emanda'] - 0.1); put(pop(0.35), M['amigo'] + 0.05)
+put(pop(0.45), T['END0'] + 1.42)
 mix = mix[: int(SR * DUR)]
 mix /= max(1.0, np.abs(mix).max() / 0.95)
 wf.write(H / 'assets' / 'som.wav', SR, (mix * 32767).astype(np.int16)); print('som ok', DUR)

@@ -41,3 +41,5 @@ videos/permuta/assets/som.wav
 videos/permuta/.hyperframes/
 videos/permuta/node_modules/
 videos/permuta/assets/perfil.jpg
+videos/permuta/capa/*.png
+videos/permuta/capa/perfil_*.jpg

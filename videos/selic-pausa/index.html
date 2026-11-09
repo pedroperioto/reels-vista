@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="pt-BR" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="assets/gsap.min.js"></script>
+<style>
+@font-face { font-family: "SI"; src: url("assets/fonts/Instr.ttf"); }
+@font-face { font-family: "IB"; src: url("assets/fonts/InterBlack.otf"); }
+@font-face { font-family: "IS"; src: url("assets/fonts/InterSemi.otf"); }
+@font-face { font-family: "IM"; src: url("assets/fonts/InterMed.otf"); }
+@font-face { font-family: "MO"; src: url("assets/fonts/Mono500.woff2"); }
+@font-face { font-family: "O7"; src: url("assets/fonts/Oswald700.woff2"); }
+/* Selic parou · tudo animado, claro, estilo Apple. Conteúdo entre y 220 e 1400; legenda em 1452. Margem lateral 70. */
+:root { --ink:#1D1D1F; --gray:#6E6E73; --blue:#0071E3; --green:#28A745; --red:#E5483E; --navy:#0B1F3A; --gold:#B8955A; --bg:#F5F5F7; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--bg); }
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; background:var(--bg); font-family:"IS"; color:var(--ink); }
+.full { position:absolute; inset:0; } .abs { position:absolute; }
+.sc { position:absolute; inset:0; opacity:0; }
+.ctr { position:absolute; left:70px; width:940px; text-align:center; }
+.t { font-family:"IB"; letter-spacing:-3px; line-height:1.02; color:var(--ink); }
+.s { font-family:"IM"; color:var(--gray); }
+.k { font-family:"MO"; font-size:26px; letter-spacing:6px; color:var(--gray); }
+.card { position:absolute; background:#fff; border-radius:44px; box-shadow:0 2px 6px rgba(0,0,0,.04), 0 26px 60px rgba(0,0,0,.10); }
+.pill { display:inline-block; padding:10px 26px; border-radius:999px; font-family:"IS"; font-size:32px; white-space:nowrap; }
+.blob { position:absolute; border-radius:50%; filter:blur(90px); opacity:.55; }
+#cap { position:absolute; left:60px; width:960px; top:1452px; height:150px; }
+.cg { position:absolute; left:0; top:0; width:960px; display:flex; flex-wrap:wrap; justify-content:center; column-gap:16px; row-gap:8px; font-family:"O7"; font-size:62px; line-height:1; text-transform:uppercase; opacity:0; }
+.cw { display:inline-block; padding:4px 10px 6px; border-radius:10px; color:var(--ink); }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="50.07" data-width="1080" data-height="1920">
+ <div id="lay" class="full clip" data-start="0" data-duration="50.07" data-track-index="0">
+  <!-- fundo vivo -->
+  <div id="bgA" class="blob" style="left:-200px;top:200px;width:700px;height:700px;background:#BFD9FF"></div>
+  <div id="bgB" class="blob" style="left:600px;top:900px;width:700px;height:700px;background:#FFE3B8"></div>
+
+  <!-- 1 · gancho -->
+  <div id="s1" class="sc" style="opacity:1">
+   <div class="full" style="background:linear-gradient(180deg,#DCEBFF 0%,#F5F5F7 62%)"></div>
+   <div id="k1" class="ctr k" style="top:250px">COPOM · 04/11/2026</div>
+   <div id="h1" class="ctr t" style="top:300px;font-size:104px">O Banco Central<br><span style="color:var(--blue)">parou</span> de baixar<br>os juros.</div>
+   <svg id="city" class="abs" style="left:90px;top:760px" width="900" height="520" viewBox="0 0 900 520">
+    <g fill="#C9D6E8"><rect x="0" y="230" width="150" height="290" rx="14"/><rect x="720" y="190" width="180" height="330" rx="14"/></g>
+    <g fill="#A9BDD8"><rect x="110" y="120" width="180" height="400" rx="16"/><rect x="600" y="80" width="170" height="440" rx="16"/></g>
+    <g id="bld" fill="#0B1F3A"><rect x="300" y="20" width="300" height="500" rx="22"/></g>
+    <g id="win" fill="#FFD27A">
+     <rect x="335" y="70" width="60" height="48" rx="8"/><rect x="420" y="70" width="60" height="48" rx="8"/><rect x="505" y="70" width="60" height="48" rx="8"/>
+     <rect x="335" y="150" width="60" height="48" rx="8"/><rect x="420" y="150" width="60" height="48" rx="8" opacity=".35"/><rect x="505" y="150" width="60" height="48" rx="8"/>
+     <rect x="335" y="230" width="60" height="48" rx="8" opacity=".35"/><rect x="420" y="230" width="60" height="48" rx="8"/><rect x="505" y="230" width="60" height="48" rx="8"/>
+     <rect x="335" y="310" width="60" height="48" rx="8"/><rect x="420" y="310" width="60" height="48" rx="8"/><rect x="505" y="310" width="60" height="48" rx="8" opacity=".35"/>
+     <rect x="410" y="420" width="80" height="100" rx="10"/></g>
+   </svg>
+   <div id="pz" class="abs" style="left:390px;top:860px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 30px 70px rgba(11,31,58,.35);display:flex;align-items:center;justify-content:center;gap:34px;opacity:0">
+    <div style="width:52px;height:150px;border-radius:16px;background:var(--blue)"></div><div style="width:52px;height:150px;border-radius:16px;background:var(--blue)"></div></div>
+   <div id="q1" class="card" style="left:120px;top:1230px;width:840px;padding:30px 40px;text-align:center;opacity:0"><div class="t" style="font-size:52px;letter-spacing:-2px">E quem esperava o juro cair<br>pra comprar apê? 🤔</div></div>
+  </div>
+
+  <!-- 2 · escada da Selic -->
+  <div id="s2" class="sc">
+   <div class="ctr k" style="top:250px">TAXA SELIC</div>
+   <div id="sv" class="ctr t" style="top:300px;font-size:190px;letter-spacing:-8px">15,00%</div>
+   <div id="cort" class="ctr s" style="top:510px;font-size:42px;opacity:0"><span class="pill" style="background:#E8F1FD;color:var(--blue);font-size:36px">5 cortes seguidos desde março</span></div>
+   <svg id="stairs" class="abs" style="left:110px;top:640px" width="860" height="620" viewBox="0 0 860 620">
+    <line x1="0" y1="600" x2="860" y2="600" stroke="#D2D2D7" stroke-width="4"/>
+    <g id="bars"></g>
+   </svg>
+   <div id="lock" class="abs" style="left:780px;top:690px;opacity:0"><span class="pill" style="background:var(--ink);color:#fff;font-size:34px">❚❚ pausa</span></div>
+  </div>
+
+  <!-- 3 · vale esperar? -->
+  <div id="s3" class="sc">
+   <div class="ctr t" style="top:560px;font-size:120px">Vale esperar?</div>
+   <div id="tg" class="abs" style="left:390px;top:810px;width:300px;height:170px;border-radius:85px;background:#E5E5EA">
+    <div id="tgk" class="abs" style="left:12px;top:12px;width:146px;height:146px;border-radius:50%;background:#fff;box-shadow:0 8px 20px rgba(0,0,0,.18)"></div></div>
+   <div class="ctr s" style="top:1040px;font-size:46px">esperar <span style="color:#C7C7CC">·</span> comprar</div>
+  </div>
+
+  <!-- 4 · preço do apê -->
+  <div id="s4" class="sc">
+   <div class="ctr k" style="top:440px">APÊ EM SÃO PAULO</div>
+   <div id="c4" class="card" style="left:70px;top:500px;width:940px;height:560px;padding:50px 56px;opacity:0">
+    <div style="display:flex;align-items:center;gap:30px">
+     <div style="width:120px;height:120px;border-radius:30px;background:#EAF3FF;display:flex;align-items:center;justify-content:center">
+      <svg width="78" height="78" viewBox="0 0 48 48"><path d="M8 22 L24 9 L40 22 V40 H8 Z" fill="#0071E3"/><rect x="20" y="28" width="8" height="12" rx="2" fill="#EAF3FF"/></svg></div>
+     <div><div class="s" style="font-size:34px">Hoje</div><div id="p0" class="t" style="font-size:110px;letter-spacing:-5px">R$ 0</div></div></div>
+    <div style="height:2px;background:#E5E5EA;margin:40px 0"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+     <div><div class="s" style="font-size:34px">Daqui a 12 meses</div><div id="p1" class="t" style="font-size:96px;letter-spacing:-4px;color:var(--ink);opacity:.25">R$ 500 mil</div></div>
+     <span id="up" class="pill" style="background:#FDECEA;color:var(--red);font-size:40px;opacity:0">+R$ 18 mil</span></div>
+   </div>
+   <div id="n4" class="ctr" style="top:1110px;opacity:0"><span class="pill" style="background:#fff;color:var(--gray);font-size:30px;box-shadow:0 8px 20px rgba(0,0,0,.06)">se repetir a alta de 12 meses: +3,6% (FipeZap, set/26)</span></div>
+  </div>
+
+  <!-- 5 · compartilhar -->
+  <div id="s5" class="sc">
+   <div id="sh" class="abs" style="left:390px;top:440px;width:300px;height:300px;border-radius:70px;background:linear-gradient(160deg,#0A84FF,#5E5CE6);display:flex;align-items:center;justify-content:center;box-shadow:0 30px 70px rgba(10,132,255,.35)">
+    <svg width="150" height="150" viewBox="0 0 24 24"><path d="M22 3L9.5 14.5M22 3l-7.5 18-3-8-8-3L22 3z" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+   <div class="ctr t" style="top:790px;font-size:76px;letter-spacing:-3px">Manda pra quem<br>tá esperando<br><span style="color:var(--blue)">o juro cair</span></div>
+   <div id="avs" class="ctr" style="top:1150px;display:flex;justify-content:center;gap:26px">
+    <div class="av" style="width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#FFB86B,#FF6A5B)"></div>
+    <div class="av" style="width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#6BD5FF,#4A7BFF)"></div>
+    <div class="av" style="width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#8CF2A8,#2DB86A)"></div>
+    <div class="av" style="width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#D8A4FF,#8B5CF6)"></div></div>
+  </div>
+
+  <!-- 6 · parcela -->
+  <div id="s6" class="sc">
+   <div class="ctr k" style="top:400px">SE O JURO CAIR 1 PONTO</div>
+   <div id="c6" class="card" style="left:70px;top:460px;width:940px;padding:50px 56px;opacity:0">
+    <div class="s" style="font-size:34px">Financiando</div>
+    <div class="t" style="font-size:100px;letter-spacing:-4px">R$ 400 mil</div>
+    <div style="display:flex;gap:18px;margin-top:26px"><span id="r0" class="pill" style="background:#F2F2F7;color:var(--ink)">juro 12% ao ano</span><span id="r1" class="pill" style="background:#E8F7EC;color:var(--green);opacity:0">→ 11% ao ano</span></div>
+    <div style="height:2px;background:#E5E5EA;margin:40px 0"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end">
+     <div><div class="s" style="font-size:34px">1ª parcela</div><div id="pc" class="t" style="font-size:120px;letter-spacing:-5px">R$ 4.907</div></div>
+     <span id="dn" class="pill" style="background:#E8F7EC;color:var(--green);font-size:40px;margin-bottom:22px;opacity:0">−R$ 302/mês</span></div>
+   </div>
+   <div id="n6" class="ctr s" style="top:1150px;font-size:28px;opacity:0">simulação: tabela SAC, 360 meses, sem TR e seguros</div>
+  </div>
+
+  <!-- 7 · 5 anos -->
+  <div id="s7" class="sc">
+   <div class="ctr s" style="top:420px;font-size:46px">R$ 300 por mês pra cobrir</div>
+   <div class="ctr t" style="top:480px;font-size:120px;letter-spacing:-5px;color:var(--red)">R$ 18 mil</div>
+   <div class="abs" style="left:110px;top:740px;width:860px;height:80px;border-radius:40px;background:#E5E5EA;overflow:hidden"><div id="fill" style="width:0;height:80px;background:linear-gradient(90deg,#34C759,#28A745)"></div></div>
+   <div id="mc" class="ctr s" style="top:850px;font-size:40px">0 meses</div>
+   <div id="y5" class="ctr t" style="top:980px;font-size:200px;letter-spacing:-8px;opacity:0">5+ anos</div>
+  </div>
+
+  <!-- 8 · portabilidade -->
+  <div id="s8" class="sc">
+   <div id="h8" class="ctr t" style="top:420px;font-size:84px;letter-spacing:-3px">Se o juro cair depois…</div>
+   <div id="bA" class="card" style="left:90px;top:640px;width:360px;height:360px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0">
+    <svg width="110" height="110" viewBox="0 0 48 48"><path d="M6 18 L24 8 L42 18 Z" fill="#8E8E93"/><g fill="#8E8E93"><rect x="10" y="20" width="5" height="16"/><rect x="21.5" y="20" width="5" height="16"/><rect x="33" y="20" width="5" height="16"/></g><rect x="6" y="38" width="36" height="4" fill="#8E8E93"/></svg>
+    <div class="t" style="font-size:44px;letter-spacing:-1px">Banco A</div><div class="s" style="font-size:32px">12%</div></div>
+   <svg id="ar8" class="abs" style="left:465px;top:760px" width="150" height="120" viewBox="0 0 150 120"><path id="ar8p" d="M10 60 H128 M92 24 L130 60 L92 96" fill="none" stroke="#0071E3" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+   <div id="bB" class="card" style="left:630px;top:640px;width:360px;height:360px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0;border:5px solid #34C759">
+    <svg width="110" height="110" viewBox="0 0 48 48"><path d="M6 18 L24 8 L42 18 Z" fill="#0071E3"/><g fill="#0071E3"><rect x="10" y="20" width="5" height="16"/><rect x="21.5" y="20" width="5" height="16"/><rect x="33" y="20" width="5" height="16"/></g><rect x="6" y="38" width="36" height="4" fill="#0071E3"/></svg>
+    <div class="t" style="font-size:44px;letter-spacing:-1px">Banco B</div><div class="s" style="font-size:32px;color:var(--green)">taxa menor</div></div>
+   <div id="pt" class="ctr" style="top:1080px;opacity:0"><span class="pill" style="background:var(--blue);color:#fff;font-family:IB;font-size:64px;padding:18px 46px;letter-spacing:-1px">Portabilidade</span></div>
+  </div>
+
+  <!-- 9 · salva + direct -->
+  <div id="s9" class="sc">
+   <div id="sv9" class="abs" style="left:440px;top:260px;width:200px;height:200px">
+    <svg width="200" height="200" viewBox="0 0 24 24"><path id="bm" d="M6 3h12v18l-6-4.5L6 21z" fill="rgba(29,29,31,0)" stroke="#1D1D1F" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+   <div id="sl" class="ctr t" style="top:480px;font-size:84px;letter-spacing:-3px">Salva essa conta.</div>
+   <div id="dm" class="abs" style="left:110px;top:640px;width:860px;height:640px;border-radius:44px;background:#fff;box-shadow:0 26px 60px rgba(0,0,0,.12);overflow:hidden;opacity:0">
+    <div style="display:flex;align-items:center;gap:20px;padding:28px 36px;border-bottom:1.5px solid #E5E5EA">
+     <div style="width:80px;height:80px;border-radius:50%;background:url(assets/perfil.jpg) center/cover"></div>
+     <div><div style="font-family:IS;font-size:34px">vistabroker.perioto</div><div class="s" style="font-size:26px">Pedro · Corretor de imóveis</div></div></div>
+    <div id="msg" class="abs" style="right:36px;top:250px;padding:22px 36px;border-radius:36px;background:linear-gradient(135deg,#7B3FE4,#3C5CF5);color:#fff;font-family:IS;font-size:46px;opacity:0">CONTA</div>
+    <div class="abs" style="left:30px;bottom:30px;width:800px;height:92px;border-radius:46px;border:1.5px solid #D2D2D7;display:flex;align-items:center;justify-content:space-between;padding:0 34px">
+     <span id="tx" style="font-family:IM;font-size:34px;color:#8E8E93">Mensagem...</span><span id="snd" style="font-family:IS;font-size:32px;color:#0095F6;opacity:0">Enviar</span></div>
+   </div>
+  </div>
+
+  <!-- 10 · final -->
+  <div id="s10" class="sc">
+   <div id="f0" class="abs" style="left:390px;top:420px;width:300px;height:300px;border-radius:50%;padding:8px;background:conic-gradient(from 210deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5,#FEDA75)"><div style="width:100%;height:100%;border-radius:50%;border:7px solid #F5F5F7;background:url(assets/perfil.jpg) center/cover"></div></div>
+   <div id="f1" class="ctr" style="top:760px;font-family:IS;font-size:48px">vistabroker.perioto</div>
+   <div id="f2" class="ctr k" style="top:830px">CORRETOR · CRECI 258729</div>
+   <div id="f3" class="ctr t" style="top:900px;font-size:64px;letter-spacing:-2px">Toda semana: o que a notícia<br>muda no seu imóvel.</div>
+   <div id="f4" class="ctr" style="top:1100px"><span id="fb" style="display:inline-block;width:420px;padding:24px 0;border-radius:24px;background:#0095F6;font-family:IS;font-size:46px;color:#fff">Seguir</span></div>
+  </div>
+
+  <div id="cap"></div>
+ </div>
+</div>
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+const W = [[0.16, 0.16], [0.28, 0.7], [0.72, 1.2], [1.27, 1.57], [1.61, 1.66], [1.66, 1.99], [1.99, 2.11], [2.11, 2.53], [2.94, 3.01], [3.14, 3.2], [3.28, 3.52], [3.52, 4.1], [4.1, 4.15], [4.16, 4.37], [4.45, 4.76], [4.84, 4.92], [4.97, 5.24], [5.24, 5.47], [6.25, 6.34], [6.45, 6.64], [6.77, 6.85], [6.89, 7.14], [7.16, 7.46], [7.5, 7.51], [7.52, 7.92], [7.92, 8.02], [8.14, 8.42], [8.42, 8.77], [8.78, 9.22], [9.22, 9.25], [9.27, 9.53], [9.53, 9.6], [9.61, 10], [10.23, 10.53], [10.57, 10.6], [10.61, 11], [11.05, 11.32], [11.33, 11.73], [12.36, 12.57], [12.8, 13], [13.04, 13.17], [13.17, 13.23], [13.32, 13.6], [13.93, 14.2], [14.2, 14.64], [15.33, 15.36], [15.43, 15.67], [15.67, 15.82], [15.88, 16.33], [16.33, 16.42], [16.42, 16.56], [16.58, 16.78], [16.84, 17.07], [17.39, 17.51], [17.53, 17.55], [17.61, 17.82], [17.83, 18.04], [18.04, 18.39], [18.4, 18.69], [18.7, 18.87], [18.87, 19.16], [19.16, 19.39], [19.41, 19.82], [20.04, 20.16], [20.18, 20.37], [20.37, 20.58], [20.61, 21.23], [21.24, 21.37], [21.38, 21.55], [21.58, 21.87], [22.45, 22.59], [22.59, 22.74], [22.75, 22.97], [23.01, 23.08], [23.14, 23.26], [23.3, 23.34], [23.34, 23.65], [23.65, 23.67], [23.69, 23.9], [23.96, 24.17], [24.81, 25.05], [25.26, 25.38], [25.41, 25.44], [25.45, 25.68], [25.68, 25.73], [25.74, 26.32], [26.36, 26.55], [26.62, 26.75], [26.88, 27.23], [27.53, 28.05], [28.07, 28.64], [28.64, 28.9], [29.17, 29.24], [29.28, 29.53], [29.6, 30], [30.06, 30.15], [30.18, 30.33], [30.39, 30.73], [30.75, 31.08], [31.62, 31.69], [31.75, 32.25], [32.26, 32.48], [32.5, 32.74], [32.75, 32.98], [32.99, 33.35], [33.35, 33.63], [33.65, 34.19], [34.2, 34.43], [34.8, 34.99], [35, 35.21], [35.24, 35.28], [35.29, 35.77], [35.84, 36.12], [36.62, 36.66], [36.72, 36.75], [36.78, 36.86], [36.88, 37.25], [37.5, 37.62], [37.65, 37.71], [37.73, 37.95], [37.99, 38.19], [38.19, 38.71], [38.88, 38.95], [38.99, 39.07], [39.08, 39.26], [39.26, 39.31], [39.32, 39.89], [39.94, 40.01], [40.01, 40.14], [40.16, 40.36], [40.42, 40.56], [40.61, 40.8], [40.81, 41.13], [41.44, 41.65], [41.74, 42.56], [43.08, 43.32], [43.32, 43.5], [43.57, 43.91], [44.1, 44.15], [44.16, 44.25], [44.26, 44.51], [44.67, 44.94], [44.95, 45.07], [45.07, 45.51], [45.56, 45.59], [45.6, 45.68], [45.69, 45.96], [45.96, 45.99], [46, 46.24], [46.39, 46.45], [46.48, 46.5], [46.51, 46.64], [46.65, 46.92]], CAP = [{"t0": 0.16, "w": [["O", 0.16, 0.16], ["Banco", 0.28, 0.7], ["Central", 0.72, 1.2]]}, {"t0": 1.27, "w": [["parou", 1.27, 1.57], ["de", 1.61, 1.66], ["baixar", 1.66, 1.99]]}, {"t0": 1.99, "w": [["os", 1.99, 2.11], ["juros.", 2.11, 2.53]]}, {"t0": 2.94, "w": [["E", 2.94, 3.01], ["quem", 3.14, 3.2], ["estava", 3.28, 3.52]]}, {"t0": 3.52, "w": [["esperando", 3.52, 4.1], ["o", 4.1, 4.15], ["juro", 4.16, 4.37]]}, {"t0": 4.45, "w": [["cair", 4.45, 4.76], ["pra", 4.84, 4.92], ["comprar", 4.97, 5.24]]}, {"t0": 5.24, "w": [["apê?", 5.24, 5.47]]}, {"t0": 6.25, "w": [["Na", 6.25, 6.34], ["quarta,", 6.45, 6.64]]}, {"t0": 6.77, "w": [["o", 6.77, 6.85], ["Copom", 6.89, 7.14], ["segurou", 7.16, 7.46]]}, {"t0": 7.5, "w": [["a", 7.5, 7.51], ["Selic", 7.52, 7.92], ["em", 7.92, 8.02]]}, {"t0": 8.14, "w": [["13,75%", 8.14, 10], ["depois", 10.23, 10.53], ["de", 10.57, 10.6]]}, {"t0": 10.61, "w": [["5 CORTES", 10.61, 11.32], ["seguidos.", 11.33, 11.73]]}, {"t0": 12.36, "w": [["Então", 12.36, 12.57], ["vamos", 12.8, 13], ["fazer", 13.04, 13.17]]}, {"t0": 13.17, "w": [["a", 13.17, 13.23], ["conta:", 13.32, 13.6]]}, {"t0": 13.93, "w": [["vale", 13.93, 14.2], ["esperar?", 14.2, 14.64]]}, {"t0": 15.33, "w": [["Um", 15.33, 15.36], ["apê", 15.43, 15.67], ["de", 15.67, 15.82]]}, {"t0": 15.88, "w": [["R$ 500 MIL", 15.88, 16.42], ["em", 16.42, 16.56], ["São", 16.58, 16.78]]}, {"t0": 16.84, "w": [["Paulo.", 16.84, 17.07]]}, {"t0": 17.39, "w": [["Se", 17.39, 17.51], ["o", 17.53, 17.55], ["preço", 17.61, 17.82]]}, {"t0": 17.83, "w": [["subir", 17.83, 18.04], ["igual", 18.04, 18.39], ["subiu", 18.4, 18.69]]}, {"t0": 18.7, "w": [["nos", 18.7, 18.87], ["últimos", 18.87, 19.16], ["12 MESES", 19.16, 19.82]]}, {"t0": 20.04, "w": [["ele", 20.04, 20.16], ["fica", 20.18, 20.37], ["uns", 20.37, 20.58]]}, {"t0": 20.61, "w": [["R$ 18 MIL", 20.61, 21.37], ["mais", 21.38, 21.55], ["caro.", 21.58, 21.87]]}, {"t0": 22.45, "w": [["Manda", 22.45, 22.59], ["esse", 22.59, 22.74], ["vídeo", 22.75, 22.97]]}, {"t0": 23.01, "w": [["pra", 23.01, 23.08], ["quem", 23.14, 23.26], ["tá", 23.3, 23.34]]}, {"t0": 23.34, "w": [["esperando", 23.34, 23.65], ["o", 23.65, 23.67], ["juro", 23.69, 23.9]]}, {"t0": 23.96, "w": [["cair.", 23.96, 24.17]]}, {"t0": 24.81, "w": [["Agora,", 24.81, 25.05]]}, {"t0": 25.26, "w": [["se", 25.26, 25.38], ["o", 25.41, 25.44], ["juro", 25.45, 25.68]]}, {"t0": 25.68, "w": [["do", 25.68, 25.73], ["financiamento", 25.74, 26.32], ["cair", 26.36, 26.55]]}, {"t0": 26.62, "w": [["1 PONTO,", 26.62, 27.23]]}, {"t0": 27.53, "w": [["financiando", 27.53, 28.05], ["R$ 400 MIL,", 28.07, 28.9]]}, {"t0": 29.17, "w": [["a", 29.17, 29.24], ["primeira", 29.28, 29.53], ["parcela", 29.6, 30]]}, {"t0": 30.06, "w": [["cai", 30.06, 30.15], ["uns", 30.18, 30.33], ["R$ 300.", 30.39, 31.08]]}, {"t0": 31.62, "w": [["Pra", 31.62, 31.69], ["R$ 300", 31.75, 32.48], ["por", 32.5, 32.74]]}, {"t0": 32.75, "w": [["mês", 32.75, 32.98], ["cobrir", 32.99, 33.35], ["esses", 33.35, 33.63]]}, {"t0": 33.65, "w": [["R$ 18 MIL,", 33.65, 34.43]]}, {"t0": 34.8, "w": [["leva", 34.8, 34.99], ["mais", 35, 35.21], ["de", 35.24, 35.28]]}, {"t0": 35.29, "w": [["5 ANOS.", 35.29, 36.12]]}, {"t0": 36.62, "w": [["E", 36.62, 36.66], ["tem", 36.72, 36.75], ["um", 36.78, 36.86]]}, {"t0": 36.88, "w": [["detalhe:", 36.88, 37.25]]}, {"t0": 37.5, "w": [["se", 37.5, 37.62], ["o", 37.65, 37.71], ["juro", 37.73, 37.95]]}, {"t0": 37.99, "w": [["cair", 37.99, 38.19], ["depois,", 38.19, 38.71]]}, {"t0": 38.88, "w": [["dá", 38.88, 38.95], ["pra", 38.99, 39.07], ["levar", 39.08, 39.26]]}, {"t0": 39.26, "w": [["o", 39.26, 39.31], ["financiamento", 39.32, 39.89], ["pra", 39.94, 40.01]]}, {"t0": 40.01, "w": [["um", 40.01, 40.14], ["banco", 40.16, 40.36], ["com", 40.42, 40.56]]}, {"t0": 40.61, "w": [["taxa", 40.61, 40.8], ["menor.", 40.81, 41.13]]}, {"t0": 41.44, "w": [["Chama", 41.44, 41.65], ["portabilidade.", 41.74, 42.56]]}, {"t0": 43.08, "w": [["Salva", 43.08, 43.32], ["essa", 43.32, 43.5], ["conta.", 43.57, 43.91]]}, {"t0": 44.1, "w": [["E", 44.1, 44.15], ["me", 44.16, 44.25], ["manda", 44.26, 44.51]]}, {"t0": 44.67, "w": [["CONTA", 44.67, 44.94], ["no", 44.95, 45.07], ["direct", 45.07, 45.51]]}, {"t0": 45.56, "w": [["que", 45.56, 45.59], ["eu", 45.6, 45.68], ["faço", 45.69, 45.96]]}, {"t0": 45.96, "w": [["a", 45.96, 45.99], ["sua,", 46, 46.24]]}, {"t0": 46.39, "w": [["com", 46.39, 46.45], ["o", 46.48, 46.5], ["seu", 46.51, 46.64]]}, {"t0": 46.65, "w": [["valor.", 46.65, 46.92]]}], DUR = 50.07, END0 = 47.27;
+const t = (i) => W[i][0];
+const $ = (s) => document.querySelector(s);
+const counters = [];
+const count = (sel, a, b, at, d, fmt) => { const o = { v: a }; counters.push([o, sel, fmt]); tl.fromTo(o, { v: a }, { v: b, duration: d, ease: 'power2.out', immediateRender: false }, at); };
+const brl = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR');
+const mil = (v) => 'R$ ' + Math.round(v) + ' mil';
+const rise = (s, at, d = 0.45) => tl.fromTo(s, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: d, ease: 'power3.out', immediateRender: false }, at);
+const pop = (s, at) => tl.fromTo(s, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2.2)', immediateRender: false }, at);
+// troca de cena: a nova sobe de leve enquanto a anterior some
+const CUT = [0, t(18) - 0.15, t(38) - 0.15, t(45) - 0.15, t(70) - 0.15, t(80) - 0.15, t(99) - 0.15, t(113) - 0.15, t(135) - 0.15, END0, DUR + 1];
+for (let k = 1; k <= 10; k++) {
+  const id = '#s' + k, a = CUT[k - 1], b = CUT[k];
+  if (k > 1) tl.fromTo(id, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'power2.out', immediateRender: false }, a);
+  if (k < 10) tl.to(id, { opacity: 0, scale: 1.02, duration: 0.25, ease: 'power2.in' }, b - 0.12);
+}
+// fundo respirando
+tl.fromTo('#bgA', { x: 0, y: 0 }, { x: 220, y: 380, duration: DUR, ease: 'sine.inOut', immediateRender: false }, 0);
+tl.fromTo('#bgB', { x: 0, y: 0 }, { x: -260, y: -420, duration: DUR, ease: 'sine.inOut', immediateRender: false }, 0);
+// 1 · gancho
+tl.fromTo('#h1', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power3.out', immediateRender: false }, 0.02);
+tl.fromTo('#city', { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out', immediateRender: false }, 0.05);
+tl.fromTo('#pz', { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'power3.in', immediateRender: false }, t(3) - 0.12);
+tl.to('#win rect', { opacity: 0.15, duration: 0.2, stagger: 0.02 }, t(3) + 0.1);
+rise('#q1', t(8) - 0.05);
+// 2 · escada
+const steps = [15, 14.75, 14.5, 14.25, 14, 13.75], g = $('#bars');
+steps.forEach((v, i) => { const h = 120 + (v - 13) * 220, r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  r.setAttribute('x', 20 + i * 140); r.setAttribute('width', 110); r.setAttribute('rx', 18); r.setAttribute('y', 600 - h); r.setAttribute('height', h);
+  r.setAttribute('fill', i === 5 ? '#0071E3' : '#C7D7EE'); r.id = 'bar' + i; g.appendChild(r); });
+const p2 = { v: 15 }; counters.push([p2, '#sv', (v) => v.toFixed(2).replace('.', ',') + '%']);
+steps.forEach((v, i) => { tl.fromTo('#bar' + i, { scaleY: 0, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 0.3, ease: 'power3.out', immediateRender: false }, CUT[1] + 0.2 + i * 0.33); });
+tl.fromTo(p2, { v: 15 }, { v: 13.75, duration: 1.8, ease: 'power1.inOut', immediateRender: false }, CUT[1] + 0.3);
+pop('#lock', t(22)); tl.to('#bar5', { fill: '#1D1D1F', duration: 0.2 }, t(22));
+rise('#cort', t(33) - 0.1);
+// 3 · vale esperar? (chave liga e desliga)
+tl.to('#tgk', { x: 130, duration: 0.3, ease: 'power2.inOut' }, t(43)); tl.to('#tg', { backgroundColor: '#34C759', duration: 0.3 }, t(43));
+tl.to('#tgk', { x: 0, duration: 0.3, ease: 'power2.inOut' }, t(44) + 0.35); tl.to('#tg', { backgroundColor: '#E5E5EA', duration: 0.3 }, t(44) + 0.35);
+// 4 · preço do apê
+rise('#c4', CUT[3] + 0.05); count('#p0', 0, 500, t(48) - 0.1, 0.7, mil);
+tl.to('#p1', { opacity: 1, duration: 0.3 }, t(56)); count('#p1', 500, 518, t(66) - 0.1, 0.9, mil); pop('#up', t(66) + 0.3); tl.to('#p1', { color: '#E5483E', duration: 0.3 }, t(66) + 0.3);
+rise('#n4', t(58));
+// 5 · compartilhar
+pop('#sh', CUT[4] + 0.05); tl.fromTo('#sh', { rotation: -8 }, { rotation: 0, duration: 0.5, ease: 'back.out(3)', immediateRender: false }, CUT[4] + 0.05);
+tl.fromTo('#avs .av', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.08, ease: 'back.out(2)', immediateRender: false }, t(74));
+// 6 · parcela
+rise('#c6', CUT[5] + 0.05); pop('#r1', t(87)); tl.to('#r0', { opacity: 0.4, duration: 0.2 }, t(87));
+const p6 = { v: 4907 }; counters.push([p6, '#pc', brl]);
+tl.fromTo(p6, { v: 4907 }, { v: 4605, duration: 0.8, ease: 'power2.out', immediateRender: false }, t(95) - 0.1); pop('#dn', t(97)); rise('#n6', t(89));
+// 7 · 5 anos
+const p7 = { v: 0 }; counters.push([p7, '#mc', (v) => Math.round(v) + ' meses']);
+tl.fromTo('#fill', { width: '0%' }, { width: '100%', duration: 3.0, ease: 'power1.in', immediateRender: false }, t(104) - 0.2);
+tl.fromTo(p7, { v: 0 }, { v: 67, duration: 3.0, ease: 'power1.in', immediateRender: false }, t(104) - 0.2);
+tl.fromTo('#y5', { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'power3.in', immediateRender: false }, t(111) - 0.05);
+// 8 · portabilidade
+rise('#h8', CUT[7] + 0.05); rise('#bA', t(117));
+tl.fromTo('#ar8p', { strokeDasharray: 300, strokeDashoffset: 300 }, { strokeDashoffset: 0, duration: 0.45, ease: 'power2.out', immediateRender: false }, t(124));
+rise('#bB', t(129) - 0.1); pop('#pt', t(134) - 0.05);
+// 9 · salva + direct
+tl.fromTo('#bm', { fill: 'rgba(29,29,31,0)' }, { fill: 'rgba(29,29,31,1)', duration: 0.2, immediateRender: false }, t(135) + 0.1);
+tl.fromTo('#sv9', { scale: 1 }, { scale: 1.15, duration: 0.12, yoyo: true, repeat: 1, immediateRender: false }, t(135) + 0.1);
+rise('#dm', t(138) - 0.1);
+const ko = { v: 0 }; counters.push([ko, '#tx', (v) => (v < 0.5 ? 'Mensagem...' : 'CONTA'.slice(0, Math.round(v)))]);
+tl.fromTo(ko, { v: 0 }, { v: 5, duration: 0.4, ease: 'none', immediateRender: false }, t(141) - 0.2); tl.set('#tx', { color: '#1D1D1F' }, t(141) - 0.2); tl.set('#snd', { opacity: 1 }, t(141) + 0.2);
+tl.set(ko, { v: 0 }, t(143) + 0.2); tl.set('#tx', { color: '#8E8E93' }, t(143) + 0.2); tl.set('#snd', { opacity: 0 }, t(143) + 0.2);
+tl.fromTo('#msg', { opacity: 0, y: 60, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: 'back.out(2)', immediateRender: false }, t(143) + 0.2);
+// 10 · final
+['#f0', '#f1', '#f2', '#f3', '#f4'].forEach((s, i) => rise(s, END0 + 0.05 + i * 0.1, 0.4));
+const fb = { v: 0 }; counters.push([fb, '#fb', (v) => (v < 0.5 ? 'Seguir' : 'Seguindo')]); tl.to(fb, { v: 1, duration: 0.01 }, END0 + 1.5);
+tl.to('#fb', { backgroundColor: '#E5E5EA', color: '#1D1D1F', duration: 0.1 }, END0 + 1.5);
+tl.fromTo('#fb', { scale: 1 }, { scale: 0.93, duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, END0 + 1.42);
+// legenda
+const capEl = $('#cap');
+CAP.forEach((gg, gi) => { const el = document.createElement('div'); el.className = 'cg'; el.id = 'cg' + gi; capEl.appendChild(el);
+  gg.w.forEach(([w], j) => { const sp = document.createElement('span'); sp.className = 'cw'; sp.id = `cw${gi}_${j}`; sp.textContent = w; el.appendChild(sp); });
+  const t1 = gi + 1 < CAP.length ? CAP[gi + 1].t0 : gg.w[gg.w.length - 1][2] + 0.6;
+  tl.fromTo(el, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.1, ease: 'power3.out', immediateRender: false }, Math.max(0, gg.t0 - 0.05));
+  tl.to(el, { opacity: 0, duration: 0.04 }, Math.min(t1 - 0.06, gg.w[gg.w.length - 1][2] + 0.5));
+  gg.w.forEach(([w, a, b], j) => { tl.to(`#cw${gi}_${j}`, { backgroundColor: 'rgba(255,214,10,1)', duration: 0.04 }, a - 0.02); tl.to(`#cw${gi}_${j}`, { backgroundColor: 'rgba(255,214,10,0)', duration: 0.1 }, b); }); });
+tl.eventCallback('onUpdate', () => { counters.forEach(([o, sel, fmt]) => { $(sel).textContent = fmt(o.v); }); });
+tl.set({}, {}, DUR);
+window.__timelines['main'] = tl;
+tl.seek(0);
+</script>
+</body>
+</html>

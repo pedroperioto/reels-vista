@@ -45,3 +45,9 @@ videos/permuta/capa/*.png
 videos/permuta/capa/perfil_*.jpg
 videos/permuta/capa/pacino_src.jpg
 videos/permuta/capa/capa_c.jpg
+videos/selic-pausa/out/
+videos/selic-pausa/voz/*.wav
+videos/selic-pausa/assets/som.wav
+videos/selic-pausa/assets/perfil.jpg
+videos/selic-pausa/.hyperframes/
+videos/selic-pausa/out_render.log

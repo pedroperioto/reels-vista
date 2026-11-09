@@ -28,6 +28,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--bg);
 #cap { position:absolute; left:60px; width:960px; top:1452px; height:150px; }
 .cg { position:absolute; left:0; top:0; width:960px; display:flex; flex-wrap:wrap; justify-content:center; column-gap:16px; row-gap:8px; font-family:"O7"; font-size:62px; line-height:1; text-transform:uppercase; opacity:0; }
 .cw { display:inline-block; padding:4px 10px 6px; border-radius:10px; color:var(--ink); }
+.cg.d .cw { color:#fff; }
 </style>
 </head>
 <body>
@@ -40,8 +41,8 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--bg);
   <!-- 1 · gancho -->
   <div id="s1" class="sc" style="opacity:1">
    <div class="full" style="background:linear-gradient(180deg,#DCEBFF 0%,#F5F5F7 62%)"></div>
-   <div id="k1" class="ctr k" style="top:250px">COPOM · 04/11/2026</div>
-   <div id="h1" class="ctr t" style="top:300px;font-size:104px">O Banco Central<br><span style="color:var(--blue)">parou</span> de baixar<br>os juros.</div>
+   <div id="nt" class="abs" style="left:70px;top:150px;width:940px;padding:26px 30px;border-radius:40px;background:rgba(255,255,255,.82);backdrop-filter:blur(20px);box-shadow:0 18px 40px rgba(0,0,0,.12);display:flex;gap:24px;align-items:center;opacity:0"><div style="width:84px;height:84px;flex:0 0 84px;border-radius:20px;background:linear-gradient(160deg,#0A84FF,#0040A8);display:flex;align-items:center;justify-content:center"><svg width="50" height="50" viewBox="0 0 48 48"><path d="M6 18 L24 8 L42 18 Z" fill="#fff"/><g fill="#fff"><rect x="10" y="20" width="5" height="16"/><rect x="21.5" y="20" width="5" height="16"/><rect x="33" y="20" width="5" height="16"/></g><rect x="6" y="38" width="36" height="4" fill="#fff"/></svg></div><div style="flex:1"><div style="display:flex;justify-content:space-between"><span style="font-family:IS;font-size:30px">Copom</span><span class="s" style="font-size:26px">agora</span></div><div style="font-family:IM;font-size:32px;margin-top:4px">Selic mantida em 13,75% ao ano.</div></div></div>
+   <div id="h1" class="ctr t" style="top:340px;font-size:104px"><span class="hw">O Banco Central</span><br><span class="hw" style="color:var(--blue)">parou</span> <span class="hw">de baixar</span><br><span class="hw">os juros.</span></div>
    <svg id="city" class="abs" style="left:90px;top:760px" width="900" height="520" viewBox="0 0 900 520">
     <g fill="#C9D6E8"><rect x="0" y="230" width="150" height="290" rx="14"/><rect x="720" y="190" width="180" height="330" rx="14"/></g>
     <g fill="#A9BDD8"><rect x="110" y="120" width="180" height="400" rx="16"/><rect x="600" y="80" width="170" height="440" rx="16"/></g>
@@ -122,12 +123,12 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--bg);
   </div>
 
   <!-- 7 · 5 anos -->
-  <div id="s7" class="sc">
-   <div class="ctr s" style="top:420px;font-size:46px">R$ 300 por mês pra cobrir</div>
+  <div id="s7" class="sc"><div class="full" style="background:#000"></div><div id="glow" class="abs" style="left:190px;top:820px;width:700px;height:500px;border-radius:50%;background:#30D158;filter:blur(140px);opacity:0"></div>
+   <div class="ctr s" style="top:420px;font-size:46px;color:#AEAEB2">R$ 300 por mês pra cobrir</div>
    <div class="ctr t" style="top:480px;font-size:120px;letter-spacing:-5px;color:var(--red)">R$ 18 mil</div>
-   <div class="abs" style="left:110px;top:740px;width:860px;height:80px;border-radius:40px;background:#E5E5EA;overflow:hidden"><div id="fill" style="width:0;height:80px;background:linear-gradient(90deg,#34C759,#28A745)"></div></div>
-   <div id="mc" class="ctr s" style="top:850px;font-size:40px">0 meses</div>
-   <div id="y5" class="ctr t" style="top:980px;font-size:200px;letter-spacing:-8px;opacity:0">5+ anos</div>
+   <div class="abs" style="left:110px;top:740px;width:860px;height:80px;border-radius:40px;background:#2C2C2E;overflow:hidden"><div id="fill" style="width:0;height:80px;background:linear-gradient(90deg,#34C759,#28A745)"></div></div>
+   <div id="mc" class="ctr s" style="top:850px;font-size:40px;color:#AEAEB2">0 meses</div>
+   <div id="y5e" class="ctr t" style="top:980px;font-size:200px;letter-spacing:-8px;color:#30D158;opacity:0">5+ anos</div><div id="y5" class="ctr t" style="top:980px;font-size:200px;letter-spacing:-8px;color:#fff;opacity:0;text-shadow:0 0 40px rgba(48,209,88,.7)">5+ anos</div>
   </div>
 
   <!-- 8 · portabilidade -->
@@ -180,20 +181,23 @@ const counters = [];
 const count = (sel, a, b, at, d, fmt) => { const o = { v: a }; counters.push([o, sel, fmt]); tl.fromTo(o, { v: a }, { v: b, duration: d, ease: 'power2.out', immediateRender: false }, at); };
 const brl = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR');
 const mil = (v) => 'R$ ' + Math.round(v) + ' mil';
-const rise = (s, at, d = 0.45) => tl.fromTo(s, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: d, ease: 'power3.out', immediateRender: false }, at);
-const pop = (s, at) => tl.fromTo(s, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2.2)', immediateRender: false }, at);
+const rise = (s, at, d = 0.5) => tl.fromTo(s, { opacity: 0, y: 46, scale: 0.96, filter: 'blur(14px)' }, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: d, ease: 'back.out(1.4)', immediateRender: false }, at);
+const pop = (s, at) => tl.fromTo(s, { opacity: 0, scale: 0.6, filter: 'blur(10px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.45, ease: 'back.out(2.2)', immediateRender: false }, at);
 // troca de cena: a nova sobe de leve enquanto a anterior some
 const CUT = [0, t(18) - 0.15, t(38) - 0.15, t(45) - 0.15, t(70) - 0.15, t(80) - 0.15, t(99) - 0.15, t(113) - 0.15, t(135) - 0.15, END0, DUR + 1];
 for (let k = 1; k <= 10; k++) {
   const id = '#s' + k, a = CUT[k - 1], b = CUT[k];
-  if (k > 1) tl.fromTo(id, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'power2.out', immediateRender: false }, a);
-  if (k < 10) tl.to(id, { opacity: 0, scale: 1.02, duration: 0.25, ease: 'power2.in' }, b - 0.12);
+  if (k > 1) tl.fromTo(id, { opacity: 0, scale: 0.94, filter: 'blur(18px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power3.out', immediateRender: false }, a);
+  if (k < 10) tl.to(id, { opacity: 0, scale: 1.06, filter: 'blur(18px)', duration: 0.25, ease: 'power2.in' }, b - 0.12);
 }
 // fundo respirando
 tl.fromTo('#bgA', { x: 0, y: 0 }, { x: 220, y: 380, duration: DUR, ease: 'sine.inOut', immediateRender: false }, 0);
 tl.fromTo('#bgB', { x: 0, y: 0 }, { x: -260, y: -420, duration: DUR, ease: 'sine.inOut', immediateRender: false }, 0);
 // 1 · gancho
-tl.fromTo('#h1', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power3.out', immediateRender: false }, 0.02);
+tl.set('#h1 .hw', { opacity: 0 }, 0);
+tl.fromTo('#nt', { opacity: 0, y: -160, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.6)', immediateRender: false }, 0.02);
+[[0, 0.16], [1, 1.2], [2, 1.55], [3, 2.05]].forEach(([n, at]) => tl.fromTo(`#h1 .hw:nth-of-type(${n + 1})`, { opacity: 0, y: 30, filter: 'blur(14px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.35, ease: 'back.out(1.5)', immediateRender: false }, at));
+tl.to('#nt', { y: -40, opacity: 0, duration: 0.3, ease: 'power2.in' }, 4.6);
 tl.fromTo('#city', { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out', immediateRender: false }, 0.05);
 tl.fromTo('#pz', { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'power3.in', immediateRender: false }, t(3) - 0.12);
 tl.to('#win rect', { opacity: 0.15, duration: 0.2, stagger: 0.02 }, t(3) + 0.1);
@@ -226,7 +230,9 @@ tl.fromTo(p6, { v: 4907 }, { v: 4605, duration: 0.8, ease: 'power2.out', immedia
 const p7 = { v: 0 }; counters.push([p7, '#mc', (v) => Math.round(v) + ' meses']);
 tl.fromTo('#fill', { width: '0%' }, { width: '100%', duration: 3.0, ease: 'power1.in', immediateRender: false }, t(104) - 0.2);
 tl.fromTo(p7, { v: 0 }, { v: 67, duration: 3.0, ease: 'power1.in', immediateRender: false }, t(104) - 0.2);
-tl.fromTo('#y5', { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'power3.in', immediateRender: false }, t(111) - 0.05);
+tl.fromTo('#y5', { opacity: 0, scale: 1.5, filter: 'blur(16px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.3, ease: 'power3.in', immediateRender: false }, t(111) - 0.05);
+tl.fromTo('#y5e', { opacity: 0.6, scale: 1 }, { opacity: 0, scale: 1.35, duration: 0.7, ease: 'power2.out', immediateRender: false }, t(111) + 0.25);
+tl.fromTo('#glow', { opacity: 0 }, { opacity: 0.55, duration: 0.6, immediateRender: false }, t(111));
 // 8 · portabilidade
 rise('#h8', CUT[7] + 0.05); rise('#bA', t(117));
 tl.fromTo('#ar8p', { strokeDasharray: 300, strokeDashoffset: 300 }, { strokeDashoffset: 0, duration: 0.45, ease: 'power2.out', immediateRender: false }, t(124));
@@ -246,7 +252,7 @@ tl.to('#fb', { backgroundColor: '#E5E5EA', color: '#1D1D1F', duration: 0.1 }, EN
 tl.fromTo('#fb', { scale: 1 }, { scale: 0.93, duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, END0 + 1.42);
 // legenda
 const capEl = $('#cap');
-CAP.forEach((gg, gi) => { const el = document.createElement('div'); el.className = 'cg'; el.id = 'cg' + gi; capEl.appendChild(el);
+CAP.forEach((gg, gi) => { const el = document.createElement('div'); el.className = 'cg' + (gg.t0 >= CUT[6] - 0.1 && gg.t0 < CUT[7] - 0.1 ? ' d' : ''); el.id = 'cg' + gi; capEl.appendChild(el);
   gg.w.forEach(([w], j) => { const sp = document.createElement('span'); sp.className = 'cw'; sp.id = `cw${gi}_${j}`; sp.textContent = w; el.appendChild(sp); });
   const t1 = gi + 1 < CAP.length ? CAP[gi + 1].t0 : gg.w[gg.w.length - 1][2] + 0.6;
   tl.fromTo(el, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.1, ease: 'power3.out', immediateRender: false }, Math.max(0, gg.t0 - 0.05));

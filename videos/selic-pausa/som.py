@@ -32,7 +32,7 @@ v = np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-i', str(H/'voz'/'br
 put(v / (np.abs(v).max()+1e-9) * 0.95, 0)
 CUT = [t(18)-0.15, t(38)-0.15, t(45)-0.15, t(70)-0.15, t(80)-0.15, t(99)-0.15, t(113)-0.15, t(135)-0.15, T['END0']]
 for c in CUT: put(swoosh(), c - 0.15)
-put(thud(0.7), t(3) - 0.1); put(glass(2000, 0.15), t(8))
+put(notif(0.18), 0.12); put(thud(0.7), t(3) - 0.1); put(glass(2000, 0.15), t(8))
 for i in range(6): put(click(0.16), CUT[0] + 0.2 + i*0.33)
 put(thud(0.45), t(22)); put(glass(2200), t(33))
 put(toggle(), t(43)); put(toggle(), t(44) + 0.35)

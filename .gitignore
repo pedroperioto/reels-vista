@@ -51,3 +51,9 @@ videos/selic-pausa/assets/som.wav
 videos/selic-pausa/assets/perfil.jpg
 videos/selic-pausa/.hyperframes/
 videos/selic-pausa/out_render.log
+videos/juro-4jeitos/out/
+videos/juro-4jeitos/voz/*.wav
+videos/juro-4jeitos/assets/som.wav
+videos/juro-4jeitos/assets/perfil.jpg
+videos/juro-4jeitos/.hyperframes/
+videos/juro-4jeitos/out_render.log

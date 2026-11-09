@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="pt-BR" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="assets/gsap.min.js"></script>
+<style>
+@font-face { font-family: "IB"; src: url("assets/fonts/InterBlack.otf"); }
+@font-face { font-family: "IS"; src: url("assets/fonts/InterSemi.otf"); }
+@font-face { font-family: "IM"; src: url("assets/fonts/InterMed.otf"); }
+@font-face { font-family: "MO"; src: url("assets/fonts/Mono500.woff2"); }
+@font-face { font-family: "O7"; src: url("assets/fonts/Oswald700.woff2"); }
+@font-face { font-family: "SI"; src: url("assets/fonts/Instr.ttf"); }
+/* 4 jeitos de pagar menos juro · motion estilo Apple: cada transição nasce de um elemento da cena anterior.
+   Conteúdo entre y 230 e 1400 · legenda em 1452 · margens laterais 70. */
+:root { --ink:#1D1D1F; --gray:#6E6E73; --line:#E5E5EA; --blue:#0071E3; --green:#28A745; --g2:#30D158; --red:#E5483E; --bg:#F5F5F7; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--bg); }
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; background:var(--bg); font-family:"IS"; color:var(--ink); }
+.full { position:absolute; inset:0; } .abs { position:absolute; }
+.sc { position:absolute; inset:0; opacity:0; }
+.ctr { position:absolute; left:70px; width:940px; text-align:center; }
+.t { font-family:"IB"; letter-spacing:-3px; line-height:1.02; }
+.s { font-family:"IM"; color:var(--gray); }
+.k { font-family:"MO"; font-size:24px; letter-spacing:5px; color:var(--gray); }
+.card { position:absolute; background:#fff; border-radius:40px; box-shadow:0 2px 6px rgba(0,0,0,.04), 0 24px 56px rgba(0,0,0,.10); }
+.pill { display:inline-block; padding:10px 24px; border-radius:999px; font-family:"IS"; font-size:30px; white-space:nowrap; }
+.blob { position:absolute; border-radius:50%; filter:blur(100px); opacity:.5; }
+.num { display:inline-flex; align-items:center; justify-content:center; width:74px; height:74px; border-radius:22px; background:var(--ink); color:#fff; font-family:"IB"; font-size:44px; }
+.hd { position:absolute; left:70px; top:330px; display:flex; align-items:center; gap:24px; }
+.hd .t { font-size:68px; letter-spacing:-2.5px; }
+#prog { position:absolute; left:0; width:1080px; top:240px; display:flex; justify-content:center; gap:14px; opacity:0; }
+#prog div { width:120px; height:10px; border-radius:5px; background:rgba(29,29,31,.12); overflow:hidden; }
+#prog div i { display:block; width:0; height:100%; background:var(--ink); }
+#cap { position:absolute; left:60px; width:960px; top:1452px; height:150px; }
+.cg { position:absolute; left:0; top:0; width:960px; display:flex; flex-wrap:wrap; justify-content:center; column-gap:16px; row-gap:8px; font-family:"O7"; font-size:62px; line-height:1; text-transform:uppercase; opacity:0; }
+.cw { display:inline-block; padding:4px 10px 6px; border-radius:10px; color:var(--ink); }
+.cg.d .cw { color:#fff; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="@@DUR@@" data-width="1080" data-height="1920">
+ <div id="lay" class="full clip" data-start="0" data-duration="@@DUR@@" data-track-index="0">
+  <div id="bgA" class="blob" style="left:-220px;top:160px;width:720px;height:720px;background:#BFD9FF"></div>
+  <div id="bgB" class="blob" style="left:620px;top:960px;width:720px;height:720px;background:#FFE3B8"></div>
+  <div id="cam" class="full">
+
+  <!-- 1 · gancho -->
+  <div id="s1" class="sc" style="opacity:1">
+   <div id="isl" class="abs" style="left:390px;top:120px;width:300px;height:86px;border-radius:43px;background:#000;overflow:hidden">
+    <div id="islc" class="abs" style="left:26px;top:22px;right:26px;display:flex;align-items:center;gap:20px;opacity:0">
+     <div style="width:84px;height:84px;flex:0 0 84px;border-radius:22px;background:linear-gradient(160deg,#0A84FF,#0040A8);display:flex;align-items:center;justify-content:center"><svg width="48" height="48" viewBox="0 0 48 48"><path d="M6 18 L24 8 L42 18 Z" fill="#fff"/><g fill="#fff"><rect x="10" y="20" width="5" height="16"/><rect x="21.5" y="20" width="5" height="16"/><rect x="33" y="20" width="5" height="16"/></g><rect x="6" y="38" width="36" height="4" fill="#fff"/></svg></div>
+     <div style="color:#fff"><div style="font-family:IS;font-size:30px">Copom · agora</div><div style="font-family:IM;font-size:32px;color:#D1D1D6">Selic mantida em 13,75% ao ano</div></div></div></div>
+   <div id="hk" class="ctr t" style="top:330px;font-size:150px;letter-spacing:-7px;line-height:.95"><span class="w1">O juro</span><br><span class="w2" style="color:var(--red)">parou</span><br><span class="w3">de cair.</span></div>
+   <svg id="ch1" class="abs" style="left:110px;top:850px" width="860" height="360" viewBox="0 0 860 360">
+    <g stroke="#D2D2D7" stroke-width="2"><line x1="0" y1="340" x2="860" y2="340"/><line x1="0" y1="230" x2="860" y2="230" stroke-dasharray="6 10"/><line x1="0" y1="120" x2="860" y2="120" stroke-dasharray="6 10"/></g>
+    <path id="ln1" d="M10 40 L160 40 L250 90 L340 140 L430 190 L520 240 L610 290 L850 290" fill="none" stroke="#0071E3" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle id="dot1" cx="850" cy="290" r="18" fill="#E5483E" opacity="0"/>
+    <text x="10" y="24" font-family="MO" font-size="22" fill="#8E8E93">15%</text><text x="740" y="270" font-family="MO" font-size="22" fill="#8E8E93">13,75%</text></svg>
+   <div id="hk2" class="ctr t" style="top:330px;font-size:84px;letter-spacing:-3px;opacity:0">Mas dá pra pagar<br><span style="color:var(--green)">menos juro</span><br>no seu apê agora.</div>
+   <div id="four" class="ctr" style="top:960px;display:flex;justify-content:center;gap:22px;opacity:0">
+    <div class="fp card" style="position:relative;width:190px;height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px"><span class="num">1</span><span class="s" style="font-size:26px">bancos</span></div>
+    <div class="fp card" style="position:relative;width:190px;height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px"><span class="num">2</span><span class="s" style="font-size:26px">FGTS</span></div>
+    <div class="fp card" style="position:relative;width:190px;height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px"><span class="num">3</span><span class="s" style="font-size:26px">SAC</span></div>
+    <div class="fp card" style="position:relative;width:190px;height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px"><span class="num">4</span><span class="s" style="font-size:26px">portab.</span></div></div>
+   <div id="save" class="abs" style="left:880px;top:780px;width:120px;height:120px;border-radius:30px;background:#fff;box-shadow:0 16px 36px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;opacity:0">
+    <svg width="64" height="64" viewBox="0 0 24 24"><path id="bm" d="M6 3h12v18l-6-4.5L6 21z" fill="rgba(29,29,31,0)" stroke="#1D1D1F" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+  </div>
+
+  <!-- cartão que cresce do "1" e vira a cena 2 (transição por morfologia) -->
+  <div id="mph" class="abs" style="background:#fff;border-radius:40px;opacity:0"></div>
+
+  <!-- 2 · compara os bancos -->
+  <div id="s2" class="sc">
+   <div class="hd"><span class="num">1</span><span class="t">Compara os bancos</span></div>
+   <div class="abs k" style="left:70px;top:440px">MESMA DÍVIDA · DEPOIS DA ELEIÇÃO</div>
+   <div id="bk1" class="card" style="left:70px;top:500px;width:455px;height:430px;padding:36px;opacity:0">
+    <div style="display:flex;align-items:center;gap:16px"><div style="width:64px;height:64px;border-radius:18px;background:#E8F7EC;display:flex;align-items:center;justify-content:center"><svg width="38" height="38" viewBox="0 0 48 48"><path d="M6 18 L24 8 L42 18 Z" fill="#28A745"/><g fill="#28A745"><rect x="10" y="20" width="5" height="16"/><rect x="21.5" y="20" width="5" height="16"/><rect x="33" y="20" width="5" height="16"/></g><rect x="6" y="38" width="36" height="4" fill="#28A745"/></svg></div><span style="font-family:IS;font-size:34px">Banco A</span></div>
+    <div class="s" style="font-size:26px;margin-top:28px">taxa ao ano</div><div id="ra" class="t" style="font-size:96px;letter-spacing:-4px;color:var(--green)">12,5%</div>
+    <svg width="380" height="70" viewBox="0 0 380 70" style="margin-top:12px"><path class="spk" d="M0 50 L60 44 L120 48 L180 30 L240 36 L300 22 L380 26" fill="none" stroke="#28A745" stroke-width="5" stroke-linecap="round"/></svg></div>
+   <div id="bk2" class="card" style="left:555px;top:500px;width:455px;height:430px;padding:36px;opacity:0">
+    <div style="display:flex;align-items:center;gap:16px"><div style="width:64px;height:64px;border-radius:18px;background:#FDECEA;display:flex;align-items:center;justify-content:center"><svg width="38" height="38" viewBox="0 0 48 48"><path d="M6 18 L24 8 L42 18 Z" fill="#E5483E"/><g fill="#E5483E"><rect x="10" y="20" width="5" height="16"/><rect x="21.5" y="20" width="5" height="16"/><rect x="33" y="20" width="5" height="16"/></g><rect x="6" y="38" width="36" height="4" fill="#E5483E"/></svg></div><span style="font-family:IS;font-size:34px">Banco B</span></div>
+    <div class="s" style="font-size:26px;margin-top:28px">taxa ao ano</div><div id="rb" class="t" style="font-size:96px;letter-spacing:-4px;color:var(--red)">15%</div>
+    <svg width="380" height="70" viewBox="0 0 380 70" style="margin-top:12px"><path class="spk" d="M0 52 L60 50 L120 40 L180 42 L240 26 L300 18 L380 8" fill="none" stroke="#E5483E" stroke-width="5" stroke-linecap="round"/></svg></div>
+   <div id="pr" class="card" style="left:70px;top:960px;width:940px;padding:34px 40px;opacity:0">
+    <div class="s" style="font-size:28px">1ª parcela · R$ 400 mil em 30 anos</div>
+    <div style="display:flex;align-items:center;gap:20px;margin-top:20px"><span style="width:120px;font-family:IS;font-size:28px">Banco A</span><div style="flex:1;height:48px;border-radius:24px;background:#F2F2F7;overflow:hidden"><div id="ba" style="width:0;height:100%;background:#28A745;border-radius:24px"></div></div><span id="va" style="width:170px;text-align:right;font-family:IB;font-size:40px">R$ 0</span></div>
+    <div style="display:flex;align-items:center;gap:20px;margin-top:16px"><span style="width:120px;font-family:IS;font-size:28px">Banco B</span><div style="flex:1;height:48px;border-radius:24px;background:#F2F2F7;overflow:hidden"><div id="bb" style="width:0;height:100%;background:#E5483E;border-radius:24px"></div></div><span id="vb" style="width:170px;text-align:right;font-family:IB;font-size:40px">R$ 0</span></div></div>
+   <div id="dif" class="abs" style="left:640px;top:880px;opacity:0"><span class="pill" style="background:#1D1D1F;color:#fff;font-family:IB;font-size:44px;padding:16px 30px;box-shadow:0 14px 30px rgba(0,0,0,.25)">+R$ 745/mês</span></div>
+  </div>
+
+  <!-- 3 · compartilhar (o avião abre a cena) -->
+  <div id="s3" class="sc">
+   <div id="s3bg" class="full" style="background:linear-gradient(160deg,#0A84FF 0%,#3A4BE0 60%,#5E5CE6 100%)"></div>
+   <div class="ctr t" style="top:560px;font-size:96px;letter-spacing:-4px;color:#fff">Manda pra quem<br>tá esperando<br>o juro cair.</div>
+   <div id="avs" class="ctr" style="top:950px;display:flex;justify-content:center;gap:24px">
+    <div class="av" style="width:120px;height:120px;border-radius:50%;border:6px solid rgba(255,255,255,.9);background:linear-gradient(135deg,#FFB86B,#FF6A5B)"></div>
+    <div class="av" style="width:120px;height:120px;border-radius:50%;border:6px solid rgba(255,255,255,.9);background:linear-gradient(135deg,#6BD5FF,#4A7BFF)"></div>
+    <div class="av" style="width:120px;height:120px;border-radius:50%;border:6px solid rgba(255,255,255,.9);background:linear-gradient(135deg,#8CF2A8,#2DB86A)"></div>
+    <div class="av" style="width:120px;height:120px;border-radius:50%;border:6px solid rgba(255,255,255,.9);background:linear-gradient(135deg,#D8A4FF,#8B5CF6)"></div></div>
+  </div>
+  <svg id="plane" class="abs" style="left:0;top:0;opacity:0" width="160" height="160" viewBox="0 0 24 24"><path d="M22 3L9.5 14.5M22 3l-7.5 18-3-8-8-3L22 3z" fill="#fff" stroke="#0A84FF" stroke-width="1.2" stroke-linejoin="round"/></svg>
+
+  <!-- 4 · FGTS -->
+  <div id="s4" class="sc">
+   <div class="hd"><span class="num">2</span><span class="t">Usa o FGTS</span></div>
+   <div id="cal" class="card" style="left:70px;top:460px;width:360px;height:380px;overflow:hidden;opacity:0">
+    <div style="height:90px;background:var(--red);color:#fff;font-family:IS;font-size:34px;display:flex;align-items:center;justify-content:center">a cada</div>
+    <div style="height:290px;display:flex;flex-direction:column;align-items:center;justify-content:center"><div id="cy" class="t" style="font-size:150px;letter-spacing:-6px">2</div><div class="s" style="font-size:34px;margin-top:-6px">anos</div></div></div>
+   <div id="wal" class="card" style="left:460px;top:460px;width:550px;height:380px;padding:36px;overflow:visible;opacity:0">
+    <div class="s" style="font-size:28px">Saldo do FGTS</div>
+    <div class="t" style="font-size:72px;letter-spacing:-3px;margin-top:8px">vai pra dívida</div>
+    <div style="position:absolute;left:36px;bottom:36px;width:478px;height:120px;border-radius:28px;background:linear-gradient(135deg,#1D1D1F,#3A3A3C)"><div style="position:absolute;left:28px;top:30px;width:90px;height:60px;border-radius:12px;background:linear-gradient(135deg,#F2C14E,#B8955A)"></div><div style="position:absolute;right:28px;top:40px;color:#fff;font-family:MO;font-size:26px;letter-spacing:4px">FGTS</div></div>
+    <div class="coin abs" style="left:240px;top:200px;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFE8A3,#E2B23C);box-shadow:0 6px 14px rgba(0,0,0,.2);opacity:0"></div>
+    <div class="coin abs" style="left:300px;top:200px;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFE8A3,#E2B23C);box-shadow:0 6px 14px rgba(0,0,0,.2);opacity:0"></div>
+    <div class="coin abs" style="left:360px;top:200px;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFE8A3,#E2B23C);box-shadow:0 6px 14px rgba(0,0,0,.2);opacity:0"></div></div>
+   <div id="debt" class="card" style="left:70px;top:880px;width:940px;padding:34px 40px;opacity:0">
+    <div style="display:flex;justify-content:space-between"><span class="s" style="font-size:28px">Sua dívida</span><span id="jt" class="s" style="font-size:28px">juro rendendo <span id="jtv" style="font-family:IB;color:var(--red)">●</span></span></div>
+    <div style="margin-top:18px;height:70px;border-radius:35px;background:#F2F2F7;overflow:hidden"><div id="dbar" style="width:100%;height:100%;background:linear-gradient(90deg,#E5483E,#FF7A6E);border-radius:35px"></div></div>
+    <div style="display:flex;justify-content:space-between;margin-top:14px"><span class="s" style="font-size:24px">o que sobra rende juro</span><span id="ab" style="font-family:IS;font-size:26px;color:var(--green);opacity:0">− saldo do FGTS</span></div></div>
+  </div>
+
+  <!-- 5 · SAC × Price -->
+  <div id="s5" class="sc">
+   <div class="hd"><span class="num">3</span><span class="t">Tabela SAC</span></div>
+   <div class="abs k" style="left:70px;top:440px">PARCELA AO LONGO DE 30 ANOS · EXEMPLO</div>
+   <div id="ch5" class="card" style="left:70px;top:490px;width:940px;height:470px;padding:30px;opacity:0">
+    <svg width="880" height="410" viewBox="0 0 880 410">
+     <g stroke="#E5E5EA" stroke-width="2"><line x1="40" y1="370" x2="860" y2="370"/><line x1="40" y1="250" x2="860" y2="250" stroke-dasharray="6 10"/><line x1="40" y1="130" x2="860" y2="130" stroke-dasharray="6 10"/></g>
+     <path id="lp" d="M40 175 L860 175" fill="none" stroke="#8E8E93" stroke-width="10" stroke-linecap="round"/>
+     <path id="ls" d="M40 60 L860 340" fill="none" stroke="#0071E3" stroke-width="12" stroke-linecap="round"/>
+     <text x="660" y="160" font-family="IS" font-size="30" fill="#8E8E93">Price: fixa</text>
+     <text id="lsl" x="120" y="50" font-family="IS" font-size="30" fill="#0071E3" opacity="0">SAC: cai todo mês ↘</text>
+     <text x="40" y="402" font-family="MO" font-size="22" fill="#8E8E93">mês 1</text><text x="760" y="402" font-family="MO" font-size="22" fill="#8E8E93">mês 360</text></svg></div>
+   <div id="tot" class="card" style="left:70px;top:990px;width:940px;padding:30px 40px;opacity:0">
+    <div class="s" style="font-size:28px">juro total pago</div>
+    <div style="display:flex;align-items:center;gap:20px;margin-top:16px"><span style="width:120px;font-family:IS;font-size:30px;color:var(--blue)">SAC</span><div style="flex:1;height:46px"><div id="ts" style="width:0;height:100%;background:#0071E3;border-radius:23px"></div></div><span id="tsv" style="width:200px;text-align:right;font-family:IB;font-size:38px">R$ 0</span></div>
+    <div style="display:flex;align-items:center;gap:20px;margin-top:14px"><span style="width:120px;font-family:IS;font-size:30px;color:#8E8E93">Price</span><div style="flex:1;height:46px"><div id="tp" style="width:0;height:100%;background:#AEAEB2;border-radius:23px"></div></div><span id="tpv" style="width:200px;text-align:right;font-family:IB;font-size:38px">R$ 0</span></div></div>
+  </div>
+
+  <!-- 6 · portabilidade (celular) -->
+  <div id="s6" class="sc">
+   <div class="hd"><span class="num">4</span><span class="t">Portabilidade</span></div>
+   <div id="ph" class="abs" style="left:260px;top:450px;width:560px;height:900px;border-radius:80px;background:#1D1D1F;padding:18px;box-shadow:0 40px 90px rgba(0,0,0,.25);opacity:0">
+    <div id="phs" style="position:relative;width:100%;height:100%;border-radius:64px;background:#F5F5F7;overflow:hidden">
+     <div style="position:absolute;left:50%;top:18px;width:150px;height:40px;margin-left:-75px;border-radius:20px;background:#000"></div>
+     <div class="abs s" style="left:36px;top:96px;font-size:24px">sua dívida</div>
+     <div id="bc" class="abs" style="left:36px;top:150px;width:452px;height:220px;border-radius:32px;background:#fff;box-shadow:0 10px 24px rgba(0,0,0,.08);padding:26px">
+      <div style="font-family:IS;font-size:30px">Banco caro</div><div class="t" style="font-size:64px;color:var(--red);letter-spacing:-2px;margin-top:10px">15% a.a.</div></div>
+     <div id="bt" class="abs" style="left:36px;top:560px;width:452px;height:220px;border-radius:32px;background:#fff;box-shadow:0 10px 24px rgba(0,0,0,.08);padding:26px;border:4px solid #30D158;opacity:.35">
+      <div style="font-family:IS;font-size:30px">Banco mais barato</div><div class="t" style="font-size:64px;color:var(--green);letter-spacing:-2px;margin-top:10px">taxa menor</div></div>
+     <div id="dc" class="abs" style="left:146px;top:270px;width:232px;height:80px;border-radius:40px;background:#1D1D1F;color:#fff;font-family:IS;font-size:30px;display:flex;align-items:center;justify-content:center;opacity:0">R$ dívida</div>
+     <svg class="abs" style="left:0;top:0" width="524" height="864"><path id="arc" d="M262 360 C 420 420, 420 520, 262 600" fill="none" stroke="#0071E3" stroke-width="6" stroke-dasharray="4 14" stroke-linecap="round" opacity="0"/></svg>
+    </div></div>
+  </div>
+
+  <!-- 7 · bônus -->
+  <div id="s7" class="sc">
+   <div id="bn" class="abs" style="left:70px;top:330px"><span class="pill" style="background:linear-gradient(135deg,#F2C14E,#E2A23C);color:#1D1D1F;font-family:IB;font-size:46px;padding:14px 34px">BÔNUS</span></div>
+   <div id="grid" class="abs" style="left:70px;top:470px;width:940px;display:grid;grid-template-columns:repeat(8,1fr);gap:14px"></div>
+   <div id="tag" class="card" style="left:150px;top:900px;width:780px;padding:36px 44px;opacity:0">
+    <div style="display:flex;justify-content:space-between;align-items:center"><span class="s" style="font-size:30px">preço pedido</span><span id="pp" class="t" style="font-size:60px;letter-spacing:-2px">R$ 500 mil</span></div>
+    <div style="position:relative;margin-top:34px;height:16px;border-radius:8px;background:#E5E5EA"><div id="kn" class="abs" style="left:700px;top:-22px;width:60px;height:60px;border-radius:50%;background:#fff;box-shadow:0 6px 16px rgba(0,0,0,.2)"></div></div>
+    <div style="display:flex;justify-content:space-between;margin-top:34px"><span class="s" style="font-size:30px">sua proposta</span><span id="np" class="t" style="font-size:60px;letter-spacing:-2px;color:var(--green)">negocia</span></div></div>
+  </div>
+
+  <!-- 8 · direct -->
+  <div id="s8" class="sc">
+   <div id="dm" class="abs" style="left:110px;top:330px;width:860px;height:980px;border-radius:44px;background:#fff;box-shadow:0 26px 60px rgba(0,0,0,.12);overflow:hidden">
+    <div style="display:flex;align-items:center;gap:20px;padding:28px 36px;border-bottom:1.5px solid #E5E5EA">
+     <div style="width:84px;height:84px;border-radius:50%;background:url(assets/perfil.jpg) center/cover"></div>
+     <div><div style="font-family:IS;font-size:34px">vistabroker.perioto</div><div class="s" style="font-size:26px">Pedro · Corretor de imóveis</div></div></div>
+    <div id="msg" class="abs" style="right:36px;top:220px;padding:22px 36px;border-radius:36px;background:linear-gradient(135deg,#7B3FE4,#3C5CF5);color:#fff;font-family:IS;font-size:48px;opacity:0">CONTA</div>
+    <div id="rep" class="abs" style="left:36px;top:360px;display:flex;gap:14px;align-items:flex-end;opacity:0"><div style="width:56px;height:56px;flex:0 0 56px;border-radius:50%;background:url(assets/perfil.jpg) center/cover"></div>
+     <div style="max-width:600px;padding:22px 30px;border-radius:32px;background:#F2F2F7;font-family:IM;font-size:36px;line-height:1.3">Bora comparar! Me passa o valor do imóvel e a sua renda 🏦</div></div>
+    <div class="abs" style="left:30px;bottom:30px;width:800px;height:92px;border-radius:46px;border:1.5px solid #D2D2D7;display:flex;align-items:center;justify-content:space-between;padding:0 34px">
+     <span id="tx" style="font-family:IM;font-size:34px;color:#8E8E93">Mensagem...</span><span id="snd" style="font-family:IS;font-size:32px;color:#0095F6;opacity:0">Enviar</span></div>
+   </div>
+  </div>
+
+  <!-- 9 · final -->
+  <div id="s9" class="sc">
+   <div id="f0" class="abs" style="left:390px;top:400px;width:300px;height:300px;border-radius:50%;padding:8px;background:conic-gradient(from 210deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5,#FEDA75)"><div style="width:100%;height:100%;border-radius:50%;border:7px solid #F5F5F7;background:url(assets/perfil.jpg) center/cover"></div></div>
+   <div id="f1" class="ctr" style="top:740px;font-family:IS;font-size:48px">vistabroker.perioto</div>
+   <div id="f2" class="ctr k" style="top:810px">CORRETOR · CRECI 258729</div>
+   <div id="f3" class="ctr t" style="top:880px;font-size:62px;letter-spacing:-2px">Toda semana: o que a notícia<br>muda no seu imóvel.</div>
+   <div id="f4" class="ctr" style="top:1080px"><span id="fb" style="display:inline-block;width:420px;padding:24px 0;border-radius:24px;background:#0095F6;font-family:IS;font-size:46px;color:#fff">Seguir</span></div>
+  </div>
+
+  <div id="prog"><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div></div>
+  </div>
+  <div id="cap"></div>
+ </div>
+</div>
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+const W = @@W@@, CAP = @@CAP@@, DUR = @@DUR@@, END0 = @@END0@@;
+const t = (i) => W[i][0];
+const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+const counters = [];
+const count = (sel, a, b, at, d, fmt, ease = 'power2.out') => { const o = { v: a }; counters.push([o, sel, fmt]); tl.fromTo(o, { v: a }, { v: b, duration: d, ease, immediateRender: false }, at); };
+const brl = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR');
+const kbrl = (v) => 'R$ ' + Math.round(v) + ' mil';
+const IN = (s, at, o = {}) => tl.fromTo(s, { opacity: 0, y: o.y ?? 50, scale: o.s ?? 0.94, filter: 'blur(12px)' }, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: o.d ?? 0.55, ease: o.e ?? 'expo.out', stagger: o.st ?? 0, immediateRender: false }, at);
+const POP = (s, at) => tl.fromTo(s, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2.4)', immediateRender: false }, at);
+const SHOW = (s, a) => tl.set(s, { opacity: 1 }, a), HIDE = (s, a) => tl.set(s, { opacity: 0 }, a);
+const draw = (s, at, d = 0.6, len = 1400) => (tl.set(s, { strokeDasharray: len, strokeDashoffset: len }, 0), tl.fromTo(s, { strokeDasharray: len, strokeDashoffset: len }, { strokeDashoffset: 0, duration: d, ease: 'power2.inOut', immediateRender: false }, at));
+const punch = (at, k = 1.06) => tl.fromTo('#cam', { scale: 1 }, { scale: k, duration: 0.1, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, at - 0.04);
+// tempos das cenas
+const C1 = 0, C2 = t(25) - 0.25, C3 = t(63) - 0.2, C4 = t(71) - 0.2, C5 = t(98) - 0.25, C6 = t(122) - 0.2, C7 = t(140) - 0.2, C8 = t(156) - 0.2;
+// fundo vivo
+tl.fromTo('#bgA', { x: 0, y: 0 }, { x: 240, y: 420, duration: DUR, ease: 'sine.inOut', immediateRender: false }, 0);
+tl.fromTo('#bgB', { x: 0, y: 0 }, { x: -260, y: -460, duration: DUR, ease: 'sine.inOut', immediateRender: false }, 0);
+
+// ── 1 · gancho: a ilha vira notificação, o texto bate palavra por palavra, a linha da Selic desce e trava
+tl.fromTo('#isl', { width: 300, height: 86, left: 390, top: 120, borderRadius: 43 }, { width: 940, height: 130, left: 70, top: 110, borderRadius: 44, duration: 0.55, ease: 'back.out(1.3)', immediateRender: false }, 0.05);
+IN('#islc', 0.3, { y: 10, d: 0.35 });
+tl.set('#hk span', { opacity: 0 }, 0);
+IN('#hk .w1', t(0) - 0.05, { y: 60, d: 0.35 });
+tl.fromTo('#hk .w2', { opacity: 0, scale: 2.4, filter: 'blur(16px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.22, ease: 'expo.in', immediateRender: false }, t(2) - 0.15);
+tl.fromTo('#cam', { x: 0 }, { x: 12, duration: 0.045, yoyo: true, repeat: 3, ease: 'none', immediateRender: false }, t(2) + 0.08);
+IN('#hk .w3', t(3) - 0.05, { y: 60, d: 0.35 });
+draw('#ln1', 0.4, 1.3, 1100); tl.to('#dot1', { opacity: 1, duration: 0.1 }, t(4));
+tl.fromTo('#dot1', { scale: 1, transformOrigin: '850px 290px' }, { scale: 1.8, opacity: 0.4, duration: 0.5, repeat: 2, ease: 'sine.out', immediateRender: false }, t(4));
+// virada: a manchete sobe e sai, a promessa entra
+tl.to('#hk', { y: -140, opacity: 0, filter: 'blur(14px)', duration: 0.35, ease: 'expo.in' }, t(5) - 0.2);
+tl.to('#isl', { y: -60, opacity: 0, duration: 0.3, ease: 'power2.in' }, t(5) - 0.2);
+IN('#hk2', t(5) + 0.1, { y: 60 }); tl.to('#hk2 span', { color: '#28A745' }, t(14));
+tl.to('#ch1', { y: 40, opacity: 0, filter: 'blur(10px)', duration: 0.35, ease: 'power2.in' }, t(19) - 0.25);
+POP('#save', t(19) - 0.1); tl.to('#bm', { fill: 'rgba(29,29,31,1)', duration: 0.15 }, t(19) + 0.25);
+IN('#four', t(22) - 0.1, { d: 0.3 }); IN('#four .fp', t(23) - 0.12, { st: 0.07, y: 70, e: 'back.out(1.6)' });
+tl.to('#save', { opacity: 0, scale: 0.6, duration: 0.25 }, t(24) + 0.3);
+// ── transição 1→2: o cartão "1" cresce e vira a tela inteira (morfologia)
+tl.add(() => {}, C2 - 0.4);
+tl.fromTo('#mph', { left: 125, top: 960, width: 190, height: 220, borderRadius: 40, opacity: 0 }, { opacity: 1, duration: 0.01, immediateRender: false }, C2 - 0.4);
+tl.to('#mph', { left: -40, top: -40, width: 1160, height: 2000, borderRadius: 0, duration: 0.5, ease: 'expo.inOut' }, C2 - 0.38);
+tl.to('#mph', { backgroundColor: '#F5F5F7', duration: 0.3 }, C2);
+HIDE('#s1', C2 + 0.05); SHOW('#s2', C2); HIDE('#mph', C2 + 0.5);
+tl.set('#s2 > *', { opacity: 0 }, 0);
+IN('#s2 .hd', C2 + 0.05, { y: 30 }); IN('#s2 .k', C2 + 0.2, { y: 20 });
+// barra de progresso das 4 dicas (fica no topo)
+IN('#prog', C2 + 0.1, { y: -20, d: 0.4 });
+const pb = $$('#prog i');
+tl.to(pb[0], { width: '100%', duration: C3 - C2, ease: 'none' }, C2);
+// ── 2 · bancos
+IN('#bk1', C2 + 0.35, { y: 80, e: 'back.out(1.4)' }); IN('#bk2', C2 + 0.5, { y: 80, e: 'back.out(1.4)' }); tl.set('#ra,#rb', { opacity: 0.15 }, 0); tl.to('#ra', { opacity: 1, duration: 0.2 }, t(38) - 0.1); tl.to('#rb', { opacity: 1, duration: 0.2 }, t(46) - 0.1);
+IN('#pr', C2 + 0.7, { y: 60 });
+$$('#s2 .spk').forEach((p, i) => draw(p, (i ? t(46) : t(38)) + 0.15, 0.7, 500));
+count('#ra', 0, 12.5, t(38) - 0.1, 0.5, (v) => v.toFixed(1).replace('.', ',') + '%');
+count('#rb', 0, 15, t(46) - 0.1, 0.5, (v) => Math.round(v) + '%');
+tl.fromTo('#ba', { width: '0%' }, { width: '87%', duration: 0.8, ease: 'expo.out', immediateRender: false }, t(50));
+tl.fromTo('#bb', { width: '0%' }, { width: '100%', duration: 0.8, ease: 'expo.out', immediateRender: false }, t(50) + 0.2);
+count('#va', 0, 5052, t(50), 0.8, brl); count('#vb', 0, 5797, t(50) + 0.2, 0.8, brl);
+POP('#dif', t(56) - 0.05); punch(t(56));
+tl.to('#dif', { y: -8, duration: 0.5, yoyo: true, repeat: 3, ease: 'sine.inOut' }, t(57));
+// ── transição 2→3: o avião de papel cruza a tela e "abre" a cena azul atrás dele (máscara)
+tl.fromTo('#plane', { x: -200, y: 1500, rotation: 0, opacity: 1, scale: 0.8 }, { x: 1150, y: 300, rotation: -12, scale: 1.4, duration: 0.55, ease: 'power2.in', immediateRender: false }, C3 - 0.35);
+HIDE('#plane', C3 + 0.25);
+SHOW('#s3', C3 - 0.3);
+tl.fromTo('#s3', { clipPath: 'circle(0% at 0% 90%)' }, { clipPath: 'circle(150% at 0% 90%)', duration: 0.6, ease: 'power2.in', immediateRender: false }, C3 - 0.3);
+HIDE('#s2', C3 + 0.35);
+tl.fromTo('#s3 .t', { opacity: 0, y: 40, filter: 'blur(12px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.4, ease: 'expo.out', immediateRender: false }, C3 + 0.1);
+IN('#avs .av', t(65), { st: 0.07, y: 60, e: 'back.out(2)' });
+tl.set('#prog', { opacity: 0 }, C3); tl.set('#prog', { opacity: 1 }, C4 + 0.2);
+// ── transição 3→4: a cena azul encolhe até virar a bolinha do número 2 (máscara ao contrário)
+SHOW('#s4', C4 - 0.05); tl.set('#s4 > *', { opacity: 0 }, 0);
+tl.to('#s3', { clipPath: 'circle(0% at 12% 19%)', duration: 0.5, ease: 'expo.in' }, C4 - 0.3);
+HIDE('#s3', C4 + 0.25);
+IN('#s4 .hd', C4 + 0.05, { y: 30, s: 1.3 });
+tl.to(pb[1], { width: '100%', duration: C5 - C4, ease: 'none' }, C4);
+// ── 4 · FGTS
+IN('#wal', t(74) - 0.2, { y: 80, e: 'back.out(1.3)' });
+IN('#cal', t(76) - 0.15, { y: 80, e: 'back.out(1.3)' });
+tl.fromTo('#cy', { rotationX: 90 }, { rotationX: 0, duration: 0.45, ease: 'back.out(2)', immediateRender: false }, t(77));
+IN('#debt', t(84) - 0.2, { y: 60 });
+$$('.coin').forEach((c, i) => { tl.fromTo(c, { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.2, immediateRender: false }, t(85) - 0.1 + i * 0.08);
+  tl.to(c, { x: -100 - i * 60, y: 560, scale: 0.5, duration: 0.55, ease: 'power2.in' }, t(85) + 0.15 + i * 0.1); tl.to(c, { opacity: 0, duration: 0.1 }, t(85) + 0.68 + i * 0.1); });
+tl.to('#dbar', { width: '62%', duration: 0.7, ease: 'expo.out' }, t(87) - 0.2); IN('#ab', t(87), { y: 10, d: 0.3 });
+tl.fromTo('#jtv', { opacity: 1 }, { opacity: 0.2, duration: 0.25, yoyo: true, repeat: 7, immediateRender: false }, t(84));
+tl.to('#jt', { color: '#28A745', duration: 0.2 }, t(92)); tl.add(() => {}, t(92));
+const jtx = { v: 0 }; counters.push([jtx, '#jt', (v) => v < 0.5 ? 'juro rendendo ●' : 'esse pedaço parou de render ✓']); tl.to(jtx, { v: 1, duration: 0.01 }, t(92));
+punch(t(94));
+// ── transição 4→5: corte casado, a barra da dívida desce e vira o eixo do gráfico
+tl.to('#s4 .hd, #cal, #wal', { opacity: 0, y: -40, filter: 'blur(10px)', duration: 0.3, ease: 'power2.in' }, C5 - 0.3);
+tl.to('#debt', { y: -400, scaleY: 0.3, opacity: 0, duration: 0.45, ease: 'expo.inOut' }, C5 - 0.25);
+SHOW('#s5', C5); tl.set('#s5 > *', { opacity: 0 }, 0); HIDE('#s4', C5 + 0.25);
+IN('#s5 .hd', C5 + 0.05, { y: 30 }); IN('#s5 .k', C5 + 0.15, { y: 20 }); IN('#ch5', C5 + 0.15, { y: 100, s: 0.9 });
+tl.to(pb[2], { width: '100%', duration: C6 - C5, ease: 'none' }, C5);
+// ── 5 · SAC × Price
+draw('#lp', C5 + 0.6, 0.8, 900); draw('#ls', t(104) - 0.1, 1.6, 900); tl.to('#lsl', { opacity: 1, duration: 0.3 }, t(108));
+IN('#tot', t(112) - 0.1, { y: 60 });
+tl.fromTo('#ts', { width: '0%' }, { width: '68%', duration: 0.8, ease: 'expo.out', immediateRender: false }, t(115));
+tl.fromTo('#tp', { width: '0%' }, { width: '100%', duration: 0.8, ease: 'expo.out', immediateRender: false }, t(115) + 0.25);
+count('#tsv', 0, 685, t(115), 0.8, kbrl); count('#tpv', 0, 1014, t(115) + 0.25, 0.8, (v) => v < 1000 ? kbrl(v) : 'R$ 1 mi');
+punch(t(116));
+// ── transição 5→6: chicote lateral (a cena escorrega com desfoque e o celular entra pelo outro lado)
+tl.to('#s5', { x: -1100, filter: 'blur(20px)', duration: 0.35, ease: 'expo.in' }, C6 - 0.3);
+SHOW('#s6', C6 - 0.05); tl.set('#s6 > *', { opacity: 0 }, 0); HIDE('#s5', C6 + 0.1);
+tl.fromTo('#ph', { opacity: 1, x: 1100, rotation: 8, filter: 'blur(20px)' }, { x: 0, rotation: 0, filter: 'blur(0px)', duration: 0.6, ease: 'expo.out', immediateRender: false }, C6 - 0.05);
+tl.to(pb[3], { width: '100%', duration: C7 - C6, ease: 'none' }, C6);
+// ── 6 · portabilidade
+IN('#s6 .hd', t(130) - 0.15, { y: 30 });
+POP('#dc', t(131) - 0.1); tl.to('#arc', { opacity: 1, duration: 0.2 }, t(132));
+tl.to('#dc', { x: 0, y: 330, duration: 0.9, ease: 'power2.inOut' }, t(132));
+tl.to('#dc', { x: 90, duration: 0.45, yoyo: true, repeat: 1, ease: 'sine.inOut' }, t(132));
+tl.to('#bt', { opacity: 1, scale: 1.03, duration: 0.3 }, t(138)); tl.to('#bc', { opacity: 0.35, duration: 0.3 }, t(138)); punch(t(139));
+// ── transição 6→7: mergulho na tela do celular, que vira o fundo da cena seguinte
+tl.to('#ph', { scale: 2.6, opacity: 0, duration: 0.45, ease: 'expo.in' }, C7 - 0.35);
+tl.set('#prog', { opacity: 0 }, C7);
+SHOW('#s7', C7 - 0.05); tl.set('#s7 > *', { opacity: 0 }, 0); HIDE('#s6', C7 + 0.15);
+// ── 7 · bônus
+POP('#bn', t(142) - 0.1);
+const grid = $('#grid'); for (let i = 0; i < 32; i++) { const d = document.createElement('div'); d.className = 'gi'; d.style.cssText = 'height:96px;border-radius:18px;background:#fff;box-shadow:0 6px 14px rgba(0,0,0,.06);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px'; d.innerHTML = `<div style="width:30px;height:${40 + (i * 37) % 40}px;border-radius:6px;background:${i % 5 ? '#C7D7EE' : '#0071E3'}"></div>`; grid.appendChild(d); }
+tl.set('#grid', { opacity: 1 }, t(143));
+tl.fromTo('#grid .gi', { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.3, stagger: { each: 0.025, from: 'random' }, ease: 'back.out(2)', immediateRender: false }, t(144));
+IN('#tag', t(151) - 0.15, { y: 80 });
+tl.to('#kn', { x: -260, duration: 0.8, ease: 'power3.inOut' }, t(153)); tl.to('#pp', { textDecoration: 'line-through', color: '#8E8E93', duration: 0.1 }, t(155));
+punch(t(155));
+// ── transição 7→8: a ilha volta e cresce até virar o direct
+tl.to('#s7', { opacity: 0, scale: 0.92, filter: 'blur(14px)', duration: 0.3, ease: 'power2.in' }, C8 - 0.3);
+SHOW('#s8', C8 - 0.05); HIDE('#s7', C8 + 0.05);
+tl.fromTo('#dm', { left: 390, top: 120, width: 300, height: 86, borderRadius: 43, backgroundColor: '#000' }, { left: 110, top: 330, width: 860, height: 980, borderRadius: 44, backgroundColor: '#fff', duration: 0.6, ease: 'expo.out', immediateRender: false }, C8 - 0.05);
+const ko = { v: 0 }; counters.push([ko, '#tx', (v) => (v < 0.5 ? 'Mensagem...' : 'CONTA'.slice(0, Math.round(v)))]);
+tl.fromTo(ko, { v: 0 }, { v: 5, duration: 0.35, ease: 'none', immediateRender: false }, t(158) - 0.25); tl.set('#tx', { color: '#1D1D1F' }, t(158) - 0.25); tl.set('#snd', { opacity: 1 }, t(158) + 0.1);
+tl.set(ko, { v: 0 }, t(160)); tl.set('#tx', { color: '#8E8E93' }, t(160)); tl.set('#snd', { opacity: 0 }, t(160));
+tl.fromTo('#msg', { opacity: 0, y: 60, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: 'back.out(2)', immediateRender: false }, t(160)); punch(t(160));
+IN('#rep', t(163), { y: 40 });
+// ── 9 · final
+tl.to('#s8', { opacity: 0, filter: 'blur(14px)', duration: 0.3 }, END0 - 0.2); SHOW('#s9', END0);
+tl.set('#s9 > *', { opacity: 0 }, 0);
+['#f0', '#f1', '#f2', '#f3', '#f4'].forEach((s, i) => IN(s, END0 + 0.05 + i * 0.09, { y: 50 }));
+const fb = { v: 0 }; counters.push([fb, '#fb', (v) => (v < 0.5 ? 'Seguir' : 'Seguindo')]); tl.to(fb, { v: 1, duration: 0.01 }, END0 + 1.5);
+tl.to('#fb', { backgroundColor: '#E5E5EA', color: '#1D1D1F', duration: 0.1 }, END0 + 1.5);
+tl.fromTo('#fb', { scale: 1 }, { scale: 0.93, duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, END0 + 1.42);
+// legenda (branca na cena azul)
+const capEl = $('#cap');
+CAP.forEach((gg, gi) => { const el = document.createElement('div'); el.className = 'cg' + (gg.t0 >= C3 - 0.1 && gg.t0 < C4 - 0.1 ? ' d' : ''); el.id = 'cg' + gi; capEl.appendChild(el);
+  gg.w.forEach(([w], j) => { const sp = document.createElement('span'); sp.className = 'cw'; sp.id = `cw${gi}_${j}`; sp.textContent = w; el.appendChild(sp); });
+  const t1 = gi + 1 < CAP.length ? CAP[gi + 1].t0 : gg.w[gg.w.length - 1][2] + 0.6;
+  tl.fromTo(el, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.1, ease: 'power3.out', immediateRender: false }, Math.max(0, gg.t0 - 0.05));
+  tl.to(el, { opacity: 0, duration: 0.04 }, Math.min(t1 - 0.06, gg.w[gg.w.length - 1][2] + 0.5));
+  gg.w.forEach(([w, a, b], j) => { tl.to(`#cw${gi}_${j}`, { backgroundColor: 'rgba(255,214,10,1)', color: '#1D1D1F', duration: 0.04 }, a - 0.02); tl.to(`#cw${gi}_${j}`, { backgroundColor: 'rgba(255,214,10,0)', clearProps: 'color', duration: 0.1 }, b); }); });
+tl.eventCallback('onUpdate', () => { counters.forEach(([o, sel, fmt]) => { $(sel).textContent = fmt(o.v); }); });
+tl.set({}, {}, DUR);
+window.__timelines['main'] = tl;
+tl.seek(0);
+</script>
+</body>
+</html>

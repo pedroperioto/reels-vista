@@ -560,7 +560,7 @@ function render(tt) {
     c.style.opacity = p > 0 && p < 1 ? 1 : 0; c.style.transform = `translate(${xy[0].toFixed(1)}px,${xy[1].toFixed(1)}px) rotate(${(p * 340).toFixed(0)}deg) scale(${(0.5 + 0.5 * Math.min(1, p * 4)).toFixed(3)})`; });
   const redW = 940 - 88 * [0, 1, 2, 3].filter(k => tt >= E['moeda' + k]).length - 88;
   BUBS.forEach((b, j) => { const on = tt > t(83) + 0.3 && tt < C5 - 0.1; const green = j >= 6; const stop = green && tt > E.para - 0.2;
-    const cyc = ((tt * 0.62 + j * 0.37) % 1 + 1) % 1; const x = green ? 700 + (j - 6) * 110 : 330 + ((j * 97) % (redW - 330));
+    const cyc = ((tt * 0.62 + j * 0.37) % 1 + 1) % 1; const x = green ? 700 + (j - 6) * 110 : 290 + ((j * 131) % (redW - 310));
     const vis = on && !stop && (!green || tt > E.moeda3 + 0.2);
     b.style.opacity = vis ? (Math.sin(cyc * 3.1416) * 0.85).toFixed(3) : 0; b.style.transform = `translate(${x}px,${(950 - (green ? 44 : 0) - cyc * 84).toFixed(1)}px) scale(${(0.7 + cyc * 0.5).toFixed(3)})`; });
   // bolinha da SAC
